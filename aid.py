@@ -7,6 +7,7 @@ Host of useful manipulation methods for Furgo Metocean Consultancy - Americas.
 from erddapy import ERDDAP
 import numpy as np
 import pandas as pd
+import datetime as dtm
 
 class Aid():
     """ Support variables"""
