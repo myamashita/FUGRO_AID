@@ -11,12 +11,14 @@ import datetime as dtm
 
 class Aid():
     """ Support variables"""
-    def __init__():
+    def __init__(self):
         from bokeh.plotting import figure
         from bokeh.models import ColorBar, HoverTool
         from bokeh.transform import linear_cmap
         from bokeh.models.formatters import DatetimeTickFormatter
         import colorcet as cc
+        
+        
     b_list = ['id', 'Label', 'Source', 'Misc', 'latitude', 'longitude', 'time']
     ERDDAP_TB = {
         'Aquadopp': {'dataset_id': 'geosOceanorAquadopp', 'vars': [
