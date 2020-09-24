@@ -4,53 +4,77 @@ Aid
 This is the Aid module.
 Host of useful manipulation methods for Furgo Metocean Consultancy - Americas.
 """
-from erddapy import ERDDAP
 import numpy as np
 import pandas as pd
 import datetime as dtm
 
 class Aid():
     """ Support variables"""
-    def __init__(self):
-        from bokeh.plotting import figure
-        from bokeh.models import ColorBar, HoverTool
-        from bokeh.transform import linear_cmap
-        from bokeh.models.formatters import DatetimeTickFormatter
-        import colorcet as cc
-        
-        
-    b_list = ['id', 'Label', 'Source', 'Misc', 'latitude', 'longitude', 'time']
-    ERDDAP_TB = {
-        'Aquadopp': {'dataset_id': 'geosOceanorAquadopp', 'vars': [
-            *b_list, 'depth', 'AqSpd', 'AqDir']},
-        'Adcp': {'dataset_id': 'geosOceanorADCP', 'vars': [
-            *b_list, 'depth', 'CurrSpd', 'CurrDir']},
-        'Wave': {'dataset_id': 'geosOceanorWave', 'vars': [
-            *b_list, 'Hm0', 'Hmax', 'Hm0a', 'Hm0b', 'Tp', 'Tm02', 'Tm02a',
-            'Tm02b', 'Thmax', 'Mdir', 'Mdira', 'Mdirb', 'Sprtp', 'Thtp',
-            'Thlf', 'Thhf', 'Ui', 'Tm01', 'Tmm10', 'Tm24', 'Hm0_Test_Result',
-            'Hmax_Test_Result', 'Hm0a_Test_Result', 'Hm0b_Test_Result']},
-        'Wind': {'dataset_id': 'geosOceanorWind', 'vars': [
-            *b_list, 'altitude', 'WindSpeed', 'WindDirection', 'WindGust']},
-        'WindCorrected': {'dataset_id': 'geosOceanorWindCorrected10m',
-                          'vars': ['id', 'longitude', 'latitude', 'time',
-                                   'original_altitude', 'altitude',
-                                   'WindSpeed', 'WindDirection', 'WindGust']},
-        'WaterTemp': {'dataset_id': 'geosOceanorTemperature', 'vars': [
-            *b_list, 'depth', 'WaterTemp']},
-        'Met': {'dataset_id': 'geosOceanorMet',
-                'vars': [*b_list, 'AirPressure', 'AirTemperature',
-                         'AirHumidity', 'SolarRadiation']},
-        'BuoyData': {'dataset_id': 'geosOceanorBuoyData', 'vars': [
-            *b_list, 'LeadBatteryVoltage', 'LithBatteryVoltage',
-            'AhCharged', 'AhDischargedLead', 'AhDischargedLithium',
-            'LeadBatteryTemp', 'CardNo']}}             
+    bk = __import__('bokeh', globals(), locals(), [], 0)
+    
 
-def erddap_instance(server='http://10.1.1.17:8080/erddap',
-                    protocol='tabledap', response='csv'):
-    return ERDDAP(server=server, protocol=protocol, response=response)
+class Erddap(object):
 
+    def __init__(self, server='http://10.1.1.17:8080/erddap',
+                 protocol='tabledap', response='csv', dataset_id=None,
+                 constraints=None, variables=None):
+        self._base = Erddap.erddap_instance(server, protocol, response)
+        self.dataset_id = dataset_id
+        self.constraints = constraints
+        self.variables = variables
 
+    def erddap_instance(server='http://10.1.1.17:8080/erddap',
+                        protocol='tabledap', response='csv'):
+        from erddapy import ERDDAP
+        return ERDDAP(server=server, protocol=protocol, response=response)
+    
+    @property
+    def dataset_id(self):
+        return self._dataset_id
+
+    @dataset_id.setter
+    def dataset_id(self, i):
+        self._dataset_id = i
+        self._base.dataset_id = i
+
+    @property
+    def constraints(self):
+        return self._constraints
+
+    @constraints.setter
+    def constraints(self, c):
+        self._constraints = c
+        self._base.constraints = c
+
+    @property
+    def variables(self):
+        return self._variables
+
+    @variables.setter
+    def variables(self, v):
+        self._variables = v
+        self._base.variables = v
+
+    def _base_constraints(id, start=None, end=None):
+        """ Create a constraints dictionary."""
+        time = dtm.datetime.utcnow()
+        time = time.replace(second=0, microsecond=0)
+        if start is None:
+            start = time - dtm.timedelta(hours=72)
+        if end is None:
+            end = time
+        return {'id=': id, 'time>=': start, 'time<=': end}
+
+    def to_pandas(self):
+        dateparser = lambda x: dtm.datetime.strptime(x, "%Y-%m-%dT%H:%M:%SZ")
+        kw = {'index_col': 'time', 'date_parser': dateparser,
+              'skiprows': [1], 'response': 'csv'}
+        return self._base.to_pandas(**kw)
+
+    def vars_in_dataset(self, dataset):
+        v = self._base._get_variables(dataset)
+        v.pop('NC_GLOBAL', None)
+        return [i for i in v]
 
 if __name__ == "__main__":
     import doctest
