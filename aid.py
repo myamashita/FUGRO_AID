@@ -8,10 +8,11 @@ import numpy as np
 import pandas as pd
 import datetime as dtm
 
+
 class Aid():
     """ Support variables"""
     bk = __import__('bokeh', globals(), locals(), [], 0)
-    
+
 
 class Erddap(object):
 
@@ -27,7 +28,7 @@ class Erddap(object):
                         protocol='tabledap', response='csv'):
         from erddapy import ERDDAP
         return ERDDAP(server=server, protocol=protocol, response=response)
-    
+
     @property
     def dataset_id(self):
         return self._dataset_id
@@ -66,7 +67,8 @@ class Erddap(object):
         return {'id=': id, 'time>=': start, 'time<=': end}
 
     def to_pandas(self):
-        dateparser = lambda x: dtm.datetime.strptime(x, "%Y-%m-%dT%H:%M:%SZ")
+        def dateparser(x): return dtm.datetime.strptime(
+            x, "%Y-%m-%dT%H:%M:%SZ")
         kw = {'index_col': 'time', 'date_parser': dateparser,
               'skiprows': [1], 'response': 'csv'}
         return self._base.to_pandas(**kw)
@@ -75,6 +77,7 @@ class Erddap(object):
         v = self._base._get_variables(dataset)
         v.pop('NC_GLOBAL', None)
         return [i for i in v]
+
 
 if __name__ == "__main__":
     import doctest
