@@ -12,9 +12,62 @@ import datetime as dtm
 class Aid():
     """ Support variables"""
     bk = __import__('bokeh', globals(), locals(), [], 0)
+    """ Suport bokeh figures"""
+    import importlib
+    figure = getattr(importlib.import_module('bokeh.plotting'), 'figure')
+
+
+class Bokeh(object):
+    """ Suport bokeh figures"""
+    from bokeh.plotting import figure
+    from bokeh.models import ColorBar, HoverTool
+    from bokeh.transform import linear_cmap
+    from bokeh.models.formatters import DatetimeTickFormatter
+
+    def mk_fig(title='Initial title', x_axis_label='Initial xlabel',
+               y_axis_label='Initial ylabel', height=350, width=1100,
+               x_axis_type='datetime', **kw):
+        sizing_mode = kw.get('sizing_mode', 'scale_both')
+        fig = self.figure(title=title, height=height, width=width,
+                          x_axis_label=x_axis_label, y_axis_label=y_axis_label,
+                          x_axis_type=x_axis_type, sizing_mode=sizing_mode)
+        return set_fig(fig, **kw)
+
+    def set_fig(fig, title_fontsize='16pt', title_fontstyle='normal',
+                axislabel_fontsize='14pt', axislabel_fontstyle='normal', **kw):
+        font = kw.get('axis_label_text_font', 'segoe ui')
+        fig.axis.axis_label_text_font = font
+        fig.title.text_font_size = title_fontsize
+        fig.axis.axis_label_text_font_size = axislabel_fontsize
+        fig.axis.major_label_text_font_size = axislabel_fontsize
+        fig.axis.axis_label_text_font_style = axislabel_fontstyle
+        if hasattr(fig.x_rangep, 'range_padding'):
+            fig.x_range.range_padding = 0
+        if hasattr(fig.y_range, 'range_padding'):
+            fig.y_range.range_padding = 0
+        fig.xaxis.formatter = self.DatetimeTickFormatter(months=["%Y/%m/%d"],
+                                                         days=["%b/%d"],
+                                                         hours=["%d %H:%M"],
+                                                         minutes=["%H:%M:%S"])
+        fig.xgrid.grid_line_color = None
+        fig.ygrid.grid_line_color = None
+        return fig
+
+        def _get_HoverTool(ycoordlabel='', zcoordlabel='',
+                           line_policy='nearest', image=False):
+            if image:
+                H = {'tooltips': [("Date", "@dt{  %Y-%m-%d %H:%M}"),
+                                  (ycoordlabel, '$y'), (zcoordlabel, '@image')],
+                     'formatters': {'@dt': 'datetime'}}
+            else:
+                H = {'tooltips': [("Date", "@x{  %Y-%m-%d %H:%M}"),
+                                  (ycoordlabel, '$y')],
+                     'formatters': {'@x': 'datetime'}, 'line_policy': line_policy}
+            return HoverTool(**H)
 
 
 class Erddap(object):
+    """ Support FUGRO Erddap connections and requests"""
 
     def __init__(self, server='http://10.1.1.17:8080/erddap',
                  protocol='tabledap', response='csv', dataset_id=None,
@@ -23,6 +76,15 @@ class Erddap(object):
         self.dataset_id = dataset_id
         self.constraints = constraints
         self.variables = variables
+
+    def __repr__(self):
+        return (f'Instance at server: {self._base.server}\n'
+                f'Dataset ID: {self._base.dataset_id}\n'
+                f'Constraints: {self._base.constraints}\n'
+                f'Variables: {self._base.variables}')
+
+    def __str__(self):
+        return 'ERDDAP instance for a specific server endpoint.'
 
     def erddap_instance(server='http://10.1.1.17:8080/erddap',
                         protocol='tabledap', response='csv'):
