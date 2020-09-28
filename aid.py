@@ -41,7 +41,7 @@ class Bokeh(object):
         f.axis.axis_label_text_font_size = axislabel_fontsize
         f.axis.major_label_text_font_size = axislabel_fontsize
         f.axis.axis_label_text_font_style = axislabel_fontstyle
-        if hasattr(f.x_rangep, 'range_padding'):
+        if hasattr(f.x_range, 'range_padding'):
             f.x_range.range_padding = 0
         if hasattr(f.y_range, 'range_padding'):
             f.y_range.range_padding = 0
