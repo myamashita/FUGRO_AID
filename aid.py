@@ -11,6 +11,7 @@ import datetime as dtm
 __version__ = '1.0.0'
 print(f'This module version is {__version__}\nno updates available.')
 
+
 class Aid():
     """ Support variables"""
     bk = __import__('bokeh', globals(), locals(), [], 0)
@@ -63,11 +64,11 @@ class Bokeh(object):
         """
         if f is None:
             f = Bokeh.mk_fig(
-                title=kw.get('title', 'Initial title'),
-                x_axis_label=kw.get('x_axis_label', 'Initial xlabel'),
-                y_axis_label=kw.get('y_axis_label', 'Initial ylabel'),
-                height=kw.get('height', 350), width=kw.get('width', 1100),
-                x_axis_type=kw.get('x_axis_type', 'datetime'), **kw)
+                title=kw.pop('title', 'Initial title'),
+                x_axis_label=kw.pop('x_axis_label', 'Initial xlabel'),
+                y_axis_label=kw.pop('y_axis_label', 'Initial ylabel'),
+                height=kw.pop('height', 350), width=kw.pop('width', 1100),
+                x_axis_type=kw.pop('x_axis_type', 'datetime'), **kw)
         Int_color = kw.get('Int_color', '#6788B1')
         Int_legend = kw.get('Int_legend', 'Intensity')
         f.line(df_int.index, df_int, color=Int_color, muted_color=Int_color,
@@ -83,7 +84,7 @@ class Bokeh(object):
         f.y_range = Bokeh.Range1d(df_int.index[0], df_int.index[-1])
         f.y_range = Bokeh.Range1d(df_int.min(), df_int.max())
         f.legend.click_policy = "mute"
-        return f
+        return Bokeh.set_fig(f, **kw)
 
     def _get_HoverTool(ycoordlabel='', zcoordlabel='',
                        line_policy='nearest', image=False):
