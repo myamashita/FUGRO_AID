@@ -28,42 +28,41 @@ class Bokeh(object):
                y_axis_label='Initial ylabel', height=350, width=1100,
                x_axis_type='datetime', **kw):
         sizing_mode = kw.get('sizing_mode', 'scale_both')
-        fig = self.figure(title=title, height=height, width=width,
-                          x_axis_label=x_axis_label, y_axis_label=y_axis_label,
-                          x_axis_type=x_axis_type, sizing_mode=sizing_mode)
-        return set_fig(fig, **kw)
+        f = Bokeh.figure(title=title, height=height, width=width,
+                         x_axis_label=x_axis_label, y_axis_label=y_axis_label,
+                         x_axis_type=x_axis_type, sizing_mode=sizing_mode)
+        return set_fig(f, **kw)
 
-    def set_fig(fig, title_fontsize='16pt', title_fontstyle='normal',
+    def set_fig(f, title_fontsize='16pt', title_fontstyle='normal',
                 axislabel_fontsize='14pt', axislabel_fontstyle='normal', **kw):
         font = kw.get('axis_label_text_font', 'segoe ui')
-        fig.axis.axis_label_text_font = font
-        fig.title.text_font_size = title_fontsize
-        fig.axis.axis_label_text_font_size = axislabel_fontsize
-        fig.axis.major_label_text_font_size = axislabel_fontsize
-        fig.axis.axis_label_text_font_style = axislabel_fontstyle
-        if hasattr(fig.x_rangep, 'range_padding'):
-            fig.x_range.range_padding = 0
-        if hasattr(fig.y_range, 'range_padding'):
-            fig.y_range.range_padding = 0
-        fig.xaxis.formatter = self.DatetimeTickFormatter(months=["%Y/%m/%d"],
-                                                         days=["%b/%d"],
-                                                         hours=["%d %H:%M"],
-                                                         minutes=["%H:%M:%S"])
-        fig.xgrid.grid_line_color = None
-        fig.ygrid.grid_line_color = None
-        return fig
+        f.axis.axis_label_text_font = font
+        f.title.text_font_size = title_fontsize
+        f.axis.axis_label_text_font_size = axislabel_fontsize
+        f.axis.major_label_text_font_size = axislabel_fontsize
+        f.axis.axis_label_text_font_style = axislabel_fontstyle
+        if hasattr(f.x_rangep, 'range_padding'):
+            f.x_range.range_padding = 0
+        if hasattr(f.y_range, 'range_padding'):
+            f.y_range.range_padding = 0
+        dt = {'months': ["%Y/%m/%d"], 'days': ["%b/%d"],
+              'hours': ["%d %H:%M"], 'minutes': ["%H:%M:%S"]}
+        f.xaxis.formatter = Bokeh.DatetimeTickFormatter(**dt)
+        f.xgrid.grid_line_color = None
+        f.ygrid.grid_line_color = None
+        return f
 
-        def _get_HoverTool(ycoordlabel='', zcoordlabel='',
-                           line_policy='nearest', image=False):
-            if image:
-                H = {'tooltips': [("Date", "@dt{  %Y-%m-%d %H:%M}"),
-                                  (ycoordlabel, '$y'), (zcoordlabel, '@image')],
-                     'formatters': {'@dt': 'datetime'}}
-            else:
-                H = {'tooltips': [("Date", "@x{  %Y-%m-%d %H:%M}"),
-                                  (ycoordlabel, '$y')],
-                     'formatters': {'@x': 'datetime'}, 'line_policy': line_policy}
-            return HoverTool(**H)
+    def _get_HoverTool(ycoordlabel='', zcoordlabel='',
+                       line_policy='nearest', image=False):
+        if image:
+            H = {'tooltips': [("Date", "@dt{  %Y-%m-%d %H:%M}"),
+                              (ycoordlabel, '$y'), (zcoordlabel, '@image')],
+                 'formatters': {'@dt': 'datetime'}}
+        else:
+            H = {'tooltips': [("Date", "@x{  %Y-%m-%d %H:%M}"),
+                              (ycoordlabel, '$y')],
+                 'formatters': {'@x': 'datetime'}, 'line_policy': line_policy}
+        return HoverTool(**H)
 
 
 class Erddap(object):
