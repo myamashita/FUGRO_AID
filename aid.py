@@ -22,6 +22,7 @@ class Aid():
 
 class Bokeh(object):
     """ Suport bokeh figures"""
+    import bokeh.palettes as bp
     from bokeh.plotting import figure
     from bokeh.models import ColorBar, HoverTool, Range1d, LinearAxis
     from bokeh.transform import linear_cmap
@@ -55,7 +56,37 @@ class Bokeh(object):
         f.ygrid.grid_line_color = None
         return f
 
-    def plot_IntDir(df_int, df_dir, f=None, **kw):
+    def plot_Colour_Flood(data, X_tooltip='Date', Y_tooltip='Altitude',
+                          Z_tooltip='Intensity', vmin=0, vmax=100,
+                          f=None, **kw):
+        """Additional Keyword arguments to be passed to the functions:
+            bokeh.mk_fig --> 'title'; 'x_axis_label'; 'y_axis_label'; 'height';
+                             'width'; 'x_axis_type'; 'axis_label_text_font'
+            bokeh.plot_Colour_Flood --> 'X_tooltip'; 'Y_tooltip'; 'Z_tooltip';
+                                  'Dir_color'; 'Dir_legend'
+        """
+        if f is None:
+            f = Bokeh.mk_fig(
+                title=kw.pop('title', 'Initial title'),
+                x_axis_label=kw.pop('xlabel', 'Initial xlabel'),
+                y_axis_label=kw.pop('ylabel', 'Initial ylabel'),
+                height=kw.pop('height', 350), width=kw.pop('width', 1100),
+                x_axis_type=kw.pop('x_axis_type', 'datetime'), **kw)
+
+        f.add_tools(Bokeh._get_HoverTool(
+            X_tooltip, Y_tooltip, Z_tooltip, image=True))
+        mapper = Bokeh.linear_cmap(field_name='y', palette=kw.get(
+            'palette', Bokeh.bp.Turbo256), low=vmin, high=vmax)
+        f.image(source=data, image='image', x='x', y='y', dw='dw', dh='dh',
+                palette=kw.get('palette', Bokeh.bp.Turbo256))
+        cbar = Bokeh.ColorBar(
+            color_mapper=mapper['transform'], width=18, location=(0, 0),
+            major_tick_line_color='#000000', label_standoff=12,
+            major_label_text_font_size=kw.get('axislabel_fontsize', '14pt'))
+        f.add_layout(cbar, 'right')
+        return f
+
+    def plot_IntDir(dfI, dfD, f=None, **kw):
         """Additional Keyword arguments to be passed to the functions:
             bokeh.mk_fig --> 'title'; 'x_axis_label'; 'y_axis_label'; 'height';
                              'width'; 'x_axis_type'; 'axis_label_text_font'
@@ -65,35 +96,41 @@ class Bokeh(object):
         if f is None:
             f = Bokeh.mk_fig(
                 title=kw.pop('title', 'Initial title'),
-                x_axis_label=kw.pop('x_axis_label', 'Initial xlabel'),
-                y_axis_label=kw.pop('y_axis_label', 'Initial ylabel'),
+                x_axis_label=kw.pop('xlabel', 'Initial xlabel'),
+                y_axis_label=kw.pop('ylabel', 'Initial ylabel'),
                 height=kw.pop('height', 350), width=kw.pop('width', 1100),
                 x_axis_type=kw.pop('x_axis_type', 'datetime'), **kw)
         Int_color = kw.get('Int_color', '#6788B1')
         Int_legend = kw.get('Int_legend', 'Intensity')
-        f.line(df_int.index, df_int, color=Int_color, muted_color=Int_color,
-               muted_alpha=0.2, line_width=2, legend_label=Int_legend)
+        I = f.line(dfI.index, dfI, color=Int_color, muted_color=Int_color,
+                   muted_alpha=0.2, line_width=2, legend_label=Int_legend)
+        H = Bokeh._get_HoverTool(ycoordlabel=Int_legend, renderer=I)
+        f.add_tools(H)
         Dir_label = kw.get('Dir_label', 'Direction [°T]')
         Dir_color = kw.get('Dir_color', '#D9BE89')
         Dir_legend = kw.get('Dir_legend', 'Direction')
         f.extra_y_ranges = {"Dir": Bokeh.Range1d(start=0, end=360)}
+        D = f.circle(dfD.index, dfD, color=Dir_color, muted_color=Dir_color,
+                     legend_label=Dir_legend, y_range_name="Dir",
+                     muted_alpha=0.2)
         f.add_layout(Bokeh.LinearAxis(y_range_name="Dir",
                                       axis_label=Dir_label), 'right')
-        f.circle(df_dir.index, df_dir, color=Dir_color, muted_color=Dir_color,
-                 legend_label=Dir_legend, y_range_name="Dir", muted_alpha=0.2)
-        f.y_range = Bokeh.Range1d(df_int.index[0], df_int.index[-1])
-        f.y_range = Bokeh.Range1d(df_int.min(), df_int.max())
+        H = Bokeh._get_HoverTool(ycoordlabel=Dir_legend, renderer=D)
+        f.add_tools(H)
+        f.x_range = Bokeh.Range1d(dfI.index[0], dfI.index[-1])
+        f.y_range = Bokeh.Range1d(dfI.min(), dfI.max())
         f.legend.click_policy = "mute"
         return Bokeh.set_fig(f, **kw)
 
-    def _get_HoverTool(ycoordlabel='', zcoordlabel='',
-                       line_policy='nearest', image=False):
+    def _get_HoverTool(xcoordlabel='Date', ycoordlabel='', zcoordlabel='',
+                       line_policy='nearest', image=False, renderer=None):
         if image:
-            H = {'tooltips': [("Date", "@dt{  %Y-%m-%d %H:%M}"),
+            H = {'tooltips': [(xcoordlabel, "@dt{  %Y-%m-%d %H:%M}"),
                               (ycoordlabel, '$y'), (zcoordlabel, '@image')],
                  'formatters': {'@dt': 'datetime'}}
         else:
-            H = {'tooltips': [("Date", "@x{  %Y-%m-%d %H:%M}"),
+            H = {'renderers': [renderer],
+                 'tooltips': [(xcoordlabel, "@x{  %Y-%m-%d %H:%M}"),
                               (ycoordlabel, '$y')],
                  'formatters': {'@x': 'datetime'}, 'line_policy': line_policy}
         return Bokeh.HoverTool(**H)
