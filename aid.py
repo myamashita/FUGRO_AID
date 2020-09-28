@@ -31,7 +31,7 @@ class Bokeh(object):
         f = Bokeh.figure(title=title, height=height, width=width,
                          x_axis_label=x_axis_label, y_axis_label=y_axis_label,
                          x_axis_type=x_axis_type, sizing_mode=sizing_mode)
-        return set_fig(f, **kw)
+        return Bokeh.set_fig(f, **kw)
 
     def set_fig(f, title_fontsize='16pt', title_fontstyle='normal',
                 axislabel_fontsize='14pt', axislabel_fontstyle='normal', **kw):
@@ -62,7 +62,7 @@ class Bokeh(object):
             H = {'tooltips': [("Date", "@x{  %Y-%m-%d %H:%M}"),
                               (ycoordlabel, '$y')],
                  'formatters': {'@x': 'datetime'}, 'line_policy': line_policy}
-        return HoverTool(**H)
+        return Bokeh.HoverTool(**H)
 
 
 class Erddap(object):
