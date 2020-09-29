@@ -14,10 +14,23 @@ print(f'This module version is {__version__}\nno updates available.')
 
 class Aid():
     """ Support variables"""
-    bk = __import__('bokeh', globals(), locals(), [], 0)
-    """ Suport bokeh figures"""
-    import importlib
-    figure = getattr(importlib.import_module('bokeh.plotting'), 'figure')
+
+    def round_dt(dt, resolution=dtm.timedelta(hours=1), up=True):
+        """
+        >>> Aid.round_dt(dtm.datetime(2020, 2, 12, 19, 33, 15),\
+                         dtm.timedelta(minutes=10))
+        datetime.datetime(2020, 2, 12, 19, 40)
+        >>> Aid.round_dt(dtm.datetime(2020, 1, 1, 5, 8, 15),\
+                         dtm.timedelta(minutes=10), False)
+        datetime.datetime(2020, 1, 1, 5, 0)
+        """
+        a, b = divmod((dt - dt.min).seconds, resolution.seconds)
+        if up:
+            n = dtm.timedelta(seconds=(
+                resolution.seconds * (1 - 0**int(b)) - int(b)))
+        else:
+            n = dtm.timedelta(seconds=(-int(b)))
+        return dt + n
 
 
 class Bokeh(object):
@@ -196,7 +209,7 @@ class Erddap(object):
             start = time - dtm.timedelta(hours=72)
         if end is None:
             end = time
-        return {'id=': id, 'time>=': start, 'time<=': end}
+        return {'id=': id, 'time>=': start, 'time<': end}
 
     def to_pandas(self):
         def dateparser(x): return dtm.datetime.strptime(
