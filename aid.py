@@ -32,6 +32,60 @@ class Aid():
             n = dtm.timedelta(seconds=(-int(b)))
         return dt + n
 
+    def describe(df, len_exp, df_dir=None):
+
+        if df.ndim == 2 and df.columns.size == 0:
+            raise ValueError("Cannot describe a DataFrame without columns")
+
+        df_out = pd.DataFrame(columns=['Return', 'Max', 'Mean', 'Min', 'Std',
+                                       'DirMax', 'DateMax', 'DateMin'])
+
+        def describe_1d(s, len_exp, df_out):
+            df_out.loc[f'{s.name}', 'Return'] = (s.count() / len_exp) * 100.0
+            df_out.loc[f'{s.name}', 'Max'] = s.max()
+            df_out.loc[f'{s.name}', 'Mean'] = s.mean()
+            df_out.loc[f'{s.name}', 'Min'] = s.min()
+            df_out.loc[f'{s.name}', 'Std'] = s.std()
+            df_out.loc[f'{s.name}', 'DateMax'] = s.idxmax(skipna=True)
+            df_out.loc[f'{s.name}', 'DateMin'] = s.idxmin(skipna=True)
+            return df_out
+
+        if df.ndim == 1:
+            df_out = describe_1d(df, len_exp, df_out)
+        else:
+            for key in df.columns:
+                df_out = describe_1d(df.loc[:, key], len_exp, df_out)
+
+        if df_dir is not None:
+            if not isinstance(df, type(df_dir)):
+                raise ValueError("Wrong input types")
+            if df.ndim == 1:
+                df_out.loc[df.name, 'DirMax'] = df_dir.loc[
+                    df_out['DateMax'].values[0]]
+            elif df_dir.shape[1] == 1:
+                for key in df.columns:
+                    df_out.loc[f'{key}', 'DirMax'] = df_dir.loc[
+                        df_out.loc[f'{key}', 'DateMax']].values[0]
+            elif df.shape[1] == df_dir.shape[1]:
+                for n, key in enumerate(df.columns):
+                    df_out.loc[f'{key}', 'DirMax'] = df_dir.loc[
+                        df_out.loc[f'{key}', 'DateMax']].values[n]
+
+        return df_out
+
+    def highlight_bins(s, range_min=98., range_max=99.):
+        '''
+        highlight a Series in tree interval.
+        orange <= range_min
+        yellow <= range_max
+        green > range_max
+        how to use:
+        df.style.apply(highlight_bins)
+        '''
+        return ['background-color: #FD8060' if v <= range_min
+                else 'background-color: #FEE191' if v <= range_max
+                else 'background-color: #B0D8A4' for v in s]
+
 
 class Bokeh(object):
     """ Suport bokeh figures"""
