@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 import datetime as dtm
 
-__version__ = '1.0.0'
+__version__ = '0.1.0'
 print(f'This module version is {__version__}\nno updates available.')
 
 
@@ -186,6 +186,49 @@ class Bokeh(object):
         f.add_tools(H)
         f.x_range = Bokeh.Range1d(dfI.index[0], dfI.index[-1])
         f.y_range = Bokeh.Range1d(dfI.min(), dfI.max())
+        f.legend.click_policy = "mute"
+        return Bokeh.set_fig(f, **kw)
+
+    def plot_Var(data, marker_type='+', f=None, **kw):
+        """Additional Keyword arguments to be passed to the functions:
+            bokeh.mk_fig --> 'title'; 'x_axis_label'; 'y_axis_label'; 'height';
+                             'width'; 'x_axis_type'; 'axis_label_text_font'
+            bokeh.plot_Var --> 'data_color'; 'data_legend'
+        """
+        if f is None:
+            f = Bokeh.mk_fig(
+                title=kw.pop('title', 'Initial title'),
+                x_axis_label=kw.pop('xlabel', 'Initial xlabel'),
+                y_axis_label=kw.pop('ylabel', 'Initial ylabel'),
+                height=kw.pop('height', 350), width=kw.pop('width', 1100),
+                x_axis_type=kw.pop('x_axis_type', 'datetime'), **kw)
+        data_args = {'x': data.index, 'y': data,
+                     'color': kw.get('data_color', '#6788B1'),
+                     'muted_color': kw.pop('data_color', '#6788B1'),
+                     'muted_alpha': 0.2,
+                     'line_width': 2}
+
+        _MARKER_SHORTCUTS = {"*": "asterisk",
+                             "+": "cross",
+                             "o": "circle",
+                             "o+": "circle_cross",
+                             "o.": "circle_dot",
+                             "ox": "circle_x",
+                             "oy": "circle_y",
+                             "-": "dash",
+                             ".": "dot",
+                             "v": "inverted_triangle",
+                             "^": "triangle",
+                             "^.": "triangle_dot"}
+
+        if marker_type in _MARKER_SHORTCUTS:
+            marker_type = _MARKER_SHORTCUTS[marker_type]
+            G = getattr(f, marker_type)(**data_args, **kw)
+        elif marker_type == 'line':
+            G = getattr(f, 'line')(**data_args, **kw)
+        H = Bokeh._get_HoverTool(
+            ycoordlabel=kw.get('legend_label', 'legend_label'), renderer=G)
+        f.add_tools(H)
         f.legend.click_policy = "mute"
         return Bokeh.set_fig(f, **kw)
 
