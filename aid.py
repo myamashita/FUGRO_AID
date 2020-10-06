@@ -4,13 +4,17 @@ Aid
 This is the Aid module.
 Host of useful manipulation methods for Furgo Metocean Consultancy - Americas.
 """
+import requests
 import numpy as np
 import pandas as pd
 import datetime as dtm
 
+releases = requests.get(
+    r'https://api.github.com/repos/myamashita/FUGRO_AID/releases/latest')
+lastest = releases.json()['tag_name']
 __version__ = '0.1.0'
-print(f'This module version is {__version__}\nno updates available.')
-
+print(f'This module version is {__version__}.\n'
+      f'The lastest version is {lastest}.')
 
 class Aid():
     """ Support variables"""
