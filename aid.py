@@ -16,8 +16,27 @@ __version__ = '0.1.0'
 print(f'This module version is {__version__}.\n'
       f'The lastest version is {lastest}.')
 
+
 class Aid():
     """ Support variables"""
+
+    def datetime_2matlab(dt):
+        """Convert a python datetime to matlab datenum
+        >>> Aid.datetime_2matlab(dtm.datetime(2020, 1, 1, 5, 8, 15, 735000))
+        737791.214071007
+        """
+        n = dt.toordinal() + 366
+        td = dt - dt.min
+        return n + td.seconds / 86400 + td.microseconds / 86400000000
+
+    def datetime64_2matlab(dt):
+        """Convert a datetime64[ns] to matlab datenum
+        >>> Aid.datetime64_2matlab(np.datetime64('2020-02-12T19:33:15.000000'))
+        737833.8147569444
+        >>> Aid.datetime64_2matlab(np.datetime64('2020-01-01 05:08:15.735'))
+        737791.214071007
+        """
+        return Aid.datetime_2matlab(dt.astype('M8[ms]').astype('O'))
 
     def round_dt(dt, resolution=dtm.timedelta(hours=1), up=True):
         """
@@ -35,6 +54,17 @@ class Aid():
         else:
             n = dtm.timedelta(seconds=(-int(b)))
         return dt + n
+
+    def datenum_2datetime(datenum):
+        """
+        Convert Matlab datenum into Python datetime.
+        :param datenum: Date in datenum format
+        :return:        Datetime object corresponding to datenum.
+        >>> Aid.datenum_to_datetime(737833.81486962)
+        datetime.datetime(2020, 2, 12, 19, 33, 24, 735170)
+        """
+        return dtm.datetime.fromordinal(int(datenum) - 366) +\
+            dtm.timedelta(days=datenum % 1)
 
     def describe(df, len_exp, df_dir=None):
 
@@ -89,6 +119,30 @@ class Aid():
         return ['background-color: #FD8060' if v <= range_min
                 else 'background-color: #FEE191' if v <= range_max
                 else 'background-color: #B0D8A4' for v in s]
+
+    def id2uv(icomp, dcomp, str_conv='cart'):
+        """Convert Intensity and Direction to U and V """
+        if str_conv == 'cart':  # Vector components in Cartesian convention
+            ucomp = icomp * np.cos(np.deg2rad(dcomp))
+            vcomp = icomp * np.sin(np.deg2rad(dcomp))
+        elif str_conv == 'meteo':  # Vector components in Meteo convention
+            ucomp = icomp * np.sin(np.deg2rad(dcomp + 180.))
+            vcomp = icomp * np.cos(np.deg2rad(dcomp + 180.))
+        elif str_conv == 'ocean':  # Vector components in Ocean convention
+            ucomp = icomp * np.sin(np.deg2rad(dcomp))
+            vcomp = icomp * np.cos(np.deg2rad(dcomp))
+        return ucomp, vcomp
+
+    def uv2id(ucomp, vcomp, str_conv='cart'):
+        """Convert U and V to Intensity and Direction"""
+        icomp = np.sqrt(ucomp ** 2 + vcomp ** 2)
+        if str_conv == 'cart':  # Direction in Cartesian convention
+            dcomp = np.rad2deg(np.arctan2(vcomp, ucomp)) % 360.
+        elif str_conv == 'meteo':  # Direction in Meteo convention
+            dcomp = (np.rad2deg(np.arctan2(ucomp, vcomp)) - 180.) % 360.
+        elif str_conv == 'ocean':  # Direction in Ocean convention
+            dcomp = np.rad2deg(np.arctan2(ucomp, vcomp)) % 360.
+        return icomp, dcomp
 
 
 class Bokeh(object):
