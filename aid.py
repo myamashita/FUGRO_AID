@@ -60,7 +60,7 @@ class Aid():
         Convert Matlab datenum into Python datetime.
         :param datenum: Date in datenum format
         :return:        Datetime object corresponding to datenum.
-        >>> Aid.datenum_to_datetime(737833.81486962)
+        >>> Aid.datenum_2datetime(737833.81486962)
         datetime.datetime(2020, 2, 12, 19, 33, 24, 735170)
         """
         return dtm.datetime.fromordinal(int(datenum) - 366) +\
