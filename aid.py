@@ -515,7 +515,8 @@ class Bokeh(object):
 
     def plot_Stick(dfI, dfD, dw, str_conv='ocean', f=None, add_cbar=True,
                    **kw):
-        """Function to plot vector. Each stick plot contains three pieces of information: direction, time, and magnitude (strength).
+        """Function to plot vector.
+        Each stick plot contains three pieces of information: direction, time, and magnitude (strength).
         Default ocean convention
 
         Args:
