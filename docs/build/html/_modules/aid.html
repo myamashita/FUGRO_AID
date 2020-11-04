@@ -1,0 +1,882 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>aid &#8212; FUGRO_AID 0.1.1 documentation</title>
+    <link rel="stylesheet" href="../_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+    <div class="header-wrapper" role="banner">
+      <div class="header">
+        <div class="headertitle"><a
+          href="../index.html">FUGRO_AID 0.1.1 documentation</a></div>
+        <div class="rel" role="navigation" aria-label="related navigation">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for aid</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">datetime</span> <span class="k">as</span> <span class="nn">dtm</span>
+
+<span class="n">releases</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="sa">r</span><span class="s1">&#39;https://api.github.com/repos/myamashita/FUGRO_AID/releases/latest&#39;</span><span class="p">)</span>
+<span class="n">lastest</span> <span class="o">=</span> <span class="n">releases</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s1">&#39;tag_name&#39;</span><span class="p">]</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;0.1.1&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;This module version is </span><span class="si">{</span><span class="n">__version__</span><span class="si">}</span><span class="s1">.</span><span class="se">\n</span><span class="s1">&#39;</span>
+      <span class="sa">f</span><span class="s1">&#39;The lastest version is </span><span class="si">{</span><span class="n">lastest</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Aid"><a class="viewcode-back" href="../aid.html#aid.Aid">[docs]</a><span class="k">class</span> <span class="nc">Aid</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. hlist::</span>
+<span class="sd">        :columns: 5</span>
+
+<span class="sd">        * :func:`datenum_2datetime`</span>
+<span class="sd">        * :func:`datetime_2matlab`</span>
+<span class="sd">        * :func:`datetime64_2matlab`</span>
+<span class="sd">        * :func:`describe`</span>
+<span class="sd">        * :func:`highlight_bins`</span>
+<span class="sd">        * :func:`id2uv`</span>
+<span class="sd">        * :func:`round_dt`</span>
+<span class="sd">        * :func:`round_time`</span>
+<span class="sd">        * :func:`uv2id`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">datenum_2datetime</span><span class="p">(</span><span class="n">dtnum</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">dtm</span><span class="o">.</span><span class="n">datetime</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Convert Matlab datenum into Python datetime</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dtnum (``float``): Date in datenum format</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            ``datetime.datetime`` object corresponding to ``datenum``</span>
+<span class="sd">        &gt;&gt;&gt; Aid.datenum_2datetime(737833.81486962)</span>
+<span class="sd">        datetime.datetime(2020, 2, 12, 19, 33, 24, 735170)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">dtm</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromordinal</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">dtnum</span><span class="p">)</span> <span class="o">-</span> <span class="mi">366</span><span class="p">)</span> <span class="o">+</span>\
+            <span class="n">dtm</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">dtnum</span> <span class="o">%</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">datetime_2matlab</span><span class="p">(</span><span class="n">dt</span><span class="p">:</span> <span class="n">dtm</span><span class="o">.</span><span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Convert a python datetime to matlab datenum</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dt (``datetime.datetime``): Date in datetime format</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            ``Datenum`` float corresponding to ``Datetime``</span>
+<span class="sd">        &gt;&gt;&gt; Aid.datetime_2matlab(dtm.datetime(2020, 1, 1, 5, 8, 15, 735000))</span>
+<span class="sd">        737791.214071007</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">toordinal</span><span class="p">()</span> <span class="o">+</span> <span class="mi">366</span>
+        <span class="n">td</span> <span class="o">=</span> <span class="n">dt</span> <span class="o">-</span> <span class="n">dt</span><span class="o">.</span><span class="n">min</span>
+        <span class="k">return</span> <span class="n">n</span> <span class="o">+</span> <span class="n">td</span><span class="o">.</span><span class="n">seconds</span> <span class="o">/</span> <span class="mi">86400</span> <span class="o">+</span> <span class="n">td</span><span class="o">.</span><span class="n">microseconds</span> <span class="o">/</span> <span class="mi">86400000000</span>
+
+    <span class="k">def</span> <span class="nf">datetime64_2matlab</span><span class="p">(</span><span class="n">dt</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Convert a datetime64[ns] to matlab datenum</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dt (``numpy.datetime64``): Date in datenum format</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            ``Datenum`` float corresponding to ```numpy.datetime64``</span>
+<span class="sd">        &gt;&gt;&gt; Aid.datetime64_2matlab(np.datetime64(&#39;2020-02-12T19:33:15.000000&#39;))</span>
+<span class="sd">        737833.8147569444</span>
+<span class="sd">        &gt;&gt;&gt; Aid.datetime64_2matlab(np.datetime64(&#39;2020-01-01 05:08:15.735&#39;))</span>
+<span class="sd">        737791.214071007</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Aid</span><span class="o">.</span><span class="n">datetime_2matlab</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;M8[ms]&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;O&#39;</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">describe</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">len_exp</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                 <span class="n">df_dir</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Describe a dataframe in statistical table::</span>
+
+<span class="sd">        [&quot;Return&quot;, &quot;Max&quot;, &quot;Mean&quot;, &quot;Min&quot;, &quot;Std&quot;, &quot;DirMax&quot;, &quot;DateMax&quot;, &quot;DateMin&quot;]</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            df (``pandas.core.frame.DataFrame``): Entry to describe</span>
+<span class="sd">            len_exp (int): expected length of entry</span>
+<span class="sd">            df_dir (``pandas.core.frame.DataFrame``): Optional direction entry</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            ``pandas.core.frame.DataFrame`` described</span>
+<span class="sd">        .. note::</span>
+<span class="sd">            **Return**:  Percentage of data return -&gt;</span>
+<span class="sd">            ``(Valid Values / Expected Length) * 100``</span>
+
+<span class="sd">            **DirMax** is returned if ``df_dir`` is declared</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Cannot describe a DataFrame without columns&quot;</span><span class="p">)</span>
+
+        <span class="n">df_out</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Return&#39;</span><span class="p">,</span> <span class="s1">&#39;Max&#39;</span><span class="p">,</span> <span class="s1">&#39;Mean&#39;</span><span class="p">,</span> <span class="s1">&#39;Min&#39;</span><span class="p">,</span> <span class="s1">&#39;Std&#39;</span><span class="p">,</span>
+                                       <span class="s1">&#39;DirMax&#39;</span><span class="p">,</span> <span class="s1">&#39;DateMax&#39;</span><span class="p">,</span> <span class="s1">&#39;DateMin&#39;</span><span class="p">])</span>
+
+        <span class="k">def</span> <span class="nf">describe_1d</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">len_exp</span><span class="p">,</span> <span class="n">df_out</span><span class="p">):</span>
+            <span class="n">df_out</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;Return&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="o">/</span> <span class="n">len_exp</span><span class="p">)</span> <span class="o">*</span> <span class="mf">100.0</span>
+            <span class="n">df_out</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;Max&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+            <span class="n">df_out</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;Mean&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+            <span class="n">df_out</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;Min&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+            <span class="n">df_out</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;Std&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+            <span class="n">df_out</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;DateMax&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">idxmax</span><span class="p">(</span><span class="n">skipna</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">df_out</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;DateMin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">idxmin</span><span class="p">(</span><span class="n">skipna</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">df_out</span>
+
+        <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">df_out</span> <span class="o">=</span> <span class="n">describe_1d</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">len_exp</span><span class="p">,</span> <span class="n">df_out</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+                <span class="n">df_out</span> <span class="o">=</span> <span class="n">describe_1d</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">key</span><span class="p">],</span> <span class="n">len_exp</span><span class="p">,</span> <span class="n">df_out</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">df_dir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">df_dir</span><span class="p">)):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Wrong input types&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">df_out</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;DirMax&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_dir</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
+                    <span class="n">df_out</span><span class="p">[</span><span class="s1">&#39;DateMax&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+            <span class="k">elif</span> <span class="n">df_dir</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+                    <span class="n">df_out</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;DirMax&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_dir</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
+                        <span class="n">df_out</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;DateMax&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">df_dir</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
+                    <span class="n">df_out</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;DirMax&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_dir</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
+                        <span class="n">df_out</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;DateMax&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">df_out</span>
+
+    <span class="k">def</span> <span class="nf">highlight_bins</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">range_min</span><span class="o">=</span><span class="mf">98.</span><span class="p">,</span> <span class="n">range_max</span><span class="o">=</span><span class="mf">99.</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Conditional formatting of a DataFrame or Series.</span>
+
+<span class="sd">        It take scalars, DataFrames or Series, and return</span>
+<span class="sd">        like-indexed DataFrames or Series with CSS &quot;attribute: value&quot;</span>
+<span class="sd">        pairs for the values.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            There is a 3 colors selected</span>
+
+<span class="sd">            orange &lt;= range_min</span>
+
+<span class="sd">            yellow &lt;= range_max</span>
+
+<span class="sd">            green &gt; range_max</span>
+
+<span class="sd">            how to use::</span>
+
+<span class="sd">                df.style.apply(Aid.highlight_bins)</span>
+
+<span class="sd">                df.style.apply(Aid.highlight_bins, args=[94., 96])</span>
+
+<span class="sd">                df.style.apply(Aid.highlight_bins, args=[94., 96],</span>
+<span class="sd">                               subset=[&#39;Return&#39;, &#39;Std&#39;, &#39;DirMax&#39; ])</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;background-color: #FD8060&#39;</span> <span class="k">if</span> <span class="n">v</span> <span class="o">&lt;=</span> <span class="n">range_min</span>
+                <span class="k">else</span> <span class="s1">&#39;background-color: #FEE191&#39;</span> <span class="k">if</span> <span class="n">v</span> <span class="o">&lt;=</span> <span class="n">range_max</span>
+                <span class="k">else</span> <span class="s1">&#39;background-color: #B0D8A4&#39;</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">s</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">id2uv</span><span class="p">(</span><span class="n">icomp</span><span class="p">,</span> <span class="n">dcomp</span><span class="p">,</span> <span class="n">str_conv</span><span class="o">=</span><span class="s1">&#39;cart&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert Intensity and Direction to U and V</span>
+
+<span class="sd">        :param icomp: Intensity</span>
+<span class="sd">        :type icomp: ``numpy.ndarray`` or ``FrameOrSeries``</span>
+<span class="sd">        :param dcomp: Direction at declared convention (degrees).</span>
+<span class="sd">        :type dcomp: ``numpy.ndarray`` or ``FrameOrSeries``</span>
+<span class="sd">        :param str_conv: Origin convention</span>
+<span class="sd">            (ex: &#39;cart&#39; - Cartesian or &#39;meteo&#39; - Meteorologic</span>
+<span class="sd">            or &#39;ocean&#39; - Oceanographic)</span>
+<span class="sd">        :type str_conv: str</span>
+<span class="sd">        :return: + Zonal component, parallel to the abscissa axis</span>
+<span class="sd">            + Meridional component, parallel to the coordinate axis</span>
+<span class="sd">        :rtype: ``numpy.ndarray`` or ``FrameOrSeries``</span>
+
+<span class="sd">        &gt;&gt;&gt; u, v = Aid.id2uv(</span>
+<span class="sd">        ...    np.array([1., 1., 1., 1., 1., 1., 1., 1.]),</span>
+<span class="sd">        ...    np.array([0., 45., 90., 135., 180., 225., 270., 315.]),</span>
+<span class="sd">        ...    &#39;cart&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; print(u)</span>
+<span class="sd">        [ 1.00000000e+00  7.07106781e-01  6.12323400e-17 -7.07106781e-01</span>
+<span class="sd">         -1.00000000e+00 -7.07106781e-01 -1.83697020e-16  7.07106781e-01]</span>
+<span class="sd">        &gt;&gt;&gt; print(v)</span>
+<span class="sd">        [ 0.00000000e+00  7.07106781e-01  1.00000000e+00  7.07106781e-01</span>
+<span class="sd">          1.22464680e-16 -7.07106781e-01 -1.00000000e+00 -7.07106781e-01]</span>
+<span class="sd">        &gt;&gt;&gt; u, v = Aid.id2uv(</span>
+<span class="sd">        ...    np.array([1., 1., 1., 1., 1., 1., 1., 1.]),</span>
+<span class="sd">        ...    np.array([270., 225., 180., 135., 90., 45., 0., 315.]),</span>
+<span class="sd">        ...    &#39;meteo&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; print(u)</span>
+<span class="sd">        [ 1.00000000e+00  7.07106781e-01 -2.44929360e-16 -7.07106781e-01</span>
+<span class="sd">         -1.00000000e+00 -7.07106781e-01  1.22464680e-16  7.07106781e-01]</span>
+<span class="sd">        &gt;&gt;&gt; print(v)</span>
+<span class="sd">        [ 3.06161700e-16  7.07106781e-01  1.00000000e+00  7.07106781e-01</span>
+<span class="sd">         -1.83697020e-16 -7.07106781e-01 -1.00000000e+00 -7.07106781e-01]</span>
+<span class="sd">        &gt;&gt;&gt; u, v = Aid.id2uv(</span>
+<span class="sd">        ...    np.array([1., 1., 1., 1., 1., 1., 1., 1.]),</span>
+<span class="sd">        ...    np.array([90., 45., 0., 315., 270., 225., 180., 135.]),</span>
+<span class="sd">        ...    &#39;ocean&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; print(u)</span>
+<span class="sd">        [ 1.00000000e+00  7.07106781e-01  0.00000000e+00 -7.07106781e-01</span>
+<span class="sd">         -1.00000000e+00 -7.07106781e-01  1.22464680e-16  7.07106781e-01]</span>
+<span class="sd">        &gt;&gt;&gt; print(v)</span>
+<span class="sd">        [ 6.12323400e-17  7.07106781e-01  1.00000000e+00  7.07106781e-01</span>
+<span class="sd">         -1.83697020e-16 -7.07106781e-01 -1.00000000e+00 -7.07106781e-01]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">str_conv</span> <span class="o">==</span> <span class="s1">&#39;cart&#39;</span><span class="p">:</span>  <span class="c1"># Vector components in Cartesian convention</span>
+            <span class="n">ucomp</span> <span class="o">=</span> <span class="n">icomp</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">dcomp</span><span class="p">))</span>
+            <span class="n">vcomp</span> <span class="o">=</span> <span class="n">icomp</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">dcomp</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">str_conv</span> <span class="o">==</span> <span class="s1">&#39;meteo&#39;</span><span class="p">:</span>  <span class="c1"># Vector components in Meteo convention</span>
+            <span class="n">ucomp</span> <span class="o">=</span> <span class="n">icomp</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">dcomp</span> <span class="o">+</span> <span class="mf">180.</span><span class="p">))</span>
+            <span class="n">vcomp</span> <span class="o">=</span> <span class="n">icomp</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">dcomp</span> <span class="o">+</span> <span class="mf">180.</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">str_conv</span> <span class="o">==</span> <span class="s1">&#39;ocean&#39;</span><span class="p">:</span>  <span class="c1"># Vector components in Ocean convention</span>
+            <span class="n">ucomp</span> <span class="o">=</span> <span class="n">icomp</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">dcomp</span><span class="p">))</span>
+            <span class="n">vcomp</span> <span class="o">=</span> <span class="n">icomp</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">dcomp</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">ucomp</span><span class="p">,</span> <span class="n">vcomp</span>
+
+    <span class="k">def</span> <span class="nf">round_dt</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="n">dtm</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">up</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Round datetime to up or down</span>
+<span class="sd">        This function is useful to create a expected range of time</span>
+
+<span class="sd">        &gt;&gt;&gt; Aid.round_dt(dtm.datetime(2020, 2, 12, 19, 33, 15),</span>
+<span class="sd">        ...              dtm.timedelta(minutes=10))</span>
+<span class="sd">        datetime.datetime(2020, 2, 12, 19, 40)</span>
+<span class="sd">        &gt;&gt;&gt; Aid.round_dt(dtm.datetime(2020, 1, 1, 5, 8, 15),</span>
+<span class="sd">        ...              dtm.timedelta(minutes=10), False)</span>
+<span class="sd">        datetime.datetime(2020, 1, 1, 5, 0)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">((</span><span class="n">dt</span> <span class="o">-</span> <span class="n">dt</span><span class="o">.</span><span class="n">min</span><span class="p">)</span><span class="o">.</span><span class="n">seconds</span><span class="p">,</span> <span class="n">resolution</span><span class="o">.</span><span class="n">seconds</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">up</span><span class="p">:</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">dtm</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">resolution</span><span class="o">.</span><span class="n">seconds</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">0</span><span class="o">**</span><span class="nb">int</span><span class="p">(</span><span class="n">b</span><span class="p">))</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="n">b</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">dtm</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="nb">int</span><span class="p">(</span><span class="n">b</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="n">dt</span> <span class="o">+</span> <span class="n">n</span>
+
+    <span class="k">def</span> <span class="nf">round_time</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="n">dtDelta</span><span class="o">=</span><span class="n">dtm</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mi">5</span><span class="p">)):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Round a datetime object to a multiple of a timedelta</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dt (``datetime.datetime``): Date in datetime format</span>
+<span class="sd">            dtDelta (``datetime.timedelta``): timedelta object</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            ``datetime.datetime`` rounded</span>
+
+<span class="sd">        &gt;&gt;&gt; Aid.round_time(dtm.datetime(2020, 2, 12, 19, 33, 15),</span>
+<span class="sd">        ...              dtm.timedelta(minutes=10))</span>
+<span class="sd">        datetime.datetime(2020, 2, 12, 19, 30)</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">            Author:</span>
+
+<span class="sd">            Thierry Husson 2012 - Use it as you want but don&#39;t blame me.</span>
+
+<span class="sd">            Stijn Nevens 2014 - Changed to use only datetime objects</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">roundTo</span> <span class="o">=</span> <span class="n">dtDelta</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
+        <span class="n">seconds</span> <span class="o">=</span> <span class="p">(</span><span class="n">dt</span> <span class="o">-</span> <span class="n">dt</span><span class="o">.</span><span class="n">min</span><span class="p">)</span><span class="o">.</span><span class="n">seconds</span>
+        <span class="c1"># // is a floor division, not a comment on following line:</span>
+        <span class="n">rounding</span> <span class="o">=</span> <span class="p">(</span><span class="n">seconds</span> <span class="o">+</span> <span class="n">roundTo</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">//</span> <span class="n">roundTo</span> <span class="o">*</span> <span class="n">roundTo</span>
+        <span class="k">return</span> <span class="n">dt</span> <span class="o">+</span> <span class="n">dtm</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">rounding</span> <span class="o">-</span> <span class="n">seconds</span><span class="p">,</span> <span class="o">-</span><span class="n">dt</span><span class="o">.</span><span class="n">microsecond</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">uv2id</span><span class="p">(</span><span class="n">ucomp</span><span class="p">,</span> <span class="n">vcomp</span><span class="p">,</span> <span class="n">str_conv</span><span class="o">=</span><span class="s1">&#39;cart&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert U and V to Intensity and Direction</span>
+
+<span class="sd">        :param ucomp: Zonal component, parallel to the abscissa axis</span>
+<span class="sd">        :type ucomp: ``numpy.ndarray`` or ``FrameOrSeries``</span>
+<span class="sd">        :param vcomp: Meridional component, parallel to the coordinate axis</span>
+<span class="sd">        :type vcomp: ``numpy.ndarray`` or ``FrameOrSeries``</span>
+<span class="sd">        :param str_conv: Origin convention</span>
+<span class="sd">            (ex: &#39;cart&#39; - Cartesian or &#39;meteo&#39; - Meteorologic</span>
+<span class="sd">            or &#39;ocean&#39; - Oceanographic)</span>
+<span class="sd">        :type str_conv: str</span>
+<span class="sd">        :return: + Intensity</span>
+<span class="sd">            + direction at the desired convention (degrees)</span>
+<span class="sd">        :rtype: ``numpy.ndarray`` or ``FrameOrSeries``</span>
+
+<span class="sd">        &gt;&gt;&gt; i, d = Aid.uv2id(</span>
+<span class="sd">        ...    np.array([1.0, 0.5, 0.0, -0.5, -1.0, -0.5, 0, 0.5]),</span>
+<span class="sd">        ...    np.array([0.0, 0.5, 1.0, 0.5, 0.0, -0.5, -1, -0.5]),</span>
+<span class="sd">        ...    &#39;cart&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; print(d)</span>
+<span class="sd">        [  0.  45.  90. 135. 180. 225. 270. 315.]</span>
+<span class="sd">        &gt;&gt;&gt; i, d = Aid.uv2id(</span>
+<span class="sd">        ...    np.array([1.0, 0.5, 0.0, -0.5, -1.0, -0.5, 0, 0.5]),</span>
+<span class="sd">        ...    np.array([0.0, 0.5, 1.0, 0.5, 0.0, -0.5, -1, -0.5]),</span>
+<span class="sd">        ...    &#39;meteo&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; print(d)</span>
+<span class="sd">        [270. 225. 180. 135.  90.  45.   0. 315.]</span>
+<span class="sd">        &gt;&gt;&gt; i, d = Aid.uv2id(</span>
+<span class="sd">        ...    np.array([1.0, 0.5, 0.0, -0.5, -1.0, -0.5, 0, 0.5]),</span>
+<span class="sd">        ...    np.array([0.0, 0.5, 1.0, 0.5, 0.0, -0.5, -1, -0.5]),</span>
+<span class="sd">        ...    &#39;ocean&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; print(d)</span>
+<span class="sd">        [ 90.  45.   0. 315. 270. 225. 180. 135.]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">icomp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ucomp</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">vcomp</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">str_conv</span> <span class="o">==</span> <span class="s1">&#39;cart&#39;</span><span class="p">:</span>  <span class="c1"># Direction in Cartesian convention</span>
+            <span class="n">dcomp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">vcomp</span><span class="p">,</span> <span class="n">ucomp</span><span class="p">))</span> <span class="o">%</span> <span class="mf">360.</span>
+        <span class="k">elif</span> <span class="n">str_conv</span> <span class="o">==</span> <span class="s1">&#39;meteo&#39;</span><span class="p">:</span>  <span class="c1"># Direction in Meteo convention</span>
+            <span class="n">dcomp</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">ucomp</span><span class="p">,</span> <span class="n">vcomp</span><span class="p">))</span> <span class="o">-</span> <span class="mf">180.</span><span class="p">)</span> <span class="o">%</span> <span class="mf">360.</span>
+        <span class="k">elif</span> <span class="n">str_conv</span> <span class="o">==</span> <span class="s1">&#39;ocean&#39;</span><span class="p">:</span>  <span class="c1"># Direction in Ocean convention</span>
+            <span class="n">dcomp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">ucomp</span><span class="p">,</span> <span class="n">vcomp</span><span class="p">))</span> <span class="o">%</span> <span class="mf">360.</span>
+        <span class="k">return</span> <span class="n">icomp</span><span class="p">,</span> <span class="n">dcomp</span></div>
+
+
+<div class="viewcode-block" id="Bokeh"><a class="viewcode-back" href="../bokeh.html#aid.Bokeh">[docs]</a><span class="k">class</span> <span class="nc">Bokeh</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. hlist::</span>
+<span class="sd">        :columns: 5</span>
+
+<span class="sd">        * :func:`mk_fig`</span>
+<span class="sd">        * :func:`plot_Colour_Flood`</span>
+<span class="sd">        * :func:`plot_IntDir`</span>
+<span class="sd">        * :func:`plot_QCresults`</span>
+<span class="sd">        * :func:`plot_Stick`</span>
+<span class="sd">        * :func:`plot_Var`</span>
+<span class="sd">        * :func:`set_fig`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">bokeh.palettes</span> <span class="k">as</span> <span class="nn">bp</span>
+    <span class="kn">from</span> <span class="nn">bokeh.plotting</span> <span class="kn">import</span> <span class="n">figure</span>
+    <span class="kn">from</span> <span class="nn">bokeh.models</span> <span class="kn">import</span> <span class="n">ColorBar</span><span class="p">,</span> <span class="n">HoverTool</span><span class="p">,</span> <span class="n">Range1d</span><span class="p">,</span> <span class="n">LinearAxis</span>
+    <span class="kn">from</span> <span class="nn">bokeh.transform</span> <span class="kn">import</span> <span class="n">linear_cmap</span>
+    <span class="kn">from</span> <span class="nn">bokeh.models.formatters</span> <span class="kn">import</span> <span class="n">DatetimeTickFormatter</span>
+
+    <span class="k">def</span> <span class="nf">mk_fig</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Initial title&#39;</span><span class="p">,</span> <span class="n">x_axis_label</span><span class="o">=</span><span class="s1">&#39;Initial xlabel&#39;</span><span class="p">,</span>
+               <span class="n">y_axis_label</span><span class="o">=</span><span class="s1">&#39;Initial ylabel&#39;</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">350</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1100</span><span class="p">,</span>
+               <span class="n">x_axis_type</span><span class="o">=</span><span class="s1">&#39;datetime&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method to simplifies figure creation</span>
+
+<span class="sd">        Args:</span>
+
+<span class="sd">          title (``str``): plot_title</span>
+<span class="sd">          x_axis_label (``str``): A label for the x-axis</span>
+<span class="sd">          y_axis_label (``str``): A label for the y-axis</span>
+<span class="sd">          height (``int``): plot_height</span>
+<span class="sd">          width (``int``): plot_width</span>
+<span class="sd">          x_axis_type (``str``): The type of the x-axis</span>
+<span class="sd">          **kw : Additional Keyword arguments to be passed to set_fig::</span>
+
+<span class="sd">            title_fontsize=&#39;16pt&#39;, title_fontstyle=&#39;normal&#39;, axislabel_fontsize=&#39;14pt&#39;,</span>
+<span class="sd">            axislabel_fontstyle=&#39;normal&#39;, axis_label_text_font=&#39;segoe ui&#39;</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        ``Bokeh.figure``</span>
+<span class="sd">        &quot;&quot;&quot;</span>  <span class="c1"># nopep8</span>
+        <span class="n">sizing_mode</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;sizing_mode&#39;</span><span class="p">,</span> <span class="s1">&#39;scale_both&#39;</span><span class="p">)</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">Bokeh</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span>
+                         <span class="n">x_axis_label</span><span class="o">=</span><span class="n">x_axis_label</span><span class="p">,</span> <span class="n">y_axis_label</span><span class="o">=</span><span class="n">y_axis_label</span><span class="p">,</span>
+                         <span class="n">x_axis_type</span><span class="o">=</span><span class="n">x_axis_type</span><span class="p">,</span> <span class="n">sizing_mode</span><span class="o">=</span><span class="n">sizing_mode</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Bokeh</span><span class="o">.</span><span class="n">set_fig</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">plot_Colour_Flood</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">X_tooltip</span><span class="o">=</span><span class="s1">&#39;Date&#39;</span><span class="p">,</span> <span class="n">Y_tooltip</span><span class="o">=</span><span class="s1">&#39;Altitude&#39;</span><span class="p">,</span>
+                          <span class="n">Z_tooltip</span><span class="o">=</span><span class="s1">&#39;Intensity&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                          <span class="n">f</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Function to plot colour flood</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data (``dict``): dict with keys::</span>
+
+<span class="sd">                &#39;image&#39;: data in array_like, &#39;dt&#39;:The range in x-coordinates,</span>
+<span class="sd">                &#39;x&#39;: The x-coordinates to locate the image anchors,</span>
+<span class="sd">                &#39;y&#39;: The y-coordinates to locate the image anchors,</span>
+<span class="sd">                &#39;dw&#39;: The width of the plot region that the image will occupy,</span>
+<span class="sd">                &#39;dh&#39;: The height of the plot region that the image will occupy</span>
+
+<span class="sd">            str, X_tooltip, Y_tooltip, Z_tooltip : string to tooltip</span>
+<span class="sd">            float, vmin, vmax : min/max values in colorbar range</span>
+<span class="sd">            f (``Bokeh.figure``): optional figure</span>
+<span class="sd">            **kw: Additional Keyword arguments to be passed to the functions:</span>
+
+<span class="sd">                function: bokeh.mk_fig::</span>
+
+<span class="sd">                    title, x_axis_label, y_axis_label, height, width, x_axis_type, axis_label_text_font</span>
+
+<span class="sd">                function: bokeh.plot_Colour_Flood::</span>
+
+<span class="sd">                    &#39;palette&#39;: default pallete &quot;Bokeh.bp.Turbo256&quot;</span>
+<span class="sd">                    &#39;axislabel_fontsize&#39;: colorbar font size &quot;14pt&quot;</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ``Bokeh.figure``</span>
+<span class="sd">        &quot;&quot;&quot;</span>  <span class="c1"># nopep8</span>
+        <span class="k">if</span> <span class="n">f</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="n">Bokeh</span><span class="o">.</span><span class="n">mk_fig</span><span class="p">(</span>
+                <span class="n">title</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;Initial title&#39;</span><span class="p">),</span>
+                <span class="n">x_axis_label</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;xlabel&#39;</span><span class="p">,</span> <span class="s1">&#39;Initial xlabel&#39;</span><span class="p">),</span>
+                <span class="n">y_axis_label</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;ylabel&#39;</span><span class="p">,</span> <span class="s1">&#39;Initial ylabel&#39;</span><span class="p">),</span>
+                <span class="n">height</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="mi">350</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="mi">1100</span><span class="p">),</span>
+                <span class="n">x_axis_type</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;x_axis_type&#39;</span><span class="p">,</span> <span class="s1">&#39;datetime&#39;</span><span class="p">),</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+
+        <span class="n">f</span><span class="o">.</span><span class="n">add_tools</span><span class="p">(</span><span class="n">Bokeh</span><span class="o">.</span><span class="n">_get_HoverTool</span><span class="p">(</span>
+            <span class="n">X_tooltip</span><span class="p">,</span> <span class="n">Y_tooltip</span><span class="p">,</span> <span class="n">Z_tooltip</span><span class="p">,</span> <span class="n">image</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+        <span class="n">mapper</span> <span class="o">=</span> <span class="n">Bokeh</span><span class="o">.</span><span class="n">linear_cmap</span><span class="p">(</span><span class="n">field_name</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s1">&#39;palette&#39;</span><span class="p">,</span> <span class="n">Bokeh</span><span class="o">.</span><span class="n">bp</span><span class="o">.</span><span class="n">Turbo256</span><span class="p">),</span> <span class="n">low</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="n">vmax</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">image</span><span class="o">=</span><span class="s1">&#39;image&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">dw</span><span class="o">=</span><span class="s1">&#39;dw&#39;</span><span class="p">,</span> <span class="n">dh</span><span class="o">=</span><span class="s1">&#39;dh&#39;</span><span class="p">,</span>
+                <span class="n">palette</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;palette&#39;</span><span class="p">,</span> <span class="n">Bokeh</span><span class="o">.</span><span class="n">bp</span><span class="o">.</span><span class="n">Turbo256</span><span class="p">))</span>
+        <span class="n">cbar</span> <span class="o">=</span> <span class="n">Bokeh</span><span class="o">.</span><span class="n">ColorBar</span><span class="p">(</span>
+            <span class="n">color_mapper</span><span class="o">=</span><span class="n">mapper</span><span class="p">[</span><span class="s1">&#39;transform&#39;</span><span class="p">],</span> <span class="n">width</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="n">major_tick_line_color</span><span class="o">=</span><span class="s1">&#39;#000000&#39;</span><span class="p">,</span> <span class="n">label_standoff</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+            <span class="n">major_label_text_font_size</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;axislabel_fontsize&#39;</span><span class="p">,</span> <span class="s1">&#39;14pt&#39;</span><span class="p">))</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">add_layout</span><span class="p">(</span><span class="n">cbar</span><span class="p">,</span> <span class="s1">&#39;right&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">f</span>
+
+    <span class="k">def</span> <span class="nf">plot_IntDir</span><span class="p">(</span><span class="n">dfI</span><span class="p">,</span> <span class="n">dfD</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Function to plot intensity and direction</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dfI(``pandas.core.series.Series``): Intensity series</span>
+<span class="sd">            dfD(``pandas.core.series.Series``): Direction series</span>
+<span class="sd">            f(``Bokeh.figure``): optional figure</span>
+<span class="sd">            **kw: Additional Keyword arguments to be passed to the functions::</span>
+<span class="sd">                function: bokeh.mk_fig::</span>
+
+<span class="sd">                    title, x_axis_label, y_axis_label, height, width, x_axis_type, axis_label_text_font</span>
+
+<span class="sd">                function: bokeh.plot_IntDir::</span>
+<span class="sd">                    </span>
+<span class="sd">                    &quot;Int_label&quot;: Y-label in left side plot</span>
+<span class="sd">                    &quot;Int_color&quot;:  Intensity color in plot</span>
+<span class="sd">                    &quot;Int_legend&quot;: Intensity legend</span>
+<span class="sd">                    &quot;Dir_label&quot;: Y-label in rigth side plot</span>
+<span class="sd">                    &quot;Dir_color&quot;: Direction color in plot</span>
+<span class="sd">                    &quot;Dir_legend&quot;: Direction legend</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ``Bokeh.figure``</span>
+<span class="sd">        &quot;&quot;&quot;</span>  <span class="c1"># nopep8</span>
+        <span class="k">if</span> <span class="n">f</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="n">Bokeh</span><span class="o">.</span><span class="n">mk_fig</span><span class="p">(</span>
+                <span class="n">title</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;Initial title&#39;</span><span class="p">),</span>
+                <span class="n">x_axis_label</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;xlabel&#39;</span><span class="p">,</span> <span class="s1">&#39;Initial xlabel&#39;</span><span class="p">),</span>
+                <span class="n">y_axis_label</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;ylabel&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">),</span>
+                <span class="n">height</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="mi">350</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="mi">1100</span><span class="p">),</span>
+                <span class="n">x_axis_type</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;x_axis_type&#39;</span><span class="p">,</span> <span class="s1">&#39;datetime&#39;</span><span class="p">),</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+        <span class="n">Int_color</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Int_color&#39;</span><span class="p">,</span> <span class="s1">&#39;#6788B1&#39;</span><span class="p">)</span>
+        <span class="n">Int_legend</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Int_legend&#39;</span><span class="p">,</span> <span class="s1">&#39;Intensity&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">axis_label</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Int_label&#39;</span><span class="p">,</span> <span class="s1">&#39;Intensity [m/s]&#39;</span><span class="p">)</span>
+        <span class="n">G</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">dfI</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">dfI</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">Int_color</span><span class="p">,</span> <span class="n">muted_color</span><span class="o">=</span><span class="n">Int_color</span><span class="p">,</span>
+                   <span class="n">muted_alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">line_width</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">legend_label</span><span class="o">=</span><span class="n">Int_legend</span><span class="p">)</span>
+        <span class="n">H</span> <span class="o">=</span> <span class="n">Bokeh</span><span class="o">.</span><span class="n">_get_HoverTool</span><span class="p">(</span><span class="n">ycoordlabel</span><span class="o">=</span><span class="n">Int_legend</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="n">G</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">add_tools</span><span class="p">(</span><span class="n">H</span><span class="p">)</span>
+        <span class="n">Dir_label</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Dir_label&#39;</span><span class="p">,</span> <span class="s1">&#39;Direction [°T]&#39;</span><span class="p">)</span>
+        <span class="n">Dir_color</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Dir_color&#39;</span><span class="p">,</span> <span class="s1">&#39;#D9BE89&#39;</span><span class="p">)</span>
+        <span class="n">Dir_legend</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Dir_legend&#39;</span><span class="p">,</span> <span class="s1">&#39;Direction&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">extra_y_ranges</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Dir&quot;</span><span class="p">:</span> <span class="n">Bokeh</span><span class="o">.</span><span class="n">Range1d</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="mi">360</span><span class="p">)}</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">dfD</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">dfD</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">Dir_color</span><span class="p">,</span> <span class="n">muted_color</span><span class="o">=</span><span class="n">Dir_color</span><span class="p">,</span>
+                     <span class="n">legend_label</span><span class="o">=</span><span class="n">Dir_legend</span><span class="p">,</span> <span class="n">y_range_name</span><span class="o">=</span><span class="s2">&quot;Dir&quot;</span><span class="p">,</span>
+                     <span class="n">muted_alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">add_layout</span><span class="p">(</span><span class="n">Bokeh</span><span class="o">.</span><span class="n">LinearAxis</span><span class="p">(</span><span class="n">y_range_name</span><span class="o">=</span><span class="s2">&quot;Dir&quot;</span><span class="p">,</span>
+                                      <span class="n">axis_label</span><span class="o">=</span><span class="n">Dir_label</span><span class="p">),</span> <span class="s1">&#39;right&#39;</span><span class="p">)</span>
+        <span class="n">H</span> <span class="o">=</span> <span class="n">Bokeh</span><span class="o">.</span><span class="n">_get_HoverTool</span><span class="p">(</span><span class="n">ycoordlabel</span><span class="o">=</span><span class="n">Dir_legend</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="n">D</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">add_tools</span><span class="p">(</span><span class="n">H</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">x_range</span> <span class="o">=</span> <span class="n">Bokeh</span><span class="o">.</span><span class="n">Range1d</span><span class="p">(</span><span class="n">dfI</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dfI</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">y_range</span> <span class="o">=</span> <span class="n">Bokeh</span><span class="o">.</span><span class="n">Range1d</span><span class="p">(</span><span class="n">dfI</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">dfI</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">legend</span><span class="o">.</span><span class="n">click_policy</span> <span class="o">=</span> <span class="s2">&quot;mute&quot;</span>
+        <span class="k">return</span> <span class="n">Bokeh</span><span class="o">.</span><span class="n">set_fig</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">plot_QCresults</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">var_name</span><span class="p">,</span> <span class="n">results</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">test_name</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Function to plot QC results of IOOS QARTOD tests</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data (``pandas.core.frame.DataFrame``): Raw data </span>
+<span class="sd">            var_name (``str``): Name of the variable</span>
+<span class="sd">            results (``OrderedDict``): The results of a QcConfig.run</span>
+<span class="sd">            title (``str``): Title of the plot</span>
+<span class="sd">            test_name (``str``): Name of the test to plot</span>
+<span class="sd">            **kw : Additional Keyword arguments to be passed to the functions:</span>
+
+<span class="sd">                function: bokeh.mk_fig::</span>
+
+<span class="sd">                    xlabel, height, width, x_axis_type</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ``Bokeh.figure``</span>
+<span class="sd">        &quot;&quot;&quot;</span>  <span class="c1"># nopep8</span>
+
+        <span class="n">time</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">index</span>
+        <span class="n">obs</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">var_name</span><span class="p">]</span>
+        <span class="n">qc_test</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;qartod&#39;</span><span class="p">][</span><span class="n">test_name</span><span class="p">]</span>
+
+        <span class="n">qc_pass</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_where</span><span class="p">(</span><span class="n">qc_test</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">obs</span><span class="p">)</span>
+        <span class="n">qc_suspect</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_where</span><span class="p">(</span><span class="n">qc_test</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">obs</span><span class="p">)</span>
+        <span class="n">qc_fail</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_where</span><span class="p">(</span><span class="n">qc_test</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">obs</span><span class="p">)</span>
+        <span class="n">qc_notrun</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_where</span><span class="p">(</span><span class="n">qc_test</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">obs</span><span class="p">)</span>
+        <span class="n">qc_noteval</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_where</span><span class="p">(</span><span class="n">qc_test</span> <span class="o">!=</span> <span class="mi">9</span><span class="p">,</span> <span class="n">obs</span><span class="p">)</span>
+
+        <span class="n">f</span> <span class="o">=</span> <span class="n">Bokeh</span><span class="o">.</span><span class="n">mk_fig</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">test_name</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="n">x_axis_label</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;xlabel&#39;</span><span class="p">,</span> <span class="s1">&#39;Initial xlabel&#39;</span><span class="p">),</span>
+            <span class="n">y_axis_label</span><span class="o">=</span><span class="s1">&#39;Observation Value&#39;</span><span class="p">,</span>
+            <span class="n">height</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="mi">350</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="mi">1100</span><span class="p">),</span>
+            <span class="n">x_axis_type</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;x_axis_type&#39;</span><span class="p">,</span> <span class="s1">&#39;datetime&#39;</span><span class="p">))</span>
+
+        <span class="n">f</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">obs</span><span class="p">,</span> <span class="n">legend_label</span><span class="o">=</span><span class="s1">&#39;obs&#39;</span><span class="p">,</span>
+               <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#A6CEE3&#39;</span><span class="p">,</span> <span class="n">muted_alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">qc_notrun</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">legend_label</span><span class="o">=</span><span class="s1">&#39;qc not run&#39;</span><span class="p">,</span>
+                 <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">muted_alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">qc_pass</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">legend_label</span><span class="o">=</span><span class="s1">&#39;qc pass&#39;</span><span class="p">,</span>
+                 <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">muted_alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">qc_suspect</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">legend_label</span><span class="o">=</span><span class="s1">&#39;qc suspect&#39;</span><span class="p">,</span>
+                 <span class="n">color</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">muted_alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">qc_fail</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">legend_label</span><span class="o">=</span><span class="s1">&#39;qc fail&#39;</span><span class="p">,</span>
+                 <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">muted_alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">qc_noteval</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">legend_label</span><span class="o">=</span><span class="s1">&#39;qc not eval&#39;</span><span class="p">,</span>
+                 <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">muted_alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+
+        <span class="n">f</span><span class="o">.</span><span class="n">legend</span><span class="o">.</span><span class="n">click_policy</span> <span class="o">=</span> <span class="s2">&quot;mute&quot;</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">add_layout</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">legend</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;right&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">add_tools</span><span class="p">(</span><span class="n">Bokeh</span><span class="o">.</span><span class="n">HoverTool</span><span class="p">(</span>
+            <span class="n">tooltips</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;index&quot;</span><span class="p">,</span> <span class="s2">&quot;$index&quot;</span><span class="p">),</span>
+                      <span class="p">(</span><span class="s2">&quot;Date&quot;</span><span class="p">,</span> <span class="s2">&quot;@x{  %Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M}&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s1">&#39;$y&#39;</span><span class="p">)],</span>
+            <span class="n">formatters</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;@x&#39;</span><span class="p">:</span> <span class="s1">&#39;datetime&#39;</span><span class="p">},</span> <span class="n">line_policy</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">f</span>
+
+    <span class="k">def</span> <span class="nf">plot_Stick</span><span class="p">(</span><span class="n">dfI</span><span class="p">,</span> <span class="n">dfD</span><span class="p">,</span> <span class="n">dw</span><span class="p">,</span> <span class="n">str_conv</span><span class="o">=</span><span class="s1">&#39;ocean&#39;</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">add_cbar</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                   <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Function to plot vector.</span>
+<span class="sd">        Each stick plot contains three pieces of information: direction, time, and magnitude (strength).</span>
+<span class="sd">        Default ocean convention</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dfI(``pandas.core.series.Series``): Intensity series</span>
+<span class="sd">            dfD(``pandas.core.series.Series``): Direction series in **degrees**</span>
+<span class="sd">            dw (``int``): width of data units (measured in the x-direction)</span>
+<span class="sd">            str_conv (``str``): &#39;meteo&#39; (from) or &#39;ocean&#39; (towards)</span>
+<span class="sd">            f(``Bokeh.figure``): optional figure</span>
+<span class="sd">            add_cbar (``bool``): True to add color bar</span>
+<span class="sd">            **kw: Additional Keyword arguments to be passed to the functions::</span>
+<span class="sd">                function: bokeh.mk_fig::</span>
+
+<span class="sd">                    title, x_axis_label, y_axis_label, height, width, x_axis_type, axis_label_text_font</span>
+
+<span class="sd">                function: bokeh.plot_stick::</span>
+
+<span class="sd">                    &#39;vmin&#39;: minumum value in colorbar range</span>
+<span class="sd">                    &#39;vmax&#39;: maximum value in colorbar range</span>
+<span class="sd">                    &#39;y_coord&#39;: The y-coordinates to start the sticks</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ``Bokeh.figure``</span>
+<span class="sd">        &quot;&quot;&quot;</span>  <span class="c1"># nopep8</span>
+        <span class="n">vmin</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;vmin&#39;</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">dfI</span><span class="p">))</span>
+        <span class="n">vmax</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;vmax&#39;</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">dfI</span><span class="p">))</span>
+        <span class="n">y_coord</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;y_coord&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">str_conv</span> <span class="o">==</span> <span class="s1">&#39;meteo&#39;</span><span class="p">:</span>  <span class="c1"># Direction in Meteo convention FROM</span>
+            <span class="n">dfD</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">dfD</span> <span class="o">+</span> <span class="mi">270</span><span class="p">)</span> <span class="o">%</span> <span class="mi">360</span>
+        <span class="k">elif</span> <span class="n">str_conv</span> <span class="o">==</span> <span class="s1">&#39;ocean&#39;</span><span class="p">:</span>  <span class="c1"># Direction in Ocean convention TOWARDS</span>
+            <span class="n">dfD</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">dfD</span> <span class="o">+</span> <span class="mi">90</span><span class="p">)</span> <span class="o">%</span> <span class="mi">360</span>
+
+        <span class="k">if</span> <span class="n">f</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="n">Bokeh</span><span class="o">.</span><span class="n">mk_fig</span><span class="p">(</span>
+                <span class="n">title</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;Initial title&#39;</span><span class="p">),</span>
+                <span class="n">x_axis_label</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;xlabel&#39;</span><span class="p">,</span> <span class="s1">&#39;Initial xlabel&#39;</span><span class="p">),</span>
+                <span class="n">y_axis_label</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;ylabel&#39;</span><span class="p">,</span> <span class="s1">&#39;Initial ylabel&#39;</span><span class="p">),</span>
+                <span class="n">height</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="mi">350</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="mi">1100</span><span class="p">),</span>
+                <span class="n">x_axis_type</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;x_axis_type&#39;</span><span class="p">,</span> <span class="s1">&#39;datetime&#39;</span><span class="p">),</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+
+        <span class="n">mapper</span> <span class="o">=</span> <span class="n">Bokeh</span><span class="o">.</span><span class="n">linear_cmap</span><span class="p">(</span>
+            <span class="n">field_name</span><span class="o">=</span><span class="s1">&#39;length&#39;</span><span class="p">,</span>
+            <span class="n">palette</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;palette&#39;</span><span class="p">,</span> <span class="n">Bokeh</span><span class="o">.</span><span class="n">bp</span><span class="o">.</span><span class="n">Turbo256</span><span class="p">),</span>
+            <span class="n">low</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="n">vmax</span> <span class="o">*</span> <span class="n">dw</span> <span class="o">*</span> <span class="mi">200</span><span class="p">)</span>
+
+        <span class="n">f</span><span class="o">.</span><span class="n">ray</span><span class="p">(</span><span class="n">dfI</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">y_coord</span><span class="p">,</span> <span class="n">dfI</span><span class="o">.</span><span class="n">size</span><span class="p">),</span> <span class="n">length</span><span class="o">=</span><span class="n">dfI</span> <span class="o">*</span> <span class="n">dw</span> <span class="o">*</span> <span class="mi">200</span><span class="p">,</span>
+              <span class="n">angle</span><span class="o">=</span><span class="n">dfD</span><span class="p">,</span> <span class="n">angle_units</span><span class="o">=</span><span class="s2">&quot;deg&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">mapper</span><span class="p">,</span> <span class="n">line_width</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">cbar_map</span> <span class="o">=</span> <span class="n">Bokeh</span><span class="o">.</span><span class="n">linear_cmap</span><span class="p">(</span>
+            <span class="n">field_name</span><span class="o">=</span><span class="s1">&#39;length&#39;</span><span class="p">,</span>
+            <span class="n">palette</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;palette&#39;</span><span class="p">,</span> <span class="n">Bokeh</span><span class="o">.</span><span class="n">bp</span><span class="o">.</span><span class="n">Turbo256</span><span class="p">),</span>
+            <span class="n">low</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="n">vmax</span><span class="p">)</span>
+        <span class="n">cbar</span> <span class="o">=</span> <span class="n">Bokeh</span><span class="o">.</span><span class="n">ColorBar</span><span class="p">(</span>
+            <span class="n">color_mapper</span><span class="o">=</span><span class="n">cbar_map</span><span class="p">[</span><span class="s1">&#39;transform&#39;</span><span class="p">],</span> <span class="n">width</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="n">major_tick_line_color</span><span class="o">=</span><span class="s1">&#39;#000000&#39;</span><span class="p">,</span> <span class="n">label_standoff</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+            <span class="n">major_label_text_font_size</span><span class="o">=</span><span class="s1">&#39;14pt&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">add_cbar</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">add_layout</span><span class="p">(</span><span class="n">cbar</span><span class="p">,</span> <span class="s1">&#39;right&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">f</span>
+
+    <span class="k">def</span> <span class="nf">plot_Var</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">marker_type</span><span class="o">=</span><span class="s1">&#39;+&#39;</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Function to plot a single variable. Using a marker type or line</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data(``pandas.core.series.Series``): Series to plot</span>
+<span class="sd">            marker_type (``str``): &quot;*&quot;, &quot;+&quot;, &quot;o&quot;, &quot;o+&quot;, &quot;o.&quot;, &quot;ox&quot;, &quot;oy&quot;, &quot;-&quot;, &quot;.&quot;, &quot;v&quot;, &quot;^&quot;, &quot;^.&quot;</span>
+<span class="sd">            f (``Bokeh.figure``): optional figure</span>
+<span class="sd">            **kw: Additional Keyword arguments to be passed to the functions:</span>
+
+<span class="sd">                function: bokeh.mk_fig::</span>
+
+<span class="sd">                    title, x_axis_label, y_axis_label, height, width, x_axis_type, axis_label_text_font</span>
+
+<span class="sd">                function:: bokeh.plot_Var::</span>
+
+<span class="sd">                    &#39;data_color&#39;: color of line or marker</span>
+<span class="sd">                    &#39;legend_label&#39;: legend label</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ``Bokeh.figure``</span>
+<span class="sd">        &quot;&quot;&quot;</span>  <span class="c1"># nopep8</span>
+        <span class="k">if</span> <span class="n">f</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="n">Bokeh</span><span class="o">.</span><span class="n">mk_fig</span><span class="p">(</span>
+                <span class="n">title</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;Initial title&#39;</span><span class="p">),</span>
+                <span class="n">x_axis_label</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;xlabel&#39;</span><span class="p">,</span> <span class="s1">&#39;Initial xlabel&#39;</span><span class="p">),</span>
+                <span class="n">y_axis_label</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;ylabel&#39;</span><span class="p">,</span> <span class="s1">&#39;Initial ylabel&#39;</span><span class="p">),</span>
+                <span class="n">height</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="mi">350</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="mi">1100</span><span class="p">),</span>
+                <span class="n">x_axis_type</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;x_axis_type&#39;</span><span class="p">,</span> <span class="s1">&#39;datetime&#39;</span><span class="p">),</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+        <span class="n">data_args</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">,</span>
+                     <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">kw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;data_color&#39;</span><span class="p">,</span> <span class="s1">&#39;#6788B1&#39;</span><span class="p">),</span>
+                     <span class="s1">&#39;muted_color&#39;</span><span class="p">:</span> <span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;data_color&#39;</span><span class="p">,</span> <span class="s1">&#39;#6788B1&#39;</span><span class="p">),</span>
+                     <span class="s1">&#39;muted_alpha&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="s1">&#39;line_width&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+
+        <span class="n">_MARKER_SHORTCUTS</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;*&quot;</span><span class="p">:</span> <span class="s2">&quot;asterisk&quot;</span><span class="p">,</span> <span class="s2">&quot;+&quot;</span><span class="p">:</span> <span class="s2">&quot;cross&quot;</span><span class="p">,</span> <span class="s2">&quot;o&quot;</span><span class="p">:</span> <span class="s2">&quot;circle&quot;</span><span class="p">,</span> <span class="s2">&quot;o+&quot;</span><span class="p">:</span> <span class="s2">&quot;circle_cross&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;o.&quot;</span><span class="p">:</span> <span class="s2">&quot;circle_dot&quot;</span><span class="p">,</span> <span class="s2">&quot;ox&quot;</span><span class="p">:</span> <span class="s2">&quot;circle_x&quot;</span><span class="p">,</span> <span class="s2">&quot;oy&quot;</span><span class="p">:</span> <span class="s2">&quot;circle_y&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;-&quot;</span><span class="p">:</span> <span class="s2">&quot;dash&quot;</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">:</span> <span class="s2">&quot;dot&quot;</span><span class="p">,</span> <span class="s2">&quot;v&quot;</span><span class="p">:</span> <span class="s2">&quot;inverted_triangle&quot;</span><span class="p">,</span> <span class="s2">&quot;^&quot;</span><span class="p">:</span> <span class="s2">&quot;triangle&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;^.&quot;</span><span class="p">:</span> <span class="s2">&quot;triangle_dot&quot;</span><span class="p">}</span>
+
+        <span class="k">if</span> <span class="n">marker_type</span> <span class="ow">in</span> <span class="n">_MARKER_SHORTCUTS</span><span class="p">:</span>
+            <span class="n">marker_type</span> <span class="o">=</span> <span class="n">_MARKER_SHORTCUTS</span><span class="p">[</span><span class="n">marker_type</span><span class="p">]</span>
+            <span class="n">G</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">marker_type</span><span class="p">)(</span><span class="o">**</span><span class="n">data_args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">marker_type</span> <span class="o">==</span> <span class="s1">&#39;line&#39;</span><span class="p">:</span>
+            <span class="n">G</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s1">&#39;line&#39;</span><span class="p">)(</span><span class="o">**</span><span class="n">data_args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+        <span class="n">H</span> <span class="o">=</span> <span class="n">Bokeh</span><span class="o">.</span><span class="n">_get_HoverTool</span><span class="p">(</span>
+            <span class="n">ycoordlabel</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;legend_label&#39;</span><span class="p">,</span> <span class="s1">&#39;legend_label&#39;</span><span class="p">),</span> <span class="n">renderer</span><span class="o">=</span><span class="n">G</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">add_tools</span><span class="p">(</span><span class="n">H</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">legend</span><span class="o">.</span><span class="n">click_policy</span> <span class="o">=</span> <span class="s2">&quot;mute&quot;</span>
+        <span class="k">return</span> <span class="n">Bokeh</span><span class="o">.</span><span class="n">set_fig</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">set_fig</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">title_fontsize</span><span class="o">=</span><span class="s1">&#39;16pt&#39;</span><span class="p">,</span> <span class="n">title_fontstyle</span><span class="o">=</span><span class="s1">&#39;normal&#39;</span><span class="p">,</span>
+                <span class="n">axislabel_fontsize</span><span class="o">=</span><span class="s1">&#39;14pt&#39;</span><span class="p">,</span> <span class="n">axislabel_fontstyle</span><span class="o">=</span><span class="s1">&#39;normal&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Function to set the figure</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">          f (``Bokeh.figure``): figure to be set</span>
+<span class="sd">          title_fontsize (``str``): set title font size</span>
+<span class="sd">          title_fontstyle (``str``): set title font style</span>
+<span class="sd">          axislabel_fontsize (``str``): set axis label font size</span>
+<span class="sd">          axislabel_fontstyle (``str``): set axis label font style</span>
+<span class="sd">          **kw: Additional Keyword arguments to be passed to the functions:</span>
+
+<span class="sd">              function: bokeh.set_fig::</span>
+
+<span class="sd">                axis_label_text_font (str): set axis label text font. Default: &#39;segoe ui&#39;</span>
+
+<span class="sd">        Retunrs:</span>
+<span class="sd">            ``Bokeh.figure``</span>
+<span class="sd">        &quot;&quot;&quot;</span>  <span class="c1"># nopep8</span>
+        <span class="n">font</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;axis_label_text_font&#39;</span><span class="p">,</span> <span class="s1">&#39;segoe ui&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">axis</span><span class="o">.</span><span class="n">axis_label_text_font</span> <span class="o">=</span> <span class="n">font</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">text_font_size</span> <span class="o">=</span> <span class="n">title_fontsize</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">axis</span><span class="o">.</span><span class="n">axis_label_text_font_size</span> <span class="o">=</span> <span class="n">axislabel_fontsize</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">axis</span><span class="o">.</span><span class="n">major_label_text_font_size</span> <span class="o">=</span> <span class="n">axislabel_fontsize</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">axis</span><span class="o">.</span><span class="n">axis_label_text_font_style</span> <span class="o">=</span> <span class="n">axislabel_fontstyle</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">x_range</span><span class="p">,</span> <span class="s1">&#39;range_padding&#39;</span><span class="p">):</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">x_range</span><span class="o">.</span><span class="n">range_padding</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">y_range</span><span class="p">,</span> <span class="s1">&#39;range_padding&#39;</span><span class="p">):</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">y_range</span><span class="o">.</span><span class="n">range_padding</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;months&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;%Y/%m/</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">],</span> <span class="s1">&#39;days&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;%b/</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">],</span>
+              <span class="s1">&#39;hours&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> %H:%M&quot;</span><span class="p">],</span> <span class="s1">&#39;minutes&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;%H:%M:%S&quot;</span><span class="p">]}</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">formatter</span> <span class="o">=</span> <span class="n">Bokeh</span><span class="o">.</span><span class="n">DatetimeTickFormatter</span><span class="p">(</span><span class="o">**</span><span class="n">dt</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">xgrid</span><span class="o">.</span><span class="n">grid_line_color</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">ygrid</span><span class="o">.</span><span class="n">grid_line_color</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">f</span>
+
+    <span class="k">def</span> <span class="nf">_get_HoverTool</span><span class="p">(</span><span class="n">xcoordlabel</span><span class="o">=</span><span class="s1">&#39;Date&#39;</span><span class="p">,</span> <span class="n">ycoordlabel</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">zcoordlabel</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+                       <span class="n">line_policy</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">image</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">renderer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">image</span><span class="p">:</span>
+            <span class="n">H</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;tooltips&#39;</span><span class="p">:</span> <span class="p">[(</span><span class="n">xcoordlabel</span><span class="p">,</span> <span class="s2">&quot;@dt{  %Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M}&quot;</span><span class="p">),</span>
+                              <span class="p">(</span><span class="n">ycoordlabel</span><span class="p">,</span> <span class="s1">&#39;$y&#39;</span><span class="p">),</span> <span class="p">(</span><span class="n">zcoordlabel</span><span class="p">,</span> <span class="s1">&#39;@image&#39;</span><span class="p">)],</span>
+                 <span class="s1">&#39;formatters&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;@dt&#39;</span><span class="p">:</span> <span class="s1">&#39;datetime&#39;</span><span class="p">}}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">H</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;renderers&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">renderer</span><span class="p">],</span>
+                 <span class="s1">&#39;tooltips&#39;</span><span class="p">:</span> <span class="p">[(</span><span class="n">xcoordlabel</span><span class="p">,</span> <span class="s2">&quot;@x{  %Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M}&quot;</span><span class="p">),</span>
+                              <span class="p">(</span><span class="n">ycoordlabel</span><span class="p">,</span> <span class="s1">&#39;$y&#39;</span><span class="p">)],</span>
+                 <span class="s1">&#39;formatters&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;@x&#39;</span><span class="p">:</span> <span class="s1">&#39;datetime&#39;</span><span class="p">},</span> <span class="s1">&#39;line_policy&#39;</span><span class="p">:</span> <span class="n">line_policy</span><span class="p">}</span>
+        <span class="k">return</span> <span class="n">Bokeh</span><span class="o">.</span><span class="n">HoverTool</span><span class="p">(</span><span class="o">**</span><span class="n">H</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Erddap"><a class="viewcode-back" href="../erddap.html#aid.Erddap">[docs]</a><span class="k">class</span> <span class="nc">Erddap</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a Class instance to facilitate connection and requests from FUGRO Erddap</span>
+
+<span class="sd">        Arguments given to the class intantiation operator::</span>
+
+<span class="sd">          server (str): Default server &quot;http://10.1.1.17:8080/erddap&quot; (FUGRO ERDDAP)</span>
+<span class="sd">          protocol (str): Default protocol &quot;tabledap&quot;</span>
+<span class="sd">          response (str): Default response &quot;csv&quot;</span>
+<span class="sd">          dataset_id (str): set dataset id</span>
+<span class="sd">          constraints (dict): set constraints</span>
+<span class="sd">          variables (list): set variables to requests</span>
+<span class="sd">      </span>
+<span class="sd">    &quot;&quot;&quot;</span>  <span class="c1"># nopep8</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">server</span><span class="o">=</span><span class="s1">&#39;http://10.1.1.17:8080/erddap&#39;</span><span class="p">,</span>
+                 <span class="n">protocol</span><span class="o">=</span><span class="s1">&#39;tabledap&#39;</span><span class="p">,</span> <span class="n">response</span><span class="o">=</span><span class="s1">&#39;csv&#39;</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">constraints</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">variables</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_base</span> <span class="o">=</span> <span class="n">Erddap</span><span class="o">.</span><span class="n">_erddap_instance</span><span class="p">(</span><span class="n">server</span><span class="p">,</span> <span class="n">protocol</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span> <span class="o">=</span> <span class="n">dataset_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">constraints</span> <span class="o">=</span> <span class="n">constraints</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span> <span class="o">=</span> <span class="n">variables</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Instance at server: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_base</span><span class="o">.</span><span class="n">server</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
+                <span class="sa">f</span><span class="s1">&#39;Dataset ID: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_base</span><span class="o">.</span><span class="n">dataset_id</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
+                <span class="sa">f</span><span class="s1">&#39;Constraints: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_base</span><span class="o">.</span><span class="n">constraints</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
+                <span class="sa">f</span><span class="s1">&#39;Variables: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_base</span><span class="o">.</span><span class="n">variables</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;ERDDAP instance for a specific server endpoint.&#39;</span>
+
+    <span class="k">def</span> <span class="nf">_erddap_instance</span><span class="p">(</span><span class="n">server</span><span class="o">=</span><span class="s1">&#39;http://10.1.1.17:8080/erddap&#39;</span><span class="p">,</span>
+                         <span class="n">protocol</span><span class="o">=</span><span class="s1">&#39;tabledap&#39;</span><span class="p">,</span> <span class="n">response</span><span class="o">=</span><span class="s1">&#39;csv&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a erddap instance&quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">erddapy</span> <span class="kn">import</span> <span class="n">ERDDAP</span>
+        <span class="k">return</span> <span class="n">ERDDAP</span><span class="p">(</span><span class="n">server</span><span class="o">=</span><span class="n">server</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=</span><span class="n">protocol</span><span class="p">,</span> <span class="n">response</span><span class="o">=</span><span class="n">response</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">dataset_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span>
+
+    <span class="nd">@dataset_id</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">dataset_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span> <span class="o">=</span> <span class="n">i</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_base</span><span class="o">.</span><span class="n">dataset_id</span> <span class="o">=</span> <span class="n">i</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">constraints</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_constraints</span>
+
+    <span class="nd">@constraints</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">constraints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_constraints</span> <span class="o">=</span> <span class="n">c</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_base</span><span class="o">.</span><span class="n">constraints</span> <span class="o">=</span> <span class="n">c</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">variables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variables</span>
+
+    <span class="nd">@variables</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">variables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_variables</span> <span class="o">=</span> <span class="n">v</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_base</span><span class="o">.</span><span class="n">variables</span> <span class="o">=</span> <span class="n">v</span>
+
+    <span class="k">def</span> <span class="nf">_base_constraints</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Create a constraints dictionary.&quot;&quot;&quot;</span>
+        <span class="n">time</span> <span class="o">=</span> <span class="n">dtm</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+        <span class="n">time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">second</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">microsecond</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">start</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="n">time</span> <span class="o">-</span> <span class="n">dtm</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">72</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">end</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">end</span> <span class="o">=</span> <span class="n">time</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;id=&#39;</span><span class="p">:</span> <span class="nb">id</span><span class="p">,</span> <span class="s1">&#39;time&gt;=&#39;</span><span class="p">:</span> <span class="n">start</span><span class="p">,</span> <span class="s1">&#39;time&lt;&#39;</span><span class="p">:</span> <span class="n">end</span><span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">to_pandas</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Function to get data from Erddap and return in ``pandas.core.frame.DataFrame``</span>
+
+<span class="sd">        index column with ``dtype=&quot;datetime64[ns]&quot;``</span>
+
+<span class="sd">        &gt;&gt;&gt; e = Erddap(dataset_id=&#39;geosOceanorMet&#39;,</span>
+<span class="sd">        ...    constraints={&#39;time&gt;=&#39;: dtm.datetime.utcnow()-dtm.timedelta(hours=1)})</span>
+<span class="sd">        &gt;&gt;&gt; df = e.to_pandas()</span>
+<span class="sd">        &gt;&gt;&gt; type(df)</span>
+<span class="sd">        &lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">dateparser</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="k">return</span> <span class="n">dtm</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span>
+            <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%SZ&quot;</span><span class="p">)</span>
+        <span class="n">kw</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;index_col&#39;</span><span class="p">:</span> <span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;date_parser&#39;</span><span class="p">:</span> <span class="n">dateparser</span><span class="p">,</span>
+              <span class="s1">&#39;skiprows&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;response&#39;</span><span class="p">:</span> <span class="s1">&#39;csv&#39;</span><span class="p">}</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_base</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">vars_in_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Function to get variables in a specific dataset</span>
+
+<span class="sd">        &gt;&gt;&gt; e = Erddap()</span>
+<span class="sd">        &gt;&gt;&gt; var = e.vars_in_dataset(&#39;geosOceanorAquadopp&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; var.sort()</span>
+<span class="sd">        &gt;&gt;&gt; print(var)</span>
+<span class="sd">        [&#39;AqDir&#39;, &#39;AqSpd&#39;, &#39;Label&#39;, &#39;Misc&#39;, &#39;Source&#39;, &#39;depth&#39;, &#39;id&#39;, &#39;latitude&#39;, &#39;longitude&#39;, &#39;time&#39;]</span>
+<span class="sd">        &gt;&gt;&gt; var = e.vars_in_dataset(&#39;geosOceanorConductivity&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; var.sort()</span>
+<span class="sd">        &gt;&gt;&gt; print(var)</span>
+<span class="sd">        [&#39;Conductivity&#39;, &#39;Label&#39;, &#39;Misc&#39;, &#39;Source&#39;, &#39;depth&#39;, &#39;id&#39;, &#39;latitude&#39;, &#39;longitude&#39;, &#39;time&#39;]</span>
+<span class="sd">        &quot;&quot;&quot;</span>  <span class="c1"># nopep8</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_base</span><span class="o">.</span><span class="n">_get_variables</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+        <span class="n">v</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;NC_GLOBAL&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">v</span><span class="p">]</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">doctest</span>
+    <span class="n">doctest</span><span class="o">.</span><span class="n">testmod</span><span class="p">()</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          
+          <h3>Table of Contents</h3>
+          <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../aid.html"><strong>Aid</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bokeh.html"><strong>Bokeh</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../erddap.html"><strong>Erddap</strong></a></li>
+</ul>
+
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Search</h3>
+            <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+            </form>
+          </div>
+
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <div role="navigation" aria-label="related navigaton">
+            <a href="../genindex.html" title="General Index"
+              >index</a>
+          </div>
+          <div role="note" aria-label="source link">
+          </div>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Marcio Yamashita.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>
