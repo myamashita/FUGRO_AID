@@ -1,0 +1,366 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bokeh &#8212; FUGRO_AID 0.1.1 documentation</title>
+    <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Erddap" href="erddap.html" />
+    <link rel="prev" title="Aid" href="aid.html" /> 
+  </head><body>
+    <div class="header-wrapper" role="banner">
+      <div class="header">
+        <div class="headertitle"><a
+          href="index.html">FUGRO_AID 0.1.1 documentation</a></div>
+        <div class="rel" role="navigation" aria-label="related navigation">
+          <a href="aid.html" title="Aid"
+             accesskey="P">previous</a> |
+          <a href="erddap.html" title="Erddap"
+             accesskey="N">next</a> |
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="bokeh">
+<h1><strong>Bokeh</strong><a class="headerlink" href="#bokeh" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-bokeh">
+<h2>Module <code class="xref py py-class docutils literal notranslate"><span class="pre">Bokeh</span></code><a class="headerlink" href="#module-bokeh" title="Permalink to this headline">¶</a></h2>
+<p>This is the Bokeh module</p>
+<p>Host of useful manipulation methods for:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Furgo</span> <span class="n">Metocean</span> <span class="n">Consultancy</span> <span class="o">-</span> <span class="n">Americas</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt id="aid.Bokeh">
+<em class="property">class </em><code class="sig-prename descclassname">aid.</code><code class="sig-name descname">Bokeh</code><a class="reference internal" href="_modules/aid.html#Bokeh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aid.Bokeh" title="Permalink to this definition">¶</a></dt>
+<dd><table class="hlist"><tr><td><ul class="simple">
+<li><p><a class="reference internal" href="#aid.Bokeh.mk_fig" title="aid.Bokeh.mk_fig"><code class="xref py py-func docutils literal notranslate"><span class="pre">mk_fig()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#aid.Bokeh.plot_Colour_Flood" title="aid.Bokeh.plot_Colour_Flood"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot_Colour_Flood()</span></code></a></p></li>
+</ul>
+</td><td><ul class="simple">
+<li><p><a class="reference internal" href="#aid.Bokeh.plot_IntDir" title="aid.Bokeh.plot_IntDir"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot_IntDir()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#aid.Bokeh.plot_QCresults" title="aid.Bokeh.plot_QCresults"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot_QCresults()</span></code></a></p></li>
+</ul>
+</td><td><ul class="simple">
+<li><p><a class="reference internal" href="#aid.Bokeh.plot_Stick" title="aid.Bokeh.plot_Stick"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot_Stick()</span></code></a></p></li>
+</ul>
+</td><td><ul class="simple">
+<li><p><a class="reference internal" href="#aid.Bokeh.plot_Var" title="aid.Bokeh.plot_Var"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot_Var()</span></code></a></p></li>
+</ul>
+</td><td><ul class="simple">
+<li><p><a class="reference internal" href="#aid.Bokeh.set_fig" title="aid.Bokeh.set_fig"><code class="xref py py-func docutils literal notranslate"><span class="pre">set_fig()</span></code></a></p></li>
+</ul>
+</td></tr></table>
+</dd></dl>
+
+</div>
+<hr class="docutils" />
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="aid.Bokeh.mk_fig">
+<code class="sig-prename descclassname">aid.Bokeh.</code><code class="sig-name descname">mk_fig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">title</span><span class="o">=</span><span class="default_value">'Initial title'</span></em>, <em class="sig-param"><span class="n">x_axis_label</span><span class="o">=</span><span class="default_value">'Initial xlabel'</span></em>, <em class="sig-param"><span class="n">y_axis_label</span><span class="o">=</span><span class="default_value">'Initial ylabel'</span></em>, <em class="sig-param"><span class="n">height</span><span class="o">=</span><span class="default_value">350</span></em>, <em class="sig-param"><span class="n">width</span><span class="o">=</span><span class="default_value">1100</span></em>, <em class="sig-param"><span class="n">x_axis_type</span><span class="o">=</span><span class="default_value">'datetime'</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="headerlink" href="#aid.Bokeh.mk_fig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to simplifies figure creation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>title</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>) – plot_title</p></li>
+<li><p><strong>x_axis_label</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>) – A label for the x-axis</p></li>
+<li><p><strong>y_axis_label</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>) – A label for the y-axis</p></li>
+<li><p><strong>height</strong> (<code class="docutils literal notranslate"><span class="pre">int</span></code>) – plot_height</p></li>
+<li><p><strong>width</strong> (<code class="docutils literal notranslate"><span class="pre">int</span></code>) – plot_width</p></li>
+<li><p><strong>x_axis_type</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>) – The type of the x-axis</p></li>
+<li><p><strong>**kw</strong> – <p>Additional Keyword arguments to be passed to set_fig:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">title_fontsize</span><span class="o">=</span><span class="s1">&#39;16pt&#39;</span><span class="p">,</span> <span class="n">title_fontstyle</span><span class="o">=</span><span class="s1">&#39;normal&#39;</span><span class="p">,</span> <span class="n">axislabel_fontsize</span><span class="o">=</span><span class="s1">&#39;14pt&#39;</span><span class="p">,</span>
+<span class="n">axislabel_fontstyle</span><span class="o">=</span><span class="s1">&#39;normal&#39;</span><span class="p">,</span> <span class="n">axis_label_text_font</span><span class="o">=</span><span class="s1">&#39;segoe ui&#39;</span>
+</pre></div>
+</div>
+</p></li>
+</ul>
+</dd>
+</dl>
+<p>Returns:
+<code class="docutils literal notranslate"><span class="pre">Bokeh.figure</span></code></p>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt id="aid.Bokeh.plot_Colour_Flood">
+<code class="sig-prename descclassname">aid.Bokeh.</code><code class="sig-name descname">plot_Colour_Flood</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">X_tooltip</span><span class="o">=</span><span class="default_value">'Date'</span></em>, <em class="sig-param"><span class="n">Y_tooltip</span><span class="o">=</span><span class="default_value">'Altitude'</span></em>, <em class="sig-param"><span class="n">Z_tooltip</span><span class="o">=</span><span class="default_value">'Intensity'</span></em>, <em class="sig-param"><span class="n">vmin</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">vmax</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">f</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="headerlink" href="#aid.Bokeh.plot_Colour_Flood" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to plot colour flood</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<code class="docutils literal notranslate"><span class="pre">dict</span></code>) – <p>dict with keys:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;image&#39;</span><span class="p">:</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">array_like</span><span class="p">,</span> <span class="s1">&#39;dt&#39;</span><span class="p">:</span><span class="n">The</span> <span class="nb">range</span> <span class="ow">in</span> <span class="n">x</span><span class="o">-</span><span class="n">coordinates</span><span class="p">,</span>
+<span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="n">The</span> <span class="n">x</span><span class="o">-</span><span class="n">coordinates</span> <span class="n">to</span> <span class="n">locate</span> <span class="n">the</span> <span class="n">image</span> <span class="n">anchors</span><span class="p">,</span>
+<span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="n">The</span> <span class="n">y</span><span class="o">-</span><span class="n">coordinates</span> <span class="n">to</span> <span class="n">locate</span> <span class="n">the</span> <span class="n">image</span> <span class="n">anchors</span><span class="p">,</span>
+<span class="s1">&#39;dw&#39;</span><span class="p">:</span> <span class="n">The</span> <span class="n">width</span> <span class="n">of</span> <span class="n">the</span> <span class="n">plot</span> <span class="n">region</span> <span class="n">that</span> <span class="n">the</span> <span class="n">image</span> <span class="n">will</span> <span class="n">occupy</span><span class="p">,</span>
+<span class="s1">&#39;dh&#39;</span><span class="p">:</span> <span class="n">The</span> <span class="n">height</span> <span class="n">of</span> <span class="n">the</span> <span class="n">plot</span> <span class="n">region</span> <span class="n">that</span> <span class="n">the</span> <span class="n">image</span> <span class="n">will</span> <span class="n">occupy</span>
+</pre></div>
+</div>
+</p></li>
+<li><p><strong>X_tooltip</strong><strong>, </strong><strong>Y_tooltip</strong><strong>, </strong><strong>Z_tooltip</strong> (<em>str</em><em>,</em>) – string to tooltip</p></li>
+<li><p><strong>vmin</strong><strong>, </strong><strong>vmax</strong> (<em>float</em><em>,</em>) – min/max values in colorbar range</p></li>
+<li><p><strong>f</strong> (<code class="docutils literal notranslate"><span class="pre">Bokeh.figure</span></code>) – optional figure</p></li>
+<li><p><strong>**kw</strong> – <p>Additional Keyword arguments to be passed to the functions:</p>
+<p>function: bokeh.mk_fig:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">title</span><span class="p">,</span> <span class="n">x_axis_label</span><span class="p">,</span> <span class="n">y_axis_label</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">x_axis_type</span><span class="p">,</span> <span class="n">axis_label_text_font</span>
+</pre></div>
+</div>
+<p>function: bokeh.plot_Colour_Flood:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;palette&#39;</span><span class="p">:</span> <span class="n">default</span> <span class="n">pallete</span> <span class="s2">&quot;Bokeh.bp.Turbo256&quot;</span>
+<span class="s1">&#39;axislabel_fontsize&#39;</span><span class="p">:</span> <span class="n">colorbar</span> <span class="n">font</span> <span class="n">size</span> <span class="s2">&quot;14pt&quot;</span>
+</pre></div>
+</div>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">Bokeh.figure</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt id="aid.Bokeh.plot_IntDir">
+<code class="sig-prename descclassname">aid.Bokeh.</code><code class="sig-name descname">plot_IntDir</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dfI</span></em>, <em class="sig-param"><span class="n">dfD</span></em>, <em class="sig-param"><span class="n">f</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="headerlink" href="#aid.Bokeh.plot_IntDir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to plot intensity and direction</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dfI</strong> (<code class="docutils literal notranslate"><span class="pre">pandas.core.series.Series</span></code>) – Intensity series</p></li>
+<li><p><strong>dfD</strong> (<code class="docutils literal notranslate"><span class="pre">pandas.core.series.Series</span></code>) – Direction series</p></li>
+<li><p><strong>f</strong> (<code class="docutils literal notranslate"><span class="pre">Bokeh.figure</span></code>) – optional figure</p></li>
+<li><p><strong>**kw</strong> – <dl>
+<dt>Additional Keyword arguments to be passed to the functions::</dt><dd><p>function: bokeh.mk_fig:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">title</span><span class="p">,</span> <span class="n">x_axis_label</span><span class="p">,</span> <span class="n">y_axis_label</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">x_axis_type</span><span class="p">,</span> <span class="n">axis_label_text_font</span>
+</pre></div>
+</div>
+<p>function: bokeh.plot_IntDir:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;Int_label&quot;</span><span class="p">:</span> <span class="n">Y</span><span class="o">-</span><span class="n">label</span> <span class="ow">in</span> <span class="n">left</span> <span class="n">side</span> <span class="n">plot</span>
+<span class="s2">&quot;Int_color&quot;</span><span class="p">:</span>  <span class="n">Intensity</span> <span class="n">color</span> <span class="ow">in</span> <span class="n">plot</span>
+<span class="s2">&quot;Int_legend&quot;</span><span class="p">:</span> <span class="n">Intensity</span> <span class="n">legend</span>
+<span class="s2">&quot;Dir_label&quot;</span><span class="p">:</span> <span class="n">Y</span><span class="o">-</span><span class="n">label</span> <span class="ow">in</span> <span class="n">rigth</span> <span class="n">side</span> <span class="n">plot</span>
+<span class="s2">&quot;Dir_color&quot;</span><span class="p">:</span> <span class="n">Direction</span> <span class="n">color</span> <span class="ow">in</span> <span class="n">plot</span>
+<span class="s2">&quot;Dir_legend&quot;</span><span class="p">:</span> <span class="n">Direction</span> <span class="n">legend</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">Bokeh.figure</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt id="aid.Bokeh.plot_QCresults">
+<code class="sig-prename descclassname">aid.Bokeh.</code><code class="sig-name descname">plot_QCresults</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">var_name</span></em>, <em class="sig-param"><span class="n">results</span></em>, <em class="sig-param"><span class="n">title</span></em>, <em class="sig-param"><span class="n">test_name</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="headerlink" href="#aid.Bokeh.plot_QCresults" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to plot QC results of IOOS QARTOD tests</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<code class="docutils literal notranslate"><span class="pre">pandas.core.frame.DataFrame</span></code>) – Raw data</p></li>
+<li><p><strong>var_name</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>) – Name of the variable</p></li>
+<li><p><strong>results</strong> (<code class="docutils literal notranslate"><span class="pre">OrderedDict</span></code>) – The results of a QcConfig.run</p></li>
+<li><p><strong>title</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>) – Title of the plot</p></li>
+<li><p><strong>test_name</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>) – Name of the test to plot</p></li>
+<li><p><strong>**kw</strong> – <p>Additional Keyword arguments to be passed to the functions:</p>
+<p>function: bokeh.mk_fig:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">xlabel</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">x_axis_type</span>
+</pre></div>
+</div>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">Bokeh.figure</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt id="aid.Bokeh.plot_Stick">
+<code class="sig-prename descclassname">aid.Bokeh.</code><code class="sig-name descname">plot_Stick</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dfI</span></em>, <em class="sig-param"><span class="n">dfD</span></em>, <em class="sig-param"><span class="n">dw</span></em>, <em class="sig-param"><span class="n">str_conv</span><span class="o">=</span><span class="default_value">'ocean'</span></em>, <em class="sig-param"><span class="n">f</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">add_cbar</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="headerlink" href="#aid.Bokeh.plot_Stick" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to plot vector.
+Each stick plot contains three pieces of information: direction, time, and magnitude (strength).
+Default ocean convention</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dfI</strong> (<code class="docutils literal notranslate"><span class="pre">pandas.core.series.Series</span></code>) – Intensity series</p></li>
+<li><p><strong>dfD</strong> (<code class="docutils literal notranslate"><span class="pre">pandas.core.series.Series</span></code>) – Direction series in <strong>degrees</strong></p></li>
+<li><p><strong>dw</strong> (<code class="docutils literal notranslate"><span class="pre">int</span></code>) – width of data units (measured in the x-direction)</p></li>
+<li><p><strong>str_conv</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>) – ‘meteo’ (from) or ‘ocean’ (towards)</p></li>
+<li><p><strong>f</strong> (<code class="docutils literal notranslate"><span class="pre">Bokeh.figure</span></code>) – optional figure</p></li>
+<li><p><strong>add_cbar</strong> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>) – True to add color bar</p></li>
+<li><p><strong>**kw</strong> – <dl>
+<dt>Additional Keyword arguments to be passed to the functions::</dt><dd><p>function: bokeh.mk_fig:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">title</span><span class="p">,</span> <span class="n">x_axis_label</span><span class="p">,</span> <span class="n">y_axis_label</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">x_axis_type</span><span class="p">,</span> <span class="n">axis_label_text_font</span>
+</pre></div>
+</div>
+<p>function: bokeh.plot_stick:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;vmin&#39;</span><span class="p">:</span> <span class="n">minumum</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">colorbar</span> <span class="nb">range</span>
+<span class="s1">&#39;vmax&#39;</span><span class="p">:</span> <span class="n">maximum</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">colorbar</span> <span class="nb">range</span>
+<span class="s1">&#39;y_coord&#39;</span><span class="p">:</span> <span class="n">The</span> <span class="n">y</span><span class="o">-</span><span class="n">coordinates</span> <span class="n">to</span> <span class="n">start</span> <span class="n">the</span> <span class="n">sticks</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">Bokeh.figure</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt id="aid.Bokeh.plot_Var">
+<code class="sig-prename descclassname">aid.Bokeh.</code><code class="sig-name descname">plot_Var</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">marker_type</span><span class="o">=</span><span class="default_value">'+'</span></em>, <em class="sig-param"><span class="n">f</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="headerlink" href="#aid.Bokeh.plot_Var" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to plot a single variable. Using a marker type or line</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<code class="docutils literal notranslate"><span class="pre">pandas.core.series.Series</span></code>) – Series to plot</p></li>
+<li><p><strong>marker_type</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>) – “*”, “+”, “o”, “o+”, “o.”, “ox”, “oy”, “-“, “.”, “v”, “^”, “^.”</p></li>
+<li><p><strong>f</strong> (<code class="docutils literal notranslate"><span class="pre">Bokeh.figure</span></code>) – optional figure</p></li>
+<li><p><strong>**kw</strong> – <p>Additional Keyword arguments to be passed to the functions:</p>
+<p>function: bokeh.mk_fig:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">title</span><span class="p">,</span> <span class="n">x_axis_label</span><span class="p">,</span> <span class="n">y_axis_label</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">x_axis_type</span><span class="p">,</span> <span class="n">axis_label_text_font</span>
+</pre></div>
+</div>
+<p>function:: bokeh.plot_Var:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;data_color&#39;</span><span class="p">:</span> <span class="n">color</span> <span class="n">of</span> <span class="n">line</span> <span class="ow">or</span> <span class="n">marker</span>
+<span class="s1">&#39;legend_label&#39;</span><span class="p">:</span> <span class="n">legend</span> <span class="n">label</span>
+</pre></div>
+</div>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">Bokeh.figure</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt id="aid.Bokeh.set_fig">
+<code class="sig-prename descclassname">aid.Bokeh.</code><code class="sig-name descname">set_fig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">f</span></em>, <em class="sig-param"><span class="n">title_fontsize</span><span class="o">=</span><span class="default_value">'16pt'</span></em>, <em class="sig-param"><span class="n">title_fontstyle</span><span class="o">=</span><span class="default_value">'normal'</span></em>, <em class="sig-param"><span class="n">axislabel_fontsize</span><span class="o">=</span><span class="default_value">'14pt'</span></em>, <em class="sig-param"><span class="n">axislabel_fontstyle</span><span class="o">=</span><span class="default_value">'normal'</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="headerlink" href="#aid.Bokeh.set_fig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to set the figure</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>f</strong> (<code class="docutils literal notranslate"><span class="pre">Bokeh.figure</span></code>) – figure to be set</p></li>
+<li><p><strong>title_fontsize</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>) – set title font size</p></li>
+<li><p><strong>title_fontstyle</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>) – set title font style</p></li>
+<li><p><strong>axislabel_fontsize</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>) – set axis label font size</p></li>
+<li><p><strong>axislabel_fontstyle</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>) – set axis label font style</p></li>
+<li><p><strong>**kw</strong> – <p>Additional Keyword arguments to be passed to the functions:</p>
+<p>function: bokeh.set_fig:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">axis_label_text_font</span> <span class="p">(</span><span class="nb">str</span><span class="p">):</span> <span class="nb">set</span> <span class="n">axis</span> <span class="n">label</span> <span class="n">text</span> <span class="n">font</span><span class="o">.</span> <span class="n">Default</span><span class="p">:</span> <span class="s1">&#39;segoe ui&#39;</span>
+</pre></div>
+</div>
+</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Retunrs:</dt><dd><p><code class="docutils literal notranslate"><span class="pre">Bokeh.figure</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          
+          <h3>Table of Contents</h3>
+          <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="aid.html"><strong>Aid</strong></a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>Bokeh</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="erddap.html"><strong>Erddap</strong></a></li>
+</ul>
+
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Search</h3>
+            <form class="search" action="search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+            </form>
+          </div>
+
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <div role="navigation" aria-label="related navigaton">
+            <a href="aid.html" title="Aid"
+              >previous</a> |
+            <a href="erddap.html" title="Erddap"
+              >next</a> |
+            <a href="genindex.html" title="General Index"
+              >index</a>
+          </div>
+          <div role="note" aria-label="source link">
+              <br/>
+              <a href="_sources/bokeh.rst.txt"
+                rel="nofollow">Show Source</a>
+          </div>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Marcio Yamashita.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

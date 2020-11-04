@@ -1,0 +1,409 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aid &#8212; FUGRO_AID 0.1.1 documentation</title>
+    <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Bokeh" href="bokeh.html" />
+    <link rel="prev" title="Welcome to FUGRO_AID’s documentation!" href="index.html" /> 
+  </head><body>
+    <div class="header-wrapper" role="banner">
+      <div class="header">
+        <div class="headertitle"><a
+          href="index.html">FUGRO_AID 0.1.1 documentation</a></div>
+        <div class="rel" role="navigation" aria-label="related navigation">
+          <a href="index.html" title="Welcome to FUGRO_AID’s documentation!"
+             accesskey="P">previous</a> |
+          <a href="bokeh.html" title="Bokeh"
+             accesskey="N">next</a> |
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="aid">
+<h1><strong>Aid</strong><a class="headerlink" href="#aid" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-aid">
+<h2>Module <code class="xref py py-class docutils literal notranslate"><span class="pre">Aid</span></code><a class="headerlink" href="#module-aid" title="Permalink to this headline">¶</a></h2>
+<p>This is the Aid module</p>
+<p>Host of useful manipulation methods for:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Furgo</span> <span class="n">Metocean</span> <span class="n">Consultancy</span> <span class="o">-</span> <span class="n">Americas</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt id="aid.Aid">
+<em class="property">class </em><code class="sig-prename descclassname">aid.</code><code class="sig-name descname">Aid</code><a class="reference internal" href="_modules/aid.html#Aid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aid.Aid" title="Permalink to this definition">¶</a></dt>
+<dd><table class="hlist"><tr><td><ul class="simple">
+<li><p><a class="reference internal" href="#aid.Aid.datenum_2datetime" title="aid.Aid.datenum_2datetime"><code class="xref py py-func docutils literal notranslate"><span class="pre">datenum_2datetime()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#aid.Aid.datetime_2matlab" title="aid.Aid.datetime_2matlab"><code class="xref py py-func docutils literal notranslate"><span class="pre">datetime_2matlab()</span></code></a></p></li>
+</ul>
+</td><td><ul class="simple">
+<li><p><a class="reference internal" href="#aid.Aid.datetime64_2matlab" title="aid.Aid.datetime64_2matlab"><code class="xref py py-func docutils literal notranslate"><span class="pre">datetime64_2matlab()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#aid.Aid.describe" title="aid.Aid.describe"><code class="xref py py-func docutils literal notranslate"><span class="pre">describe()</span></code></a></p></li>
+</ul>
+</td><td><ul class="simple">
+<li><p><a class="reference internal" href="#aid.Aid.highlight_bins" title="aid.Aid.highlight_bins"><code class="xref py py-func docutils literal notranslate"><span class="pre">highlight_bins()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#aid.Aid.id2uv" title="aid.Aid.id2uv"><code class="xref py py-func docutils literal notranslate"><span class="pre">id2uv()</span></code></a></p></li>
+</ul>
+</td><td><ul class="simple">
+<li><p><a class="reference internal" href="#aid.Aid.round_dt" title="aid.Aid.round_dt"><code class="xref py py-func docutils literal notranslate"><span class="pre">round_dt()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#aid.Aid.round_time" title="aid.Aid.round_time"><code class="xref py py-func docutils literal notranslate"><span class="pre">round_time()</span></code></a></p></li>
+</ul>
+</td><td><ul class="simple">
+<li><p><a class="reference internal" href="#aid.Aid.uv2id" title="aid.Aid.uv2id"><code class="xref py py-func docutils literal notranslate"><span class="pre">uv2id()</span></code></a></p></li>
+</ul>
+</td></tr></table>
+</dd></dl>
+
+</div>
+<hr class="docutils" />
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="aid.Aid.datenum_2datetime">
+<code class="sig-prename descclassname">aid.Aid.</code><code class="sig-name descname">datenum_2datetime</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dtnum</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span> &#x2192; datetime.datetime<a class="headerlink" href="#aid.Aid.datenum_2datetime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert Matlab datenum into Python datetime</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dtnum</strong> (<code class="docutils literal notranslate"><span class="pre">float</span></code>) – Date in datenum format</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code> object corresponding to <code class="docutils literal notranslate"><span class="pre">datenum</span></code></p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Aid</span><span class="o">.</span><span class="n">datenum_2datetime</span><span class="p">(</span><span class="mf">737833.81486962</span><span class="p">)</span>
+<span class="go">datetime.datetime(2020, 2, 12, 19, 33, 24, 735170)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt id="aid.Aid.datetime_2matlab">
+<code class="sig-prename descclassname">aid.Aid.</code><code class="sig-name descname">datetime_2matlab</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dt</span><span class="p">:</span> <span class="n">datetime.datetime</span></em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#aid.Aid.datetime_2matlab" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a python datetime to matlab datenum</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dt</strong> (<code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code>) – Date in datetime format</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">Datenum</span></code> float corresponding to <code class="docutils literal notranslate"><span class="pre">Datetime</span></code></p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Aid</span><span class="o">.</span><span class="n">datetime_2matlab</span><span class="p">(</span><span class="n">dtm</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">735000</span><span class="p">))</span>
+<span class="go">737791.214071007</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt id="aid.Aid.datetime64_2matlab">
+<code class="sig-prename descclassname">aid.Aid.</code><code class="sig-name descname">datetime64_2matlab</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dt</span><span class="p">:</span> <span class="n">numpy.datetime64</span></em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#aid.Aid.datetime64_2matlab" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a datetime64[ns] to matlab datenum</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dt</strong> (<code class="docutils literal notranslate"><span class="pre">numpy.datetime64</span></code>) – Date in datenum format</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">Datenum</span></code> float corresponding to <code class="docutils literal notranslate"><span class="pre">`numpy.datetime64</span></code></p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Aid</span><span class="o">.</span><span class="n">datetime64_2matlab</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">(</span><span class="s1">&#39;2020-02-12T19:33:15.000000&#39;</span><span class="p">))</span>
+<span class="go">737833.8147569444</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Aid</span><span class="o">.</span><span class="n">datetime64_2matlab</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">(</span><span class="s1">&#39;2020-01-01 05:08:15.735&#39;</span><span class="p">))</span>
+<span class="go">737791.214071007</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt id="aid.Aid.describe">
+<code class="sig-prename descclassname">aid.Aid.</code><code class="sig-name descname">describe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">len_exp</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">df_dir</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#aid.Aid.describe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Describe a dataframe in statistical table:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s2">&quot;Return&quot;</span><span class="p">,</span> <span class="s2">&quot;Max&quot;</span><span class="p">,</span> <span class="s2">&quot;Mean&quot;</span><span class="p">,</span> <span class="s2">&quot;Min&quot;</span><span class="p">,</span> <span class="s2">&quot;Std&quot;</span><span class="p">,</span> <span class="s2">&quot;DirMax&quot;</span><span class="p">,</span> <span class="s2">&quot;DateMax&quot;</span><span class="p">,</span> <span class="s2">&quot;DateMin&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<code class="docutils literal notranslate"><span class="pre">pandas.core.frame.DataFrame</span></code>) – Entry to describe</p></li>
+<li><p><strong>len_exp</strong> (<em>int</em>) – expected length of entry</p></li>
+<li><p><strong>df_dir</strong> (<code class="docutils literal notranslate"><span class="pre">pandas.core.frame.DataFrame</span></code>) – Optional direction entry</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">pandas.core.frame.DataFrame</span></code> described</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Return</strong>:  Percentage of data return -&gt;
+<code class="docutils literal notranslate"><span class="pre">(Valid</span> <span class="pre">Values</span> <span class="pre">/</span> <span class="pre">Expected</span> <span class="pre">Length)</span> <span class="pre">*</span> <span class="pre">100</span></code></p>
+<p><strong>DirMax</strong> is returned if <code class="docutils literal notranslate"><span class="pre">df_dir</span></code> is declared</p>
+</div>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt id="aid.Aid.highlight_bins">
+<code class="sig-prename descclassname">aid.Aid.</code><code class="sig-name descname">highlight_bins</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">s</span></em>, <em class="sig-param"><span class="n">range_min</span><span class="o">=</span><span class="default_value">98.0</span></em>, <em class="sig-param"><span class="n">range_max</span><span class="o">=</span><span class="default_value">99.0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#aid.Aid.highlight_bins" title="Permalink to this definition">¶</a></dt>
+<dd><p>Conditional formatting of a DataFrame or Series.</p>
+<p>It take scalars, DataFrames or Series, and return
+like-indexed DataFrames or Series with CSS “attribute: value”
+pairs for the values.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There is a 3 colors selected</p>
+<p>orange &lt;= range_min</p>
+<p>yellow &lt;= range_max</p>
+<p>green &gt; range_max</p>
+<p>how to use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">Aid</span><span class="o">.</span><span class="n">highlight_bins</span><span class="p">)</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">Aid</span><span class="o">.</span><span class="n">highlight_bins</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="mf">94.</span><span class="p">,</span> <span class="mi">96</span><span class="p">])</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">Aid</span><span class="o">.</span><span class="n">highlight_bins</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="mf">94.</span><span class="p">,</span> <span class="mi">96</span><span class="p">],</span>
+               <span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Return&#39;</span><span class="p">,</span> <span class="s1">&#39;Std&#39;</span><span class="p">,</span> <span class="s1">&#39;DirMax&#39;</span> <span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt id="aid.Aid.id2uv">
+<code class="sig-prename descclassname">aid.Aid.</code><code class="sig-name descname">id2uv</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">icomp</span></em>, <em class="sig-param"><span class="n">dcomp</span></em>, <em class="sig-param"><span class="n">str_conv</span><span class="o">=</span><span class="default_value">'cart'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#aid.Aid.id2uv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert Intensity and Direction to U and V</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>icomp</strong> (<code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code> or <code class="docutils literal notranslate"><span class="pre">FrameOrSeries</span></code>) – Intensity</p></li>
+<li><p><strong>dcomp</strong> (<code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code> or <code class="docutils literal notranslate"><span class="pre">FrameOrSeries</span></code>) – Direction at declared convention (degrees).</p></li>
+<li><p><strong>str_conv</strong> (<em>str</em>) – Origin convention
+(ex: ‘cart’ - Cartesian or ‘meteo’ - Meteorologic
+or ‘ocean’ - Oceanographic)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>Zonal component, parallel to the abscissa axis</p></li>
+<li><p>Meridional component, parallel to the coordinate axis</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code> or <code class="docutils literal notranslate"><span class="pre">FrameOrSeries</span></code></p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">Aid</span><span class="o">.</span><span class="n">id2uv</span><span class="p">(</span>
+<span class="gp">... </span>   <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]),</span>
+<span class="gp">... </span>   <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">45.</span><span class="p">,</span> <span class="mf">90.</span><span class="p">,</span> <span class="mf">135.</span><span class="p">,</span> <span class="mf">180.</span><span class="p">,</span> <span class="mf">225.</span><span class="p">,</span> <span class="mf">270.</span><span class="p">,</span> <span class="mf">315.</span><span class="p">]),</span>
+<span class="gp">... </span>   <span class="s1">&#39;cart&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+<span class="go">[ 1.00000000e+00  7.07106781e-01  6.12323400e-17 -7.07106781e-01</span>
+<span class="go"> -1.00000000e+00 -7.07106781e-01 -1.83697020e-16  7.07106781e-01]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+<span class="go">[ 0.00000000e+00  7.07106781e-01  1.00000000e+00  7.07106781e-01</span>
+<span class="go">  1.22464680e-16 -7.07106781e-01 -1.00000000e+00 -7.07106781e-01]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">Aid</span><span class="o">.</span><span class="n">id2uv</span><span class="p">(</span>
+<span class="gp">... </span>   <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]),</span>
+<span class="gp">... </span>   <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">270.</span><span class="p">,</span> <span class="mf">225.</span><span class="p">,</span> <span class="mf">180.</span><span class="p">,</span> <span class="mf">135.</span><span class="p">,</span> <span class="mf">90.</span><span class="p">,</span> <span class="mf">45.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">315.</span><span class="p">]),</span>
+<span class="gp">... </span>   <span class="s1">&#39;meteo&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+<span class="go">[ 1.00000000e+00  7.07106781e-01 -2.44929360e-16 -7.07106781e-01</span>
+<span class="go"> -1.00000000e+00 -7.07106781e-01  1.22464680e-16  7.07106781e-01]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+<span class="go">[ 3.06161700e-16  7.07106781e-01  1.00000000e+00  7.07106781e-01</span>
+<span class="go"> -1.83697020e-16 -7.07106781e-01 -1.00000000e+00 -7.07106781e-01]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">Aid</span><span class="o">.</span><span class="n">id2uv</span><span class="p">(</span>
+<span class="gp">... </span>   <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]),</span>
+<span class="gp">... </span>   <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">90.</span><span class="p">,</span> <span class="mf">45.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">315.</span><span class="p">,</span> <span class="mf">270.</span><span class="p">,</span> <span class="mf">225.</span><span class="p">,</span> <span class="mf">180.</span><span class="p">,</span> <span class="mf">135.</span><span class="p">]),</span>
+<span class="gp">... </span>   <span class="s1">&#39;ocean&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+<span class="go">[ 1.00000000e+00  7.07106781e-01  0.00000000e+00 -7.07106781e-01</span>
+<span class="go"> -1.00000000e+00 -7.07106781e-01  1.22464680e-16  7.07106781e-01]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+<span class="go">[ 6.12323400e-17  7.07106781e-01  1.00000000e+00  7.07106781e-01</span>
+<span class="go"> -1.83697020e-16 -7.07106781e-01 -1.00000000e+00 -7.07106781e-01]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt id="aid.Aid.round_dt">
+<code class="sig-prename descclassname">aid.Aid.</code><code class="sig-name descname">round_dt</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dt</span></em>, <em class="sig-param"><span class="n">resolution</span><span class="o">=</span><span class="default_value">datetime.timedelta(seconds=3600)</span></em>, <em class="sig-param"><span class="n">up</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#aid.Aid.round_dt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Round datetime to up or down
+This function is useful to create a expected range of time</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Aid</span><span class="o">.</span><span class="n">round_dt</span><span class="p">(</span><span class="n">dtm</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">33</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span>
+<span class="gp">... </span>             <span class="n">dtm</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>
+<span class="go">datetime.datetime(2020, 2, 12, 19, 40)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Aid</span><span class="o">.</span><span class="n">round_dt</span><span class="p">(</span><span class="n">dtm</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span>
+<span class="gp">... </span>             <span class="n">dtm</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">10</span><span class="p">),</span> <span class="kc">False</span><span class="p">)</span>
+<span class="go">datetime.datetime(2020, 1, 1, 5, 0)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt id="aid.Aid.round_time">
+<code class="sig-prename descclassname">aid.Aid.</code><code class="sig-name descname">round_time</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dt</span></em>, <em class="sig-param"><span class="n">dtDelta</span><span class="o">=</span><span class="default_value">datetime.timedelta(seconds=5)</span></em><span class="sig-paren">)</span><a class="headerlink" href="#aid.Aid.round_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Round a datetime object to a multiple of a timedelta</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dt</strong> (<code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code>) – Date in datetime format</p></li>
+<li><p><strong>dtDelta</strong> (<code class="docutils literal notranslate"><span class="pre">datetime.timedelta</span></code>) – timedelta object</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code> rounded</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Aid</span><span class="o">.</span><span class="n">round_time</span><span class="p">(</span><span class="n">dtm</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">33</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span>
+<span class="gp">... </span>             <span class="n">dtm</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>
+<span class="go">datetime.datetime(2020, 2, 12, 19, 30)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Author:</p>
+<p>Thierry Husson 2012 - Use it as you want but don’t blame me.</p>
+<p>Stijn Nevens 2014 - Changed to use only datetime objects</p>
+</div>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt id="aid.Aid.uv2id">
+<code class="sig-prename descclassname">aid.Aid.</code><code class="sig-name descname">uv2id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ucomp</span></em>, <em class="sig-param"><span class="n">vcomp</span></em>, <em class="sig-param"><span class="n">str_conv</span><span class="o">=</span><span class="default_value">'cart'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#aid.Aid.uv2id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert U and V to Intensity and Direction</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ucomp</strong> (<code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code> or <code class="docutils literal notranslate"><span class="pre">FrameOrSeries</span></code>) – Zonal component, parallel to the abscissa axis</p></li>
+<li><p><strong>vcomp</strong> (<code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code> or <code class="docutils literal notranslate"><span class="pre">FrameOrSeries</span></code>) – Meridional component, parallel to the coordinate axis</p></li>
+<li><p><strong>str_conv</strong> (<em>str</em>) – Origin convention
+(ex: ‘cart’ - Cartesian or ‘meteo’ - Meteorologic
+or ‘ocean’ - Oceanographic)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>Intensity</p></li>
+<li><p>direction at the desired convention (degrees)</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code> or <code class="docutils literal notranslate"><span class="pre">FrameOrSeries</span></code></p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">i</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">Aid</span><span class="o">.</span><span class="n">uv2id</span><span class="p">(</span>
+<span class="gp">... </span>   <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]),</span>
+<span class="gp">... </span>   <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">]),</span>
+<span class="gp">... </span>   <span class="s1">&#39;cart&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+<span class="go">[  0.  45.  90. 135. 180. 225. 270. 315.]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">i</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">Aid</span><span class="o">.</span><span class="n">uv2id</span><span class="p">(</span>
+<span class="gp">... </span>   <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]),</span>
+<span class="gp">... </span>   <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">]),</span>
+<span class="gp">... </span>   <span class="s1">&#39;meteo&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+<span class="go">[270. 225. 180. 135.  90.  45.   0. 315.]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">i</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">Aid</span><span class="o">.</span><span class="n">uv2id</span><span class="p">(</span>
+<span class="gp">... </span>   <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]),</span>
+<span class="gp">... </span>   <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">]),</span>
+<span class="gp">... </span>   <span class="s1">&#39;ocean&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+<span class="go">[ 90.  45.   0. 315. 270. 225. 180. 135.]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          
+          <h3>Table of Contents</h3>
+          <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>Aid</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="bokeh.html"><strong>Bokeh</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="erddap.html"><strong>Erddap</strong></a></li>
+</ul>
+
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Search</h3>
+            <form class="search" action="search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+            </form>
+          </div>
+
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <div role="navigation" aria-label="related navigaton">
+            <a href="index.html" title="Welcome to FUGRO_AID’s documentation!"
+              >previous</a> |
+            <a href="bokeh.html" title="Bokeh"
+              >next</a> |
+            <a href="genindex.html" title="General Index"
+              >index</a>
+          </div>
+          <div role="note" aria-label="source link">
+              <br/>
+              <a href="_sources/aid.rst.txt"
+                rel="nofollow">Show Source</a>
+          </div>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Marcio Yamashita.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

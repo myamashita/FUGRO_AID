@@ -1,0 +1,161 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erddap &#8212; FUGRO_AID 0.1.1 documentation</title>
+    <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Bokeh" href="bokeh.html" /> 
+  </head><body>
+    <div class="header-wrapper" role="banner">
+      <div class="header">
+        <div class="headertitle"><a
+          href="index.html">FUGRO_AID 0.1.1 documentation</a></div>
+        <div class="rel" role="navigation" aria-label="related navigation">
+          <a href="bokeh.html" title="Bokeh"
+             accesskey="P">previous</a> |
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="erddap">
+<h1><strong>Erddap</strong><a class="headerlink" href="#erddap" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-erddap">
+<h2>Module <code class="xref py py-class docutils literal notranslate"><span class="pre">Erddap</span></code><a class="headerlink" href="#module-erddap" title="Permalink to this headline">¶</a></h2>
+<p>This is the Erddap module</p>
+<p>Host of useful manipulation methods for:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Furgo</span> <span class="n">Metocean</span> <span class="n">Consultancy</span> <span class="o">-</span> <span class="n">Americas</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt id="aid.Erddap">
+<em class="property">class </em><code class="sig-prename descclassname">aid.</code><code class="sig-name descname">Erddap</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">server</span><span class="o">=</span><span class="default_value">'http://10.1.1.17:8080/erddap'</span></em>, <em class="sig-param"><span class="n">protocol</span><span class="o">=</span><span class="default_value">'tabledap'</span></em>, <em class="sig-param"><span class="n">response</span><span class="o">=</span><span class="default_value">'csv'</span></em>, <em class="sig-param"><span class="n">dataset_id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">constraints</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">variables</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aid.html#Erddap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aid.Erddap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a Class instance to facilitate connection and requests from FUGRO Erddap</p>
+<p>Arguments given to the class intantiation operator:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">server</span> <span class="p">(</span><span class="nb">str</span><span class="p">):</span> <span class="n">Default</span> <span class="n">server</span> <span class="s2">&quot;http://10.1.1.17:8080/erddap&quot;</span> <span class="p">(</span><span class="n">FUGRO</span> <span class="n">ERDDAP</span><span class="p">)</span>
+<span class="n">protocol</span> <span class="p">(</span><span class="nb">str</span><span class="p">):</span> <span class="n">Default</span> <span class="n">protocol</span> <span class="s2">&quot;tabledap&quot;</span>
+<span class="n">response</span> <span class="p">(</span><span class="nb">str</span><span class="p">):</span> <span class="n">Default</span> <span class="n">response</span> <span class="s2">&quot;csv&quot;</span>
+<span class="n">dataset_id</span> <span class="p">(</span><span class="nb">str</span><span class="p">):</span> <span class="nb">set</span> <span class="n">dataset</span> <span class="nb">id</span>
+<span class="n">constraints</span> <span class="p">(</span><span class="nb">dict</span><span class="p">):</span> <span class="nb">set</span> <span class="n">constraints</span>
+<span class="n">variables</span> <span class="p">(</span><span class="nb">list</span><span class="p">):</span> <span class="nb">set</span> <span class="n">variables</span> <span class="n">to</span> <span class="n">requests</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<hr class="docutils" />
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="aid.Erddap.to_pandas">
+<code class="sig-prename descclassname">aid.Erddap.</code><code class="sig-name descname">to_pandas</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#aid.Erddap.to_pandas" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to get data from Erddap and return in <code class="docutils literal notranslate"><span class="pre">pandas.core.frame.DataFrame</span></code></p>
+<p>index column with <code class="docutils literal notranslate"><span class="pre">dtype=&quot;datetime64[ns]&quot;</span></code></p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="n">Erddap</span><span class="p">(</span><span class="n">dataset_id</span><span class="o">=</span><span class="s1">&#39;geosOceanorMet&#39;</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="n">constraints</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;time&gt;=&#39;</span><span class="p">:</span> <span class="n">dtm</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="o">-</span><span class="n">dtm</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">1</span><span class="p">)})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="go">&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt id="aid.Erddap.vars_in_dataset">
+<code class="sig-prename descclassname">aid.Erddap.</code><code class="sig-name descname">vars_in_dataset</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">dataset</span></em><span class="sig-paren">)</span><a class="headerlink" href="#aid.Erddap.vars_in_dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to get variables in a specific dataset</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="n">Erddap</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">var</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">vars_in_dataset</span><span class="p">(</span><span class="s1">&#39;geosOceanorAquadopp&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">var</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
+<span class="go">[&#39;AqDir&#39;, &#39;AqSpd&#39;, &#39;Label&#39;, &#39;Misc&#39;, &#39;Source&#39;, &#39;depth&#39;, &#39;id&#39;, &#39;latitude&#39;, &#39;longitude&#39;, &#39;time&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">var</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">vars_in_dataset</span><span class="p">(</span><span class="s1">&#39;geosOceanorConductivity&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">var</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
+<span class="go">[&#39;Conductivity&#39;, &#39;Label&#39;, &#39;Misc&#39;, &#39;Source&#39;, &#39;depth&#39;, &#39;id&#39;, &#39;latitude&#39;, &#39;longitude&#39;, &#39;time&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          
+          <h3>Table of Contents</h3>
+          <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="aid.html"><strong>Aid</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="bokeh.html"><strong>Bokeh</strong></a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>Erddap</strong></a></li>
+</ul>
+
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Search</h3>
+            <form class="search" action="search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+            </form>
+          </div>
+
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <div role="navigation" aria-label="related navigaton">
+            <a href="bokeh.html" title="Bokeh"
+              >previous</a> |
+            <a href="genindex.html" title="General Index"
+              >index</a>
+          </div>
+          <div role="note" aria-label="source link">
+              <br/>
+              <a href="_sources/erddap.rst.txt"
+                rel="nofollow">Show Source</a>
+          </div>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Marcio Yamashita.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>
