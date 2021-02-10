@@ -6,7 +6,7 @@ import datetime as dtm
 releases = requests.get(
     r'https://api.github.com/repos/myamashita/FUGRO_AID/releases/latest')
 lastest = releases.json()['tag_name']
-__version__ = '0.1.1'
+__version__ = '0.2.0'
 print(f'This module version is {__version__}.\n'
       f'The lastest version is {lastest}.')
 
@@ -36,10 +36,10 @@ class Aid():
         Returns:
             ``datetime.datetime`` object corresponding to ``datenum``
         >>> Aid.datenum_2datetime(737833.81486962)
-        datetime.datetime(2020, 2, 12, 19, 33, 24, 735170)
+        datetime.datetime(2020, 2, 12, 19, 33, 24, 735000)
         """
         return dtm.datetime.fromordinal(int(dtnum) - 366) +\
-            dtm.timedelta(days=dtnum % 1)
+            dtm.timedelta(microseconds=round(dtnum % 1 * 86400000) * 1000)
 
     def datetime_2matlab(dt: dtm.datetime) -> float:
         """Convert a python datetime to matlab datenum
@@ -380,6 +380,20 @@ class Bokeh(object):
 
         Returns:
             ``Bokeh.figure``
+
+        Example::
+
+          N = 500
+          x = np.linspace(0, 10, N)
+          xx, yy = np.meshgrid(x, x)
+          d = np.sin(xx) * np.cos(yy)
+          X = pd.date_range(dtm.datetime(2020,2,12,19,30), 
+                            dtm.datetime(2020,2,12,19,30) + dtm.timedelta(minutes=499), freq='Min')
+          XX, YY = np.meshgrid(X, x)
+          data = dict(image=[d], dt=[XX], x=[dtm.datetime(2020,2,12,19,30)], y=[0], dw=[500*60000], dh=[10])
+          fig = Bokeh.plot_Colour_Flood(data, Y_tooltip='y', Z_tooltip='value', vmin=-1, vmax=1,
+                                        title='Example', xlabel='')
+                  
         """  # nopep8
         if f is None:
             f = Bokeh.mk_fig(
@@ -394,7 +408,7 @@ class Bokeh(object):
         mapper = Bokeh.linear_cmap(field_name='y', palette=kw.get(
             'palette', Bokeh.bp.Turbo256), low=vmin, high=vmax)
         f.image(source=data, image='image', x='x', y='y', dw='dw', dh='dh',
-                palette=kw.get('palette', Bokeh.bp.Turbo256))
+                color_mapper=mapper['transform'])
         cbar = Bokeh.ColorBar(
             color_mapper=mapper['transform'], width=18, location=(0, 0),
             major_tick_line_color='#000000', label_standoff=12,
@@ -760,7 +774,7 @@ class Erddap(object):
         >>> df = e.to_pandas()
         >>> type(df)
         <class 'pandas.core.frame.DataFrame'>
-        """
+        """  # nopep8
         def dateparser(x): return dtm.datetime.strptime(
             x, "%Y-%m-%dT%H:%M:%SZ")
         kw = {'index_col': 'time', 'date_parser': dateparser,
@@ -783,6 +797,49 @@ class Erddap(object):
         v = self._base._get_variables(dataset)
         v.pop('NC_GLOBAL', None)
         return [i for i in v]
+
+
+class Mat(object):
+    """Class to facilitate matlab operations for FUGRO Softwares
+
+    .. hlist::
+        :columns: 5
+
+        * :func:`fmdm_meta`
+        * :func:`save`
+
+    """  # nopep8
+
+    from scipy.io import savemat
+
+    def fmdm_meta(lat=0, lon=0, waterdepth=0, Contract='Contract'):
+
+        """Create a dictionary with metadata necessary for FMDM.
+
+        Args:
+            lat(``float``): Latitude
+            lon(``float``): Longitude
+            waterdepth(``float``): waterdepth
+            Contract(``str``): Contract
+        Returns:
+            ``dict`` Data corresponding to ``metadata``
+        """  # nopep8
+        Data = {}
+        Data['Metadata'] = {}
+        Data['Metadata']['Lat'] = lat
+        Data['Metadata']['Lon'] = lon
+        Data['Metadata']['Waterdepth'] = waterdepth
+        Data['Metadata']['Contract'] = Contract
+        return Data
+
+    def save(fname, mdict):
+        """Save a dictionary of names and arrays into a MATLAB-style .mat file.
+
+        Args:
+            fname(``str``): Name of the .mat file
+            mdict(``dict``): Dictionary from which to save matfile variables
+        """  # nopep8
+        Mat.savemat(fname, mdict, do_compression=True, oned_as='column')
 
 
 if __name__ == "__main__":

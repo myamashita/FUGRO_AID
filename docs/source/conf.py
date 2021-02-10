@@ -18,11 +18,11 @@ sys.path.insert(0, os.path.abspath('..\\..\\'))
 # -- Project information -----------------------------------------------------
 
 project = 'FUGRO_AID'
-copyright = '2020, Marcio Yamashita'
+copyright = '2021, Marcio Yamashita'
 author = 'Marcio Yamashita'
 
 # The full version, including alpha/beta/rc tags
-release = '0.1.1'
+release = '0.2.0'
 
 
 # -- General configuration ---------------------------------------------------

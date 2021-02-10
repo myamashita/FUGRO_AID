@@ -13,7 +13,8 @@ Welcome to FUGRO_AID's documentation!
    aid
    bokeh
    erddap
-
+   mat
+   
 
 Indices and tables
 ==================
