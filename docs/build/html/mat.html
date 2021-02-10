@@ -1,0 +1,168 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mat &#8212; FUGRO_AID 0.2.0 documentation</title>
+    <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Erddap" href="erddap.html" /> 
+  </head><body>
+    <div class="header-wrapper" role="banner">
+      <div class="header">
+        <div class="headertitle"><a
+          href="index.html">FUGRO_AID 0.2.0 documentation</a></div>
+        <div class="rel" role="navigation" aria-label="related navigation">
+          <a href="erddap.html" title="Erddap"
+             accesskey="P">previous</a> |
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="mat">
+<h1><strong>Mat</strong><a class="headerlink" href="#mat" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-mat">
+<h2>Module <code class="xref py py-class docutils literal notranslate"><span class="pre">Mat</span></code><a class="headerlink" href="#module-mat" title="Permalink to this headline">¶</a></h2>
+<p>This is the Mat module</p>
+<p>Host of useful manipulation methods for:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Furgo</span> <span class="n">Metocean</span> <span class="n">Consultancy</span> <span class="o">-</span> <span class="n">Americas</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt id="aid.Mat">
+<em class="property">class </em><code class="sig-prename descclassname">aid.</code><code class="sig-name descname">Mat</code><a class="reference internal" href="_modules/aid.html#Mat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aid.Mat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class to facilitate matlab operations for FUGRO Softwares</p>
+<table class="hlist"><tr><td><ul class="simple">
+<li><p><a class="reference internal" href="#aid.Mat.fmdm_meta" title="aid.Mat.fmdm_meta"><code class="xref py py-func docutils literal notranslate"><span class="pre">fmdm_meta()</span></code></a></p></li>
+</ul>
+</td><td><ul class="simple">
+<li><p><a class="reference internal" href="#aid.Mat.save" title="aid.Mat.save"><code class="xref py py-func docutils literal notranslate"><span class="pre">save()</span></code></a></p></li>
+</ul>
+</td><td><ul class="simple">
+</ul>
+</td><td><ul class="simple">
+</ul>
+</td><td><ul class="simple">
+</ul>
+</td></tr></table>
+</dd></dl>
+
+</div>
+<hr class="docutils" />
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="aid.Mat.fmdm_meta">
+<code class="sig-prename descclassname">aid.Mat.</code><code class="sig-name descname">fmdm_meta</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lat</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">lon</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">waterdepth</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">Contract</span><span class="o">=</span><span class="default_value">'Contract'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#aid.Mat.fmdm_meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a dictionary with metadata necessary for FMDM.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lat</strong> (<code class="docutils literal notranslate"><span class="pre">float</span></code>) – Latitude</p></li>
+<li><p><strong>lon</strong> (<code class="docutils literal notranslate"><span class="pre">float</span></code>) – Longitude</p></li>
+<li><p><strong>waterdepth</strong> (<code class="docutils literal notranslate"><span class="pre">float</span></code>) – waterdepth</p></li>
+<li><p><strong>Contract</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>) – Contract</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">dict</span></code> Data corresponding to <code class="docutils literal notranslate"><span class="pre">metadata</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt id="aid.Mat.save">
+<code class="sig-prename descclassname">aid.Mat.</code><code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fname</span></em>, <em class="sig-param"><span class="n">mdict</span></em><span class="sig-paren">)</span><a class="headerlink" href="#aid.Mat.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save a dictionary of names and arrays into a MATLAB-style .mat file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fname</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>) – Name of the .mat file</p></li>
+<li><p><strong>mdict</strong> (<code class="docutils literal notranslate"><span class="pre">dict</span></code>) – Dictionary from which to save matfile variables</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          
+          <h3>Table of Contents</h3>
+          <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="aid.html"><strong>Aid</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="bokeh.html"><strong>Bokeh</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="erddap.html"><strong>Erddap</strong></a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>Mat</strong></a></li>
+</ul>
+
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Search</h3>
+            <form class="search" action="search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+            </form>
+          </div>
+
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <div role="navigation" aria-label="related navigaton">
+            <a href="erddap.html" title="Erddap"
+              >previous</a> |
+            <a href="genindex.html" title="General Index"
+              >index</a>
+          </div>
+          <div role="note" aria-label="source link">
+              <br/>
+              <a href="_sources/mat.rst.txt"
+                rel="nofollow">Show Source</a>
+          </div>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Marcio Yamashita.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>
