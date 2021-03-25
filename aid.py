@@ -698,7 +698,7 @@ class Erddap(object):
 
         Arguments given to the class intantiation operator::
 
-          server (str): Default server "https://10.1.1.17:8080/erddap" (FUGRO ERDDAP)
+          server (str): Default server "http://10.1.1.17:8080/erddap" (FUGRO ERDDAP)
           protocol (str): Default protocol "tabledap"
           response (str): Default response "csv"
           dataset_id (str): set dataset id
@@ -707,7 +707,7 @@ class Erddap(object):
 
     """  # nopep8
 
-    def __init__(self, server='https://10.1.1.17:8080/erddap',
+    def __init__(self, server='http://10.1.1.17:8080/erddap',
                  protocol='tabledap', response='csv', dataset_id=None,
                  constraints=None, variables=None):
         self._base = Erddap._erddap_instance(server, protocol, response)
@@ -724,7 +724,7 @@ class Erddap(object):
     def __str__(self):
         return 'ERDDAP instance for a specific server endpoint.'
 
-    def _erddap_instance(server='https://10.1.1.17:8080/erddap',
+    def _erddap_instance(server='http://10.1.1.17:8080/erddap',
                          protocol='tabledap', response='csv'):
         """Create a erddap instance"""
         from erddapy import ERDDAP
