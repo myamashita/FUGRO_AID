@@ -1,12 +1,15 @@
 import requests
+import os
 import numpy as np
 import pandas as pd
+import xarray as xr
 import datetime as dtm
+import matplotlib.pyplot as plt
 
 releases = requests.get(
     r'https://api.github.com/repos/myamashita/FUGRO_AID/releases/latest')
 lastest = releases.json()['tag_name']
-__version__ = '0.2.0'
+__version__ = '0.3.0'
 print(f'This module version is {__version__}.\n'
       f'The lastest version is {lastest}.')
 
@@ -393,7 +396,7 @@ class Bokeh(object):
           data = dict(image=[d], dt=[XX], x=[dtm.datetime(2020,2,12,19,30)], y=[0], dw=[500*60000], dh=[10])
           fig = Bokeh.plot_Colour_Flood(data, Y_tooltip='y', Z_tooltip='value', vmin=-1, vmax=1,
                                         title='Example', xlabel='')
-                  
+
         """  # nopep8
         if f is None:
             f = Bokeh.mk_fig(
@@ -429,7 +432,7 @@ class Bokeh(object):
                     title, x_axis_label, y_axis_label, height, width, x_axis_type, axis_label_text_font
 
                 function: bokeh.plot_IntDir::
-                    
+
                     "Int_label": Y-label in left side plot
                     "Int_color":  Intensity color in plot
                     "Int_legend": Intensity legend
@@ -695,16 +698,16 @@ class Erddap(object):
 
         Arguments given to the class intantiation operator::
 
-          server (str): Default server "http://10.1.1.17:8080/erddap" (FUGRO ERDDAP)
+          server (str): Default server "https://10.1.1.17:8080/erddap" (FUGRO ERDDAP)
           protocol (str): Default protocol "tabledap"
           response (str): Default response "csv"
           dataset_id (str): set dataset id
           constraints (dict): set constraints
           variables (list): set variables to requests
-      
+
     """  # nopep8
 
-    def __init__(self, server='http://10.1.1.17:8080/erddap',
+    def __init__(self, server='https://10.1.1.17:8080/erddap',
                  protocol='tabledap', response='csv', dataset_id=None,
                  constraints=None, variables=None):
         self._base = Erddap._erddap_instance(server, protocol, response)
@@ -721,7 +724,7 @@ class Erddap(object):
     def __str__(self):
         return 'ERDDAP instance for a specific server endpoint.'
 
-    def _erddap_instance(server='http://10.1.1.17:8080/erddap',
+    def _erddap_instance(server='https://10.1.1.17:8080/erddap',
                          protocol='tabledap', response='csv'):
         """Create a erddap instance"""
         from erddapy import ERDDAP
@@ -813,7 +816,6 @@ class Mat(object):
     from scipy.io import savemat
 
     def fmdm_meta(lat=0, lon=0, waterdepth=0, Contract='Contract'):
-
         """Create a dictionary with metadata necessary for FMDM.
 
         Args:
@@ -840,6 +842,268 @@ class Mat(object):
             mdict(``dict``): Dictionary from which to save matfile variables
         """  # nopep8
         Mat.savemat(fname, mdict, do_compression=True, oned_as='column')
+
+
+class Hycom(object):
+    """Class to get Hycom datasets
+
+    .. hlist::
+        :columns: 5
+
+        * :func:`gom_url`
+        * :func:`gom_ds`
+        * :func:`subset_gom`
+        * :func:`loop_current_time_rng`
+        * :func:`plot_gom_LC`
+        * :func:`plot_LC`
+        * :func:`plot_gom_sst`
+        * :func:`plot_gom_ssh`
+        * :func:`plot_gom_vel`
+        * :func:`plot_map`
+
+    """  # nopep8
+
+    import cftime
+    import cartopy.crs as ccrs
+    plt.rcParams['font.sans-serif'] = "Segoe ui"
+
+    class nf(float):
+        def __repr__(self):
+            s = f'{self:.1f}'
+            return f'{self:.0f}' if s[-1] == '0' else s
+
+    def gom_url(dt: dtm.datetime) -> str:
+        """Return url experiment
+
+        Args:
+            dt (``datetime.datetime``): Date in datetime format
+        Returns:
+            ``str`` URL string corresponding to ``Datetime``
+        >>> Hycom.gom_url(dtm.datetime(2020, 1, 1))
+        'https://tds.hycom.org/thredds/dodsC/GOMu0.04/expt_90.1m000'
+        """
+        lim = [dtm.datetime(2013, 1, 1), dtm.datetime(2014, 4, 1),
+               dtm.datetime(2019, 1, 1)]
+        if dt < lim[0]:
+            url = "https://tds.hycom.org/thredds/dodsC/GOMu0.04/expt_50.1"
+        elif (dt >= lim[0]) & (dt < lim[1]):
+            url = "https://tds.hycom.org/thredds/dodsC/GOMl0.04/expt_31.0"
+        elif (dt >= lim[1]) & (dt < lim[2]):
+            url = 'https://tds.hycom.org/thredds/dodsC/GOMl0.04/expt_32.5'
+        else:
+            url = "https://tds.hycom.org/thredds/dodsC/GOMu0.04/expt_90.1m000"
+        return url
+
+    def gom_ds(dt: dtm.datetime) -> xr.Dataset:
+        """Return xarray Dataset experiment in GOM
+
+        Args:
+            dt (``datetime.datetime``): Date in datetime format
+        Returns:
+            ``xarray.core.dataset.Dataset`` using respective experiment
+        """
+        if ((dt < dtm.datetime(2013, 1, 1, 0)) |
+             (dt >= dtm.datetime(2019, 1, 1))):
+            ds = xr.open_dataset(Hycom.gom_url(dt), decode_times=False)
+            time_fix = Hycom.cftime.num2date(
+                ds.time, units=ds.time.units, calendar='gregorian')
+            ds = ds.assign_coords(time=time_fix)
+            ds = ds.rename({'surf_el': 'ssh'})
+        else:
+            ds = xr.open_dataset(Hycom.gom_url(dt), decode_times=True)
+            ds = ds.rename({'MT': 'time', 'Depth': 'depth', 'u': 'water_u',
+                            'v': 'water_v', 'temperature': 'water_temp',
+                            'Latitude': 'lat', 'Longitude': 'lon'})
+        return ds
+
+    def _get_grid(lon, lat, grid):
+        if isinstance(grid, int):
+            kw = {'lon': slice(lon - (grid / 2), lon + (grid / 2)),
+                  'lat': slice(lat - (grid / 2), lat + (grid / 2))}
+        elif len(grid) == 4:
+            kw = {'lon': slice(grid[0], grid[1]),
+                  'lat': slice(grid[2], grid[3])}
+        elif len(grid) == 2:
+            kw = {'lon': slice(lon - (grid[0] / 2), lon + (grid[0] / 2)),
+                  'lat': slice(lat - (grid[1] / 2), lat + (grid[1] / 2))}
+        return kw
+
+    def subset_gom(dt, lon, lat, grid=2,
+                   var=['water_u', 'water_v', 'water_temp', 'ssh']):
+        """Return a subset xarray in GOM with one timestamp and some variables
+
+        Args:
+            dt (``datetime.datetime``): Date in datetime format
+            lon (``float``): Central longitude
+            lat (``float``): Central latitude
+            grid (``float | list``): Grid between central point
+        Returns:
+            ``xarray.core.dataset.Dataset`` using respective constraints
+        """
+        kw = Hycom._get_grid(lon, lat, grid)
+        ds = Hycom.gom_ds(dt)
+        ds_out = ds.sel(time=dt, **kw)
+        return ds_out[var]
+
+    def loop_current_time_rng(start, end, lon, lat, grid=2, **kw):
+
+        def mk_plots(start, end, eof_time, lon, lat, grid, fol, **kw):
+            ds = Hycom.gom_ds(start)
+            while start < eof_time:
+                ds_time = ds.sel(time=start, method='nearest')
+                kwg = Hycom._get_grid(lon, lat, grid)
+                ds_ = ds_time.sel(**kwg)
+                fig, ax = Hycom.plot_LC(ds_, lon, lat, **kw)
+                plt.savefig(f'{fol}/LC_gom_{start.strftime("%Y%m%dT%HZ")}.png',
+                            bbox_inches='tight', pad_inches=0.05)
+                plt.close()
+                start += dtm.timedelta(days=1)
+                if (start > end) | (start > eof_time):
+                    break
+            return start
+
+        fol = kw.get(
+            'folder', dtm.datetime.utcnow().strftime("%Y%m%d_%H%M%SUTC"))
+        if not os.path.exists(fol):
+            os.mkdir(fol)
+
+        eof_time = [dtm.datetime(2013, 1, 1, 0), dtm.datetime(2014, 4, 1),
+                    dtm.datetime(2019, 1, 1), dtm.datetime.utcnow()]
+        A = [start < i for i in eof_time]
+        B = [end >= i for i in [dtm.datetime(1993, 1, 1, 0)] + eof_time[:-1]]
+        DS = [a * b for a, b in zip(A, B)]
+
+        for i, ds in zip(eof_time, DS):
+            if ds:
+                start = mk_plots(start, end, i, lon, lat, grid, fol, **kw)
+
+    def plot_gom_LC(time, lon, lat, save=True, **kw):
+        ds = Hycom.subset_gom(time, lon, lat, kw.pop('grid', 6))
+        fig, ax = Hycom.plot_LC(ds, lon, lat, **kw)
+        if save:
+            plt.savefig(f'LC_gom_{time.strftime("%Y%m%dT%HZ")}.png',
+                        bbox_inches='tight', pad_inches=0.05)
+
+    def plot_LC(ds, lon, lat, **kw):
+
+        pooling = kw.pop('pooling', [])
+        points = kw.pop('points', True)
+        quiver = kw.pop('quiver', True)
+        cmap = kw.pop('cmap', plt.cm.bwr)
+        vmin = kw.pop('vmin', ds['ssh'].min(dim=("lat", "lon")).item())
+        vmax = kw.pop('vmax', ds['ssh'].max(dim=("lat", "lon")).item())
+        temp = ds['water_temp'].sel(depth=200.0)
+
+        fig, ax = Hycom.plot_map(
+            ds['ssh'], ds['ssh'].attrs['units'], cmap, vmin, vmax)
+        ax.set_title(f'LC GOM {ds.time.dt.strftime("%Y-%m-%d %HZ").item()}')
+
+        if points:
+            ax.plot(lon, lat, 'oy')
+            for pos in pooling:
+                ax.plot(pos[0], pos[1], marker='o', color='brown')
+
+        CS = ax.contour(temp.lon, temp.lat, temp, [20],
+                        linewidths=3, colors='darkgreen')
+        CS.levels = [Hycom.nf(val) for val in CS.levels]
+        ax.clabel(CS, CS.levels, inline=True, fmt=r'%r degC', fontsize=13)
+        CS.levels = [Hycom.nf(val) for val in CS.levels]
+        CS = ax.contour(temp.lon, temp.lat, ds['ssh'], [0.17],
+                        linewidths=3, colors='k')
+        ax.clabel(CS, CS.levels, inline=True, fmt=r'%r m', fontsize=12)
+
+        ax.legend([plt.Rectangle((0, 0), 1, 1, fc='k'),
+                   plt.Rectangle((0, 0), 1, 1, fc='darkgreen')],
+                  ['SSH 17 cm', '20 deg C at 200m'], loc='upper right',
+                  framealpha=0.9)
+        if quiver:
+            u = ds['water_u'].sel(depth=0)
+            v = ds['water_v'].sel(depth=0)
+            ax = Hycom._quiver(ax, u, v)
+        return fig, ax
+
+    def plot_gom_sst(time, lon, lat, save=True, **kw):
+
+        ds = Hycom.subset_gom(
+            time, lon, lat, kw.pop('grid', 2), ['water_temp'])
+        sst = ds['water_temp'].sel(depth=0)
+
+        cmap = kw.pop('cmap', plt.cm.rainbow)
+        vmin = kw.pop('vmin', sst.min(dim=("lat", "lon")).item())
+        vmax = kw.pop('vmax', sst.max(dim=("lat", "lon")).item())
+
+        fig, ax = Hycom.plot_map(
+            sst, ds['water_temp'].attrs['units'], cmap, vmin, vmax)
+        ax.set_title(f'SST {time.strftime("%Y-%m-%d %HZ")}')
+
+        if save:
+            plt.savefig(f'SST_gom_{time.strftime("%Y%m%dT%HZ")}.png',
+                        bbox_inches='tight', pad_inches=0.05)
+
+    def plot_gom_ssh(time, lon, lat, save=True, **kw):
+
+        ds = Hycom.subset_gom(time, lon, lat, kw.pop('grid', 2), ['ssh'])
+
+        cmap = kw.pop('cmap', plt.cm.bwr)
+        vmin = kw.pop('vmin', ds['ssh'].min(dim=("lat", "lon")).item())
+        vmax = kw.pop('vmax', ds['ssh'].max(dim=("lat", "lon")).item())
+
+        fig, ax = Hycom.plot_map(
+            ds['ssh'], ds['ssh'].attrs['units'], cmap, vmin, vmax)
+        ax.set_title(f'SSH {time.strftime("%Y-%m-%d %HZ").item()}')
+        if save:
+            plt.savefig(f'SSH_gom_{time.strftime("%Y%m%dT%HZ")}.png',
+                        bbox_inches='tight', pad_inches=0.05)
+
+    def plot_gom_vel(time, lon, lat, depth=0, quiver=True, save=True, **kw):
+
+        ds = Hycom.subset_gom(time, lon, lat, kw.pop(
+            'grid', 2), ['water_u', 'water_v'])
+        if depth not in ds.depth:
+            print('Depth not present in Hycom')
+            return
+
+        u = ds['water_u'].sel(depth=depth)
+        v = ds['water_v'].sel(depth=depth)
+        vel = np.sqrt(u**2 + v**2)
+
+        cmap = kw.pop('cmap', plt.cm.rainbow)
+        vmin = kw.pop('vmin', vel.min(dim=("lat", "lon")).item())
+        vmax = kw.pop('vmax', vel.max(dim=("lat", "lon")).item())
+
+        fig, ax = Hycom.plot_map(
+            vel, ds['water_u'].attrs['units'], cmap, vmin, vmax)
+        ax.set_title(
+            f'VEL {time.strftime("%Y-%m-%d %HZ")} {depth}m')
+        if quiver:
+            ax = Hycom._quiver(ax, u, v)
+        if save:
+            plt.savefig(
+                f'VEL_gom_{time.strftime("%Y%m%dT%HZ")}_{depth}m.png',
+                bbox_inches='tight', pad_inches=0.05)
+
+    def _quiver(ax, u, v):
+        ax.quiver(u.lon[::4], u.lat[::4], u[::4, ::4],
+                  v[::4, ::4], pivot='middle', color='blue')
+        return ax
+
+    def plot_map(var, label, cmap, vmin, vmax):
+        xx, yy = np.meshgrid(var.lon, var.lat)
+        fig, ax = plt.subplots(figsize=(8.5, 11), dpi=70,
+                               subplot_kw={"projection": Hycom.ccrs.PlateCarree()})
+        ax.set_extent([xx[0, 0], xx[0, -1], yy[0, 0], yy[-1, 0]])
+        pcm = ax.pcolormesh(xx, yy, var, cmap=cmap, vmin=vmin, vmax=vmax)
+        ax.coastlines()
+        ax.gridlines(draw_labels=True, edgecolor='gray', linewidth=.75)
+        axpos = ax.get_position()
+        px = axpos.x0
+        py = axpos.y0 - 0.06
+        cax_width = axpos.width
+        cax_height = 0.02
+        pos_cax = fig.add_axes([px, py, cax_width, cax_height])
+        fig.colorbar(pcm, cax=pos_cax, orientation='horizontal', label=label)
+
+        return fig, ax
 
 
 if __name__ == "__main__":

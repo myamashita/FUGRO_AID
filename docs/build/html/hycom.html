@@ -1,0 +1,238 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hycom &#8212; FUGRO_AID 0.3.0 documentation</title>
+    <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Mat" href="mat.html" /> 
+  </head><body>
+    <div class="header-wrapper" role="banner">
+      <div class="header">
+        <div class="headertitle"><a
+          href="index.html">FUGRO_AID 0.3.0 documentation</a></div>
+        <div class="rel" role="navigation" aria-label="related navigation">
+          <a href="mat.html" title="Mat"
+             accesskey="P">previous</a> |
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="hycom">
+<h1><strong>Hycom</strong><a class="headerlink" href="#hycom" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-mat">
+<h2>Module <code class="xref py py-class docutils literal notranslate"><span class="pre">Mat</span></code><a class="headerlink" href="#module-mat" title="Permalink to this headline">¶</a></h2>
+<p>This is the Hycom module</p>
+<p>Host of useful manipulation methods for:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Furgo</span> <span class="n">Metocean</span> <span class="n">Consultancy</span> <span class="o">-</span> <span class="n">Americas</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt id="aid.Hycom">
+<em class="property">class </em><code class="sig-prename descclassname">aid.</code><code class="sig-name descname">Hycom</code><a class="reference internal" href="_modules/aid.html#Hycom"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aid.Hycom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class to get Hycom datasets</p>
+<table class="hlist"><tr><td><ul class="simple">
+<li><p><a class="reference internal" href="#aid.Hycom.gom_url" title="aid.Hycom.gom_url"><code class="xref py py-func docutils literal notranslate"><span class="pre">gom_url()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#aid.Hycom.gom_ds" title="aid.Hycom.gom_ds"><code class="xref py py-func docutils literal notranslate"><span class="pre">gom_ds()</span></code></a></p></li>
+</ul>
+</td><td><ul class="simple">
+<li><p><a class="reference internal" href="#aid.Hycom.subset_gom" title="aid.Hycom.subset_gom"><code class="xref py py-func docutils literal notranslate"><span class="pre">subset_gom()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#aid.Hycom.loop_current_time_rng" title="aid.Hycom.loop_current_time_rng"><code class="xref py py-func docutils literal notranslate"><span class="pre">loop_current_time_rng()</span></code></a></p></li>
+</ul>
+</td><td><ul class="simple">
+<li><p><a class="reference internal" href="#aid.Hycom.plot_gom_LC" title="aid.Hycom.plot_gom_LC"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot_gom_LC()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#aid.Hycom.plot_LC" title="aid.Hycom.plot_LC"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot_LC()</span></code></a></p></li>
+</ul>
+</td><td><ul class="simple">
+<li><p><a class="reference internal" href="#aid.Hycom.plot_gom_sst" title="aid.Hycom.plot_gom_sst"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot_gom_sst()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#aid.Hycom.plot_gom_ssh" title="aid.Hycom.plot_gom_ssh"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot_gom_ssh()</span></code></a></p></li>
+</ul>
+</td><td><ul class="simple">
+<li><p><a class="reference internal" href="#aid.Hycom.plot_gom_vel" title="aid.Hycom.plot_gom_vel"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot_gom_vel()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#aid.Hycom.plot_map" title="aid.Hycom.plot_map"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot_map()</span></code></a></p></li>
+</ul>
+</td></tr></table>
+</dd></dl>
+
+</div>
+<hr class="docutils" />
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="aid.Hycom.gom_url">
+<code class="sig-prename descclassname">aid.Hycom.</code><code class="sig-name descname">gom_url</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dt</span><span class="p">:</span> <span class="n">datetime.datetime</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#aid.Hycom.gom_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return url experiment</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dt</strong> (<code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code>) – Date in datetime format</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">str</span></code> URL string corresponding to <code class="docutils literal notranslate"><span class="pre">Datetime</span></code></p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Hycom</span><span class="o">.</span><span class="n">gom_url</span><span class="p">(</span><span class="n">dtm</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="go">&#39;https://tds.hycom.org/thredds/dodsC/GOMu0.04/expt_90.1m000&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt id="aid.Hycom.gom_ds">
+<code class="sig-prename descclassname">aid.Hycom.</code><code class="sig-name descname">gom_ds</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dt</span><span class="p">:</span> <span class="n">datetime.datetime</span></em><span class="sig-paren">)</span> &#x2192; xarray.core.dataset.Dataset<a class="headerlink" href="#aid.Hycom.gom_ds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return xarray Dataset experiment in GOM</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dt</strong> (<code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code>) – Date in datetime format</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">xarray.core.dataset.Dataset</span></code> using respective experiment</p>
+</dd>
+</dl>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt id="aid.Hycom.subset_gom">
+<code class="sig-prename descclassname">aid.Hycom.</code><code class="sig-name descname">subset_gom</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dt</span></em>, <em class="sig-param"><span class="n">lon</span></em>, <em class="sig-param"><span class="n">lat</span></em>, <em class="sig-param"><span class="n">grid</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">var</span><span class="o">=</span><span class="default_value">['water_u', 'water_v', 'water_temp', 'ssh']</span></em><span class="sig-paren">)</span><a class="headerlink" href="#aid.Hycom.subset_gom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a subset xarray in GOM with one timestamp and some variables</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dt</strong> (<code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code>) – Date in datetime format</p></li>
+<li><p><strong>lon</strong> (<code class="docutils literal notranslate"><span class="pre">float</span></code>) – Central longitude</p></li>
+<li><p><strong>lat</strong> (<code class="docutils literal notranslate"><span class="pre">float</span></code>) – Central latitude</p></li>
+<li><p><strong>grid</strong> (<code class="docutils literal notranslate"><span class="pre">float</span> <span class="pre">|</span> <span class="pre">list</span></code>) – Grid between central point</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">xarray.core.dataset.Dataset</span></code> using respective constraints</p>
+</dd>
+</dl>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt id="aid.Hycom.loop_current_time_rng">
+<code class="sig-prename descclassname">aid.Hycom.</code><code class="sig-name descname">loop_current_time_rng</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">start</span></em>, <em class="sig-param"><span class="n">end</span></em>, <em class="sig-param"><span class="n">lon</span></em>, <em class="sig-param"><span class="n">lat</span></em>, <em class="sig-param"><span class="n">grid</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="headerlink" href="#aid.Hycom.loop_current_time_rng" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt id="aid.Hycom.plot_gom_LC">
+<code class="sig-prename descclassname">aid.Hycom.</code><code class="sig-name descname">plot_gom_LC</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">time</span></em>, <em class="sig-param"><span class="n">lon</span></em>, <em class="sig-param"><span class="n">lat</span></em>, <em class="sig-param"><span class="n">save</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="headerlink" href="#aid.Hycom.plot_gom_LC" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt id="aid.Hycom.plot_LC">
+<code class="sig-prename descclassname">aid.Hycom.</code><code class="sig-name descname">plot_LC</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ds</span></em>, <em class="sig-param"><span class="n">lon</span></em>, <em class="sig-param"><span class="n">lat</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="headerlink" href="#aid.Hycom.plot_LC" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt id="aid.Hycom.plot_gom_sst">
+<code class="sig-prename descclassname">aid.Hycom.</code><code class="sig-name descname">plot_gom_sst</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">time</span></em>, <em class="sig-param"><span class="n">lon</span></em>, <em class="sig-param"><span class="n">lat</span></em>, <em class="sig-param"><span class="n">save</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="headerlink" href="#aid.Hycom.plot_gom_sst" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt id="aid.Hycom.plot_gom_ssh">
+<code class="sig-prename descclassname">aid.Hycom.</code><code class="sig-name descname">plot_gom_ssh</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">time</span></em>, <em class="sig-param"><span class="n">lon</span></em>, <em class="sig-param"><span class="n">lat</span></em>, <em class="sig-param"><span class="n">save</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="headerlink" href="#aid.Hycom.plot_gom_ssh" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt id="aid.Hycom.plot_gom_vel">
+<code class="sig-prename descclassname">aid.Hycom.</code><code class="sig-name descname">plot_gom_vel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">time</span></em>, <em class="sig-param"><span class="n">lon</span></em>, <em class="sig-param"><span class="n">lat</span></em>, <em class="sig-param"><span class="n">depth</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">quiver</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">save</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="headerlink" href="#aid.Hycom.plot_gom_vel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt id="aid.Hycom.plot_map">
+<code class="sig-prename descclassname">aid.Hycom.</code><code class="sig-name descname">plot_map</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">var</span></em>, <em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">cmap</span></em>, <em class="sig-param"><span class="n">vmin</span></em>, <em class="sig-param"><span class="n">vmax</span></em><span class="sig-paren">)</span><a class="headerlink" href="#aid.Hycom.plot_map" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          
+          <h3>Table of Contents</h3>
+          <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="aid.html"><strong>Aid</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="bokeh.html"><strong>Bokeh</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="erddap.html"><strong>Erddap</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="mat.html"><strong>Mat</strong></a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>Hycom</strong></a></li>
+</ul>
+
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Search</h3>
+            <form class="search" action="search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+            </form>
+          </div>
+
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <div role="navigation" aria-label="related navigaton">
+            <a href="mat.html" title="Mat"
+              >previous</a> |
+            <a href="genindex.html" title="General Index"
+              >index</a>
+          </div>
+          <div role="note" aria-label="source link">
+              <br/>
+              <a href="_sources/hycom.rst.txt"
+                rel="nofollow">Show Source</a>
+          </div>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Marcio Yamashita.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

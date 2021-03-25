@@ -14,6 +14,7 @@ Welcome to FUGRO_AID's documentation!
    bokeh
    erddap
    mat
+   hycom
    
 
 Indices and tables
