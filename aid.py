@@ -947,9 +947,9 @@ class Hycom(object):
 
     def loop_current_time_rng(start, end, lon, lat, grid=2, **kw):
 
-        def mk_plots(start, end, eof_time, lon, lat, grid, fol, **kw):
+        def mk_plots(start, end, eof, lon, lat, grid, fol, **kw):
             ds = Hycom.gom_ds(start)
-            while start < eof_time:
+            while start < eof:
                 ds_time = ds.sel(time=start, method='nearest')
                 kwg = Hycom._get_grid(lon, lat, grid)
                 ds_ = ds_time.sel(**kwg)
@@ -958,7 +958,7 @@ class Hycom(object):
                             bbox_inches='tight', pad_inches=0.05)
                 plt.close()
                 start += dtm.timedelta(days=1)
-                if (start > end) | (start > eof_time):
+                if (start > end) | (start > eof):
                     break
             return start
 
@@ -999,9 +999,7 @@ class Hycom(object):
         ax.set_title(f'LC GOM {ds.time.dt.strftime("%Y-%m-%d %HZ").item()}')
 
         if points:
-            ax.plot(lon, lat, 'oy')
-            for pos in pooling:
-                ax.plot(pos[0], pos[1], marker='o', color='brown')
+            ax = Hycom._points(ax, lon, lat, pooling)
 
         CS = ax.contour(temp.lon, temp.lat, temp, [20],
                         linewidths=3, colors='darkgreen')
@@ -1031,10 +1029,15 @@ class Hycom(object):
         cmap = kw.pop('cmap', plt.cm.rainbow)
         vmin = kw.pop('vmin', sst.min(dim=("lat", "lon")).item())
         vmax = kw.pop('vmax', sst.max(dim=("lat", "lon")).item())
+        pooling = kw.pop('pooling', [])
+        points = kw.pop('points', True)
 
         fig, ax = Hycom.plot_map(
             sst, ds['water_temp'].attrs['units'], cmap, vmin, vmax)
         ax.set_title(f'SST {time.strftime("%Y-%m-%d %HZ")}')
+
+        if points:
+            ax = Hycom._points(ax, lon, lat, pooling)
 
         if save:
             plt.savefig(f'SST_gom_{time.strftime("%Y%m%dT%HZ")}.png',
@@ -1047,10 +1050,15 @@ class Hycom(object):
         cmap = kw.pop('cmap', plt.cm.bwr)
         vmin = kw.pop('vmin', ds['ssh'].min(dim=("lat", "lon")).item())
         vmax = kw.pop('vmax', ds['ssh'].max(dim=("lat", "lon")).item())
+        pooling = kw.pop('pooling', [])
+        points = kw.pop('points', True)
 
         fig, ax = Hycom.plot_map(
             ds['ssh'], ds['ssh'].attrs['units'], cmap, vmin, vmax)
-        ax.set_title(f'SSH {time.strftime("%Y-%m-%d %HZ").item()}')
+        ax.set_title(f'SSH {time.strftime("%Y-%m-%d %HZ")}')
+        
+        if points:
+            ax = Hycom._points(ax, lon, lat, pooling)
         if save:
             plt.savefig(f'SSH_gom_{time.strftime("%Y%m%dT%HZ")}.png',
                         bbox_inches='tight', pad_inches=0.05)
@@ -1070,17 +1078,28 @@ class Hycom(object):
         cmap = kw.pop('cmap', plt.cm.rainbow)
         vmin = kw.pop('vmin', vel.min(dim=("lat", "lon")).item())
         vmax = kw.pop('vmax', vel.max(dim=("lat", "lon")).item())
+        pooling = kw.pop('pooling', [])
+        points = kw.pop('points', True)
+
 
         fig, ax = Hycom.plot_map(
             vel, ds['water_u'].attrs['units'], cmap, vmin, vmax)
         ax.set_title(
             f'VEL {time.strftime("%Y-%m-%d %HZ")} {depth}m')
+        if points:
+            ax = Hycom._points(ax, lon, lat, pooling)
         if quiver:
             ax = Hycom._quiver(ax, u, v)
         if save:
             plt.savefig(
                 f'VEL_gom_{time.strftime("%Y%m%dT%HZ")}_{depth}m.png',
                 bbox_inches='tight', pad_inches=0.05)
+
+    def _points(ax, lon, lat, pooling):
+        ax.plot(lon, lat, 'oy')
+        for pos in pooling:
+            ax.plot(pos[0], pos[1], marker='o', color='brown')
+        return ax
 
     def _quiver(ax, u, v):
         ax.quiver(u.lon[::4], u.lat[::4], u[::4, ::4],
