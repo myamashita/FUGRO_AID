@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Erddap &#8212; FUGRO_AID 0.3.0 documentation</title>
+    <title>Erddap &#8212; FUGRO_AID 0.3.1 documentation</title>
     <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -21,7 +21,7 @@
     <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
-          href="index.html">FUGRO_AID 0.3.0 documentation</a></div>
+          href="index.html">FUGRO_AID 0.3.1 documentation</a></div>
         <div class="rel" role="navigation" aria-label="related navigation">
           <a href="bokeh.html" title="Bokeh"
              accesskey="P">previous</a> |
@@ -54,7 +54,8 @@
 <dt id="aid.Erddap">
 <em class="property">class </em><code class="sig-prename descclassname">aid.</code><code class="sig-name descname">Erddap</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">server</span><span class="o">=</span><span class="default_value">'http://10.1.1.17:8080/erddap'</span></em>, <em class="sig-param"><span class="n">protocol</span><span class="o">=</span><span class="default_value">'tabledap'</span></em>, <em class="sig-param"><span class="n">response</span><span class="o">=</span><span class="default_value">'csv'</span></em>, <em class="sig-param"><span class="n">dataset_id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">constraints</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">variables</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/aid.html#Erddap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#aid.Erddap" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a Class instance to facilitate connection and requests from FUGRO Erddap</p>
-<p>Arguments given to the class intantiation operator:</p>
+<blockquote>
+<div><p>Arguments given to the class intantiation operator:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">server</span> <span class="p">(</span><span class="nb">str</span><span class="p">):</span> <span class="n">Default</span> <span class="n">server</span> <span class="s2">&quot;http://10.1.1.17:8080/erddap&quot;</span> <span class="p">(</span><span class="n">FUGRO</span> <span class="n">ERDDAP</span><span class="p">)</span>
 <span class="n">protocol</span> <span class="p">(</span><span class="nb">str</span><span class="p">):</span> <span class="n">Default</span> <span class="n">protocol</span> <span class="s2">&quot;tabledap&quot;</span>
 <span class="n">response</span> <span class="p">(</span><span class="nb">str</span><span class="p">):</span> <span class="n">Default</span> <span class="n">response</span> <span class="s2">&quot;csv&quot;</span>
@@ -63,6 +64,20 @@
 <span class="n">variables</span> <span class="p">(</span><span class="nb">list</span><span class="p">):</span> <span class="nb">set</span> <span class="n">variables</span> <span class="n">to</span> <span class="n">requests</span>
 </pre></div>
 </div>
+</div></blockquote>
+<table class="hlist"><tr><td><ul class="simple">
+<li><p><a class="reference internal" href="#aid.Erddap.to_pandas" title="aid.Erddap.to_pandas"><code class="xref py py-func docutils literal notranslate"><span class="pre">to_pandas()</span></code></a></p></li>
+</ul>
+</td><td><ul class="simple">
+<li><p><a class="reference internal" href="#aid.Erddap.vars_in_dataset" title="aid.Erddap.vars_in_dataset"><code class="xref py py-func docutils literal notranslate"><span class="pre">vars_in_dataset()</span></code></a></p></li>
+</ul>
+</td><td><ul class="simple">
+</ul>
+</td><td><ul class="simple">
+</ul>
+</td><td><ul class="simple">
+</ul>
+</td></tr></table>
 </dd></dl>
 
 </div>

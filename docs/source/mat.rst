@@ -19,7 +19,27 @@ Methods
 
 .. autofunction:: aid.Mat.fmdm_meta
 
--------------------------------------------
+-------------------------------------
+
+.. autofunction:: aid.Mat.mets_structure
+
+----------------------------------------
+
+.. autofunction:: aid.Mat.mets_meta
+
+-----------------------------------
+
+.. autofunction:: aid.Mat.mets_data
+
+-----------------------------------
+
+.. autofunction:: aid.Mat.merge_local_flag
+
+--------------------------------------------
+
+.. autofunction:: aid.Mat.split_local_flag
+
+--------------------------------------------
 
 .. autofunction:: aid.Mat.save
 

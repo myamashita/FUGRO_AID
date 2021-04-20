@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>aid &#8212; FUGRO_AID 0.3.0 documentation</title>
+    <title>aid &#8212; FUGRO_AID 0.3.1 documentation</title>
     <link rel="stylesheet" href="../_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -19,7 +19,7 @@
     <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
-          href="../index.html">FUGRO_AID 0.3.0 documentation</a></div>
+          href="../index.html">FUGRO_AID 0.3.1 documentation</a></div>
         <div class="rel" role="navigation" aria-label="related navigation">
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a>
@@ -47,7 +47,7 @@
 <span class="n">releases</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
     <span class="sa">r</span><span class="s1">&#39;https://api.github.com/repos/myamashita/FUGRO_AID/releases/latest&#39;</span><span class="p">)</span>
 <span class="n">lastest</span> <span class="o">=</span> <span class="n">releases</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s1">&#39;tag_name&#39;</span><span class="p">]</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;0.3.0&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;0.3.1&#39;</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;This module version is </span><span class="si">{</span><span class="n">__version__</span><span class="si">}</span><span class="s1">.</span><span class="se">\n</span><span class="s1">&#39;</span>
       <span class="sa">f</span><span class="s1">&#39;The lastest version is </span><span class="si">{</span><span class="n">lastest</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
 
@@ -433,14 +433,14 @@
 <span class="sd">          XX, YY = np.meshgrid(X, x)</span>
 <span class="sd">          data = dict(image=[d], dt=[XX], x=[dtm.datetime(2020,2,12,19,30)], y=[0], dw=[500*60000], dh=[10])</span>
 <span class="sd">          fig = Bokeh.plot_Colour_Flood(data, Y_tooltip=&#39;y&#39;, Z_tooltip=&#39;value&#39;, vmin=-1, vmax=1,</span>
-<span class="sd">                                        title=&#39;Example&#39;, xlabel=&#39;&#39;)</span>
+<span class="sd">                                        title=&#39;Example&#39;, x_axis_label=&#39;&#39;)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>  <span class="c1"># nopep8</span>
         <span class="k">if</span> <span class="n">f</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">f</span> <span class="o">=</span> <span class="n">Bokeh</span><span class="o">.</span><span class="n">mk_fig</span><span class="p">(</span>
                 <span class="n">title</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;Initial title&#39;</span><span class="p">),</span>
-                <span class="n">x_axis_label</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;xlabel&#39;</span><span class="p">,</span> <span class="s1">&#39;Initial xlabel&#39;</span><span class="p">),</span>
-                <span class="n">y_axis_label</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;ylabel&#39;</span><span class="p">,</span> <span class="s1">&#39;Initial ylabel&#39;</span><span class="p">),</span>
+                <span class="n">x_axis_label</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;x_axis_label&#39;</span><span class="p">,</span> <span class="s1">&#39;Initial xlabel&#39;</span><span class="p">),</span>
+                <span class="n">y_axis_label</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;y_axis_label&#39;</span><span class="p">,</span> <span class="s1">&#39;Initial ylabel&#39;</span><span class="p">),</span>
                 <span class="n">height</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="mi">350</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="mi">1100</span><span class="p">),</span>
                 <span class="n">x_axis_type</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;x_axis_type&#39;</span><span class="p">,</span> <span class="s1">&#39;datetime&#39;</span><span class="p">),</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
 
@@ -484,8 +484,8 @@
         <span class="k">if</span> <span class="n">f</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">f</span> <span class="o">=</span> <span class="n">Bokeh</span><span class="o">.</span><span class="n">mk_fig</span><span class="p">(</span>
                 <span class="n">title</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;Initial title&#39;</span><span class="p">),</span>
-                <span class="n">x_axis_label</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;xlabel&#39;</span><span class="p">,</span> <span class="s1">&#39;Initial xlabel&#39;</span><span class="p">),</span>
-                <span class="n">y_axis_label</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;ylabel&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">),</span>
+                <span class="n">x_axis_label</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;x_axis_label&#39;</span><span class="p">,</span> <span class="s1">&#39;Initial xlabel&#39;</span><span class="p">),</span>
+                <span class="n">y_axis_label</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;y_axis_label&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">),</span>
                 <span class="n">height</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="mi">350</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="mi">1100</span><span class="p">),</span>
                 <span class="n">x_axis_type</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;x_axis_type&#39;</span><span class="p">,</span> <span class="s1">&#39;datetime&#39;</span><span class="p">),</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
         <span class="n">Int_color</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Int_color&#39;</span><span class="p">,</span> <span class="s1">&#39;#6788B1&#39;</span><span class="p">)</span>
@@ -524,7 +524,7 @@
 
 <span class="sd">                function: bokeh.mk_fig::</span>
 
-<span class="sd">                    xlabel, height, width, x_axis_type</span>
+<span class="sd">                    x_axis_label, height, width, x_axis_type</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            ``Bokeh.figure``</span>
@@ -542,7 +542,7 @@
 
         <span class="n">f</span> <span class="o">=</span> <span class="n">Bokeh</span><span class="o">.</span><span class="n">mk_fig</span><span class="p">(</span>
             <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">test_name</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
-            <span class="n">x_axis_label</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;xlabel&#39;</span><span class="p">,</span> <span class="s1">&#39;Initial xlabel&#39;</span><span class="p">),</span>
+            <span class="n">x_axis_label</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;x_axis_label&#39;</span><span class="p">,</span> <span class="s1">&#39;Initial xlabel&#39;</span><span class="p">),</span>
             <span class="n">y_axis_label</span><span class="o">=</span><span class="s1">&#39;Observation Value&#39;</span><span class="p">,</span>
             <span class="n">height</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="mi">350</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="mi">1100</span><span class="p">),</span>
             <span class="n">x_axis_type</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;x_axis_type&#39;</span><span class="p">,</span> <span class="s1">&#39;datetime&#39;</span><span class="p">))</span>
@@ -607,8 +607,8 @@
         <span class="k">if</span> <span class="n">f</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">f</span> <span class="o">=</span> <span class="n">Bokeh</span><span class="o">.</span><span class="n">mk_fig</span><span class="p">(</span>
                 <span class="n">title</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;Initial title&#39;</span><span class="p">),</span>
-                <span class="n">x_axis_label</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;xlabel&#39;</span><span class="p">,</span> <span class="s1">&#39;Initial xlabel&#39;</span><span class="p">),</span>
-                <span class="n">y_axis_label</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;ylabel&#39;</span><span class="p">,</span> <span class="s1">&#39;Initial ylabel&#39;</span><span class="p">),</span>
+                <span class="n">x_axis_label</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;x_axis_label&#39;</span><span class="p">,</span> <span class="s1">&#39;Initial xlabel&#39;</span><span class="p">),</span>
+                <span class="n">y_axis_label</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;y_axis_label&#39;</span><span class="p">,</span> <span class="s1">&#39;Initial ylabel&#39;</span><span class="p">),</span>
                 <span class="n">height</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="mi">350</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="mi">1100</span><span class="p">),</span>
                 <span class="n">x_axis_type</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;x_axis_type&#39;</span><span class="p">,</span> <span class="s1">&#39;datetime&#39;</span><span class="p">),</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
 
@@ -655,8 +655,8 @@
         <span class="k">if</span> <span class="n">f</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">f</span> <span class="o">=</span> <span class="n">Bokeh</span><span class="o">.</span><span class="n">mk_fig</span><span class="p">(</span>
                 <span class="n">title</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;Initial title&#39;</span><span class="p">),</span>
-                <span class="n">x_axis_label</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;xlabel&#39;</span><span class="p">,</span> <span class="s1">&#39;Initial xlabel&#39;</span><span class="p">),</span>
-                <span class="n">y_axis_label</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;ylabel&#39;</span><span class="p">,</span> <span class="s1">&#39;Initial ylabel&#39;</span><span class="p">),</span>
+                <span class="n">x_axis_label</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;x_axis_label&#39;</span><span class="p">,</span> <span class="s1">&#39;Initial xlabel&#39;</span><span class="p">),</span>
+                <span class="n">y_axis_label</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;y_axis_label&#39;</span><span class="p">,</span> <span class="s1">&#39;Initial ylabel&#39;</span><span class="p">),</span>
                 <span class="n">height</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="mi">350</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="mi">1100</span><span class="p">),</span>
                 <span class="n">x_axis_type</span><span class="o">=</span><span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;x_axis_type&#39;</span><span class="p">,</span> <span class="s1">&#39;datetime&#39;</span><span class="p">),</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
         <span class="n">data_args</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">,</span>
@@ -743,6 +743,11 @@
 <span class="sd">          constraints (dict): set constraints</span>
 <span class="sd">          variables (list): set variables to requests</span>
 
+<span class="sd">    .. hlist::</span>
+<span class="sd">        :columns: 5</span>
+
+<span class="sd">        * :func:`to_pandas`</span>
+<span class="sd">        * :func:`vars_in_dataset`</span>
 <span class="sd">    &quot;&quot;&quot;</span>  <span class="c1"># nopep8</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">server</span><span class="o">=</span><span class="s1">&#39;http://10.1.1.17:8080/erddap&#39;</span><span class="p">,</span>
@@ -816,8 +821,8 @@
 <span class="sd">        &gt;&gt;&gt; type(df)</span>
 <span class="sd">        &lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;</span>
 <span class="sd">        &quot;&quot;&quot;</span>  <span class="c1"># nopep8</span>
-        <span class="k">def</span> <span class="nf">dateparser</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="k">return</span> <span class="n">dtm</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span>
-            <span class="n">x</span><span class="p">,</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%SZ&quot;</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">dateparser</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">dtm</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%SZ&quot;</span><span class="p">)</span>
         <span class="n">kw</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;index_col&#39;</span><span class="p">:</span> <span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;date_parser&#39;</span><span class="p">:</span> <span class="n">dateparser</span><span class="p">,</span>
               <span class="s1">&#39;skiprows&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;response&#39;</span><span class="p">:</span> <span class="s1">&#39;csv&#39;</span><span class="p">}</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_base</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">)</span>
@@ -847,6 +852,11 @@
 <span class="sd">        :columns: 5</span>
 
 <span class="sd">        * :func:`fmdm_meta`</span>
+<span class="sd">        * :func:`mets_structure`</span>
+<span class="sd">        * :func:`mets_meta`</span>
+<span class="sd">        * :func:`mets_data`</span>
+<span class="sd">        * :func:`merge_local_flag`</span>
+<span class="sd">        * :func:`split_local_flag`</span>
 <span class="sd">        * :func:`save`</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>  <span class="c1"># nopep8</span>
@@ -870,6 +880,207 @@
         <span class="n">Data</span><span class="p">[</span><span class="s1">&#39;Metadata&#39;</span><span class="p">][</span><span class="s1">&#39;Lon&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lon</span>
         <span class="n">Data</span><span class="p">[</span><span class="s1">&#39;Metadata&#39;</span><span class="p">][</span><span class="s1">&#39;Waterdepth&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">waterdepth</span>
         <span class="n">Data</span><span class="p">[</span><span class="s1">&#39;Metadata&#39;</span><span class="p">][</span><span class="s1">&#39;Contract&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Contract</span>
+        <span class="k">return</span> <span class="n">Data</span>
+
+    <span class="k">def</span> <span class="nf">mets_structure</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;raw_data.mat&#39;</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">data_type</span><span class="o">=</span><span class="s1">&#39;ADCP&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a dictionary with structure necessary for METS.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            filename(``str``): filename </span>
+<span class="sd">            time(``list``): List of matlab datenum</span>
+<span class="sd">            data_type(``str``): output data type for METS</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            ``dict`` Data corresponding to ``METS structure``</span>
+<span class="sd">        &quot;&quot;&quot;</span>  <span class="c1"># nopep8</span>
+
+        <span class="n">DTYPES</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ADCP&#39;</span><span class="p">,</span> <span class="s1">&#39;MCAL&#39;</span><span class="p">,</span> <span class="s1">&#39;CCAL&#39;</span><span class="p">,</span> <span class="s1">&#39;TCAL&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">data_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">DTYPES</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid data type. Expected one of: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">DTYPES</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span> <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\\</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="n">Data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">Data</span><span class="p">[</span><span class="s2">&quot;qc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">Data</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">Data</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">Data</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span>
+        <span class="n">Data</span><span class="p">[</span><span class="s2">&quot;filename&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="n">Data</span><span class="p">[</span><span class="s2">&quot;irec&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">time</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span>  <span class="c1"># indice_reccord</span>
+        <span class="n">Data</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_type</span>
+        <span class="n">Data</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s1">&#39;SDOFC&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">Data</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s1">&#39;EDOFC&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">Data</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;NREC&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+        <span class="n">Data</span><span class="p">[</span><span class="s2">&quot;qc&quot;</span><span class="p">][</span><span class="s1">&#39;flag&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">Data</span><span class="p">[</span><span class="s2">&quot;qc&quot;</span><span class="p">][</span><span class="s1">&#39;flag&#39;</span><span class="p">][</span><span class="s1">&#39;global&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[[</span><span class="s1">&#39;FalseStart&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;FalseEnd&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;General&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+        <span class="n">Data</span><span class="p">[</span><span class="s2">&quot;qc&quot;</span><span class="p">][</span><span class="s1">&#39;flag&#39;</span><span class="p">][</span><span class="s1">&#39;local&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[[</span><span class="s1">&#39;PGood&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;Spline&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;ErrVel&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;Gao&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+             <span class="p">[</span><span class="s1">&#39;VelSp&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;OK&#39;</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;Block&#39;</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;Manual&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">]],</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+        <span class="n">Data</span><span class="p">[</span><span class="s2">&quot;qc&quot;</span><span class="p">][</span><span class="s1">&#39;global&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">time</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Data</span>
+
+    <span class="k">def</span> <span class="nf">mets_meta</span><span class="p">(</span><span class="n">Data</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;metadata&#39;</span><span class="p">:</span> <span class="p">{}},</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update or generate metadata in METS structure.</span>
+
+<span class="sd">        ``One-to-one relationship. keyword arguments and METS arguments.``</span>
+
+<span class="sd">        TITLE = Job Name</span>
+
+<span class="sd">        REFNO = Contract Number</span>
+
+<span class="sd">        INSTR = Instrument Name</span>
+
+<span class="sd">        INTRAT = Sample Rate</span>
+
+<span class="sd">        MAGVAR = MagVar (-West/+East)</span>
+
+<span class="sd">        POSL = Position</span>
+
+<span class="sd">        POSD = Location (Descriptive)</span>
+
+<span class="sd">        ZONE = Time Zone</span>
+
+<span class="sd">        MSERS = Sensor. Serial Nros</span>
+
+<span class="sd">        HTMSL = Height of ground</span>
+
+<span class="sd">        HEIGHT = Height of Sensor</span>
+
+<span class="sd">        SENS1 = Type of First extra sensor</span>
+
+<span class="sd">        SENS2 = Type of second extra sensor</span>
+
+<span class="sd">        SENS3 = Type of third extra sensor</span>
+
+<span class="sd">        SPLIN = Splined</span>
+
+<span class="sd">        KFREQ = Head Frequency (kHz)</span>
+
+<span class="sd">        DATUM = DATUM</span>
+
+<span class="sd">        WDEP = Water Depth (m)</span>
+
+<span class="sd">        SDEP = Current Meter Sensor Height (m above bed)</span>
+
+<span class="sd">        SERNO = Instrument Serial Number</span>
+
+<span class="sd">        NDEP = Dephts array</span>
+
+<span class="sd">        NCELL = Number of bins</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            Data(``dict``): Dictionary with METS structure </span>
+<span class="sd">            **kw: Additional Keyword arguments to be passed to the functions::</span>
+
+<span class="sd">                TITLE, REFNO, INSTR, INTRAT, MAGVAR, POSL, POSD, ZONE,</span>
+<span class="sd">                MSERS, HTMSL, HEIGHT, SENS1, SENS2, SENS3, SPLIN, KFREQ,</span>
+<span class="sd">                DATUM, WDEP, SDEP, SERNO, NDEP, NCELL </span>
+
+<span class="sd">         Returns:</span>
+<span class="sd">            ``dict`` Data corresponding to ``METS structure``</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>  <span class="c1"># nopep8</span>
+
+        <span class="n">types</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;ADCP&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;KFREQ&#39;</span><span class="p">,</span> <span class="s1">&#39;SERNO&#39;</span><span class="p">,</span> <span class="s1">&#39;SPLIN&#39;</span><span class="p">,</span> <span class="s1">&#39;WDEP&#39;</span><span class="p">,</span> <span class="s1">&#39;NDEP&#39;</span><span class="p">,</span> <span class="s1">&#39;NCELL&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;MCAL&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;HEIGHT&#39;</span><span class="p">,</span> <span class="s1">&#39;HTMSL&#39;</span><span class="p">,</span> <span class="s1">&#39;MSERS&#39;</span><span class="p">,</span> <span class="s1">&#39;SENS1&#39;</span><span class="p">,</span> <span class="s1">&#39;SENS2&#39;</span><span class="p">,</span> <span class="s1">&#39;SENS3&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;CCAL&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;WDEP&#39;</span><span class="p">,</span> <span class="s1">&#39;SDEP&#39;</span><span class="p">,</span> <span class="s1">&#39;SERNO&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;TCAL&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;DATUM&#39;</span><span class="p">,</span> <span class="s1">&#39;HEIGHT&#39;</span><span class="p">,</span> <span class="s1">&#39;SDEP&#39;</span><span class="p">,</span> <span class="s1">&#39;SERNO&#39;</span><span class="p">,</span> <span class="s1">&#39;WDEP&#39;</span><span class="p">]}</span>
+        <span class="k">if</span> <span class="s1">&#39;metadata&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">Data</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;Invalid METS structure. Missing: metadata&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">types</span><span class="p">[</span><span class="n">Data</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]]:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">Data</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;Keyword Argument REQUIRED </span><span class="si">{</span><span class="n">types</span><span class="p">[</span><span class="n">Data</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="n">Data</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;TITLE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;TITLE&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">Data</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;REFNO&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;REFNO&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">Data</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;INSTR&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;INSTR&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">Data</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;INTRAT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;INTRAT&#39;</span><span class="p">,</span> <span class="mi">6000</span><span class="p">)</span>
+        <span class="n">Data</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;MAGVAR&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;MAGVAR&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">Data</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;POSL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;POSL&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">Data</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;POSD&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;POSD&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">Data</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;ZONE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;ZONE&#39;</span><span class="p">,</span> <span class="s1">&#39;UTC&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">Data</span>
+
+    <span class="k">def</span> <span class="nf">mets_data</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">units</span><span class="p">,</span> <span class="n">param_type</span><span class="p">,</span> <span class="n">isBined</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">Data</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="p">{}}):</span>
+
+        <span class="k">if</span> <span class="s1">&#39;data&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">Data</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;Invalid METS structure. Missing: data&quot;</span><span class="p">)</span>
+        <span class="n">struct</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">struct</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">units</span>
+        <span class="n">struct</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">param_type</span>
+        <span class="n">struct</span><span class="p">[</span><span class="s2">&quot;isBinned&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">isBined</span><span class="p">)</span>
+        <span class="n">struct</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="n">Data</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">][</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">struct</span>
+
+        <span class="k">if</span> <span class="s1">&#39;localMapping&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">Data</span><span class="p">[</span><span class="s1">&#39;qc&#39;</span><span class="p">]:</span>
+            <span class="n">Data</span><span class="p">[</span><span class="s1">&#39;qc&#39;</span><span class="p">][</span><span class="s1">&#39;localMapping&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">name</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+        <span class="n">cols</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="o">**</span> <span class="n">isBined</span>
+        <span class="n">loc_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint16</span><span class="p">),</span> <span class="p">]</span> <span class="o">*</span> <span class="n">cols</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+        <span class="k">if</span> <span class="s1">&#39;local&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">Data</span><span class="p">[</span><span class="s1">&#39;qc&#39;</span><span class="p">]:</span>
+            <span class="n">qc_local</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+            <span class="n">qc_local</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">loc_arr</span>
+            <span class="n">Data</span><span class="p">[</span><span class="s1">&#39;qc&#39;</span><span class="p">][</span><span class="s1">&#39;local&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">qc_local</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">Data</span><span class="p">[</span><span class="s1">&#39;qc&#39;</span><span class="p">][</span><span class="s1">&#39;localMapping&#39;</span><span class="p">]:</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">Data</span><span class="p">[</span><span class="s1">&#39;qc&#39;</span><span class="p">][</span><span class="s1">&#39;localMapping&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">name</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">Data</span><span class="p">[</span><span class="s1">&#39;qc&#39;</span><span class="p">][</span><span class="s1">&#39;local&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">loc_arr</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">Data</span><span class="p">[</span><span class="s2">&quot;qc&quot;</span><span class="p">][</span><span class="s2">&quot;local&quot;</span><span class="p">])</span>
+            <span class="n">qc_local</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+            <span class="n">qc_local</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">Data</span><span class="p">[</span><span class="s2">&quot;qc&quot;</span><span class="p">][</span><span class="s2">&quot;local&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">qc_local</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">loc_arr</span>
+            <span class="n">Data</span><span class="p">[</span><span class="s1">&#39;qc&#39;</span><span class="p">][</span><span class="s1">&#39;local&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">qc_local</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">Data</span><span class="p">[</span><span class="s1">&#39;qc&#39;</span><span class="p">][</span><span class="s1">&#39;localMapping&#39;</span><span class="p">]:</span>
+            <span class="n">Lmap</span> <span class="o">=</span> <span class="n">Data</span><span class="p">[</span><span class="s1">&#39;qc&#39;</span><span class="p">][</span><span class="s1">&#39;localMapping&#39;</span><span class="p">]</span>
+            <span class="n">Data</span><span class="p">[</span><span class="s1">&#39;qc&#39;</span><span class="p">][</span><span class="s1">&#39;localMapping&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">Lmap</span><span class="p">,</span> <span class="p">[</span><span class="n">name</span><span class="p">,</span> <span class="n">name</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">Lmap</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+            <span class="n">Data</span><span class="p">[</span><span class="s1">&#39;qc&#39;</span><span class="p">][</span><span class="s1">&#39;localMapping&#39;</span><span class="p">][</span><span class="nb">len</span><span class="p">(</span><span class="n">Lmap</span><span class="p">),</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">Lmap</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">Data</span>
+
+    <span class="k">def</span> <span class="nf">merge_local_flag</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">merge</span><span class="o">=</span><span class="p">[]):</span>
+
+        <span class="n">Lmap</span> <span class="o">=</span> <span class="n">Data</span><span class="p">[</span><span class="s1">&#39;qc&#39;</span><span class="p">][</span><span class="s1">&#39;localMapping&#39;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">merge</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">Lmap</span> <span class="o">==</span> <span class="n">name</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">i</span><span class="p">]</span>
+            <span class="n">Data</span><span class="p">[</span><span class="s1">&#39;qc&#39;</span><span class="p">][</span><span class="s1">&#39;localMapping&#39;</span><span class="p">][</span><span class="n">a</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">Lmap</span><span class="p">[</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">values</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">Data</span><span class="p">[</span><span class="s1">&#39;qc&#39;</span><span class="p">][</span><span class="s1">&#39;localMapping&#39;</span><span class="p">][:,</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="n">qc_local</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">new</span><span class="p">,</span> <span class="n">old</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">Data</span><span class="p">[</span><span class="s1">&#39;qc&#39;</span><span class="p">][</span><span class="s1">&#39;localMapping&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">old</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">Data</span><span class="p">[</span><span class="s1">&#39;qc&#39;</span><span class="p">][</span><span class="s1">&#39;localMapping&#39;</span><span class="p">][</span><span class="n">b</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">new</span>
+            <span class="n">qc_local</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">new</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">Data</span><span class="p">[</span><span class="s1">&#39;qc&#39;</span><span class="p">][</span><span class="s1">&#39;local&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="n">old</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">Data</span><span class="p">[</span><span class="s1">&#39;qc&#39;</span><span class="p">][</span><span class="s1">&#39;local&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">qc_local</span>
+        <span class="k">return</span> <span class="n">Data</span>
+
+    <span class="k">def</span> <span class="nf">split_local_flag</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="p">[]):</span>
+
+        <span class="n">Lmap</span> <span class="o">=</span> <span class="n">Data</span><span class="p">[</span><span class="s1">&#39;qc&#39;</span><span class="p">][</span><span class="s1">&#39;localMapping&#39;</span><span class="p">]</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">Lmap</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">split</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">Lmap</span> <span class="o">==</span> <span class="n">name</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">i</span><span class="p">]</span>
+            <span class="n">old</span> <span class="o">=</span> <span class="n">Lmap</span><span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">Data</span><span class="p">[</span><span class="s1">&#39;qc&#39;</span><span class="p">][</span><span class="s1">&#39;localMapping&#39;</span><span class="p">][</span><span class="n">a</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">n</span>
+            <span class="n">nl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">Data</span><span class="p">[</span><span class="s2">&quot;qc&quot;</span><span class="p">][</span><span class="s2">&quot;local&quot;</span><span class="p">])</span>
+            <span class="n">qc_local</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">nl</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+            <span class="n">qc_local</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:</span><span class="n">nl</span><span class="p">]</span> <span class="o">=</span> <span class="n">Data</span><span class="p">[</span><span class="s2">&quot;qc&quot;</span><span class="p">][</span><span class="s2">&quot;local&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">qc_local</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">nl</span><span class="p">]</span> <span class="o">=</span> <span class="n">Data</span><span class="p">[</span><span class="s2">&quot;qc&quot;</span><span class="p">][</span><span class="s2">&quot;local&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="n">old</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">Data</span><span class="p">[</span><span class="s1">&#39;qc&#39;</span><span class="p">][</span><span class="s1">&#39;local&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">qc_local</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">Data</span><span class="p">[</span><span class="s1">&#39;qc&#39;</span><span class="p">][</span><span class="s1">&#39;localMapping&#39;</span><span class="p">][:,</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="n">qc_local</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">new</span><span class="p">,</span> <span class="n">old</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">Data</span><span class="p">[</span><span class="s1">&#39;qc&#39;</span><span class="p">][</span><span class="s1">&#39;localMapping&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">old</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">Data</span><span class="p">[</span><span class="s1">&#39;qc&#39;</span><span class="p">][</span><span class="s1">&#39;localMapping&#39;</span><span class="p">][</span><span class="n">b</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">new</span>
+            <span class="n">qc_local</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">new</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">Data</span><span class="p">[</span><span class="s1">&#39;qc&#39;</span><span class="p">][</span><span class="s1">&#39;local&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="n">old</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">Data</span><span class="p">[</span><span class="s1">&#39;qc&#39;</span><span class="p">][</span><span class="s1">&#39;local&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">qc_local</span>
+
         <span class="k">return</span> <span class="n">Data</span>
 
     <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">mdict</span><span class="p">):</span>
@@ -941,7 +1152,7 @@
 <span class="sd">            ``xarray.core.dataset.Dataset`` using respective experiment</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="p">((</span><span class="n">dt</span> <span class="o">&lt;</span> <span class="n">dtm</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2013</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="o">|</span>
-             <span class="p">(</span><span class="n">dt</span> <span class="o">&gt;=</span> <span class="n">dtm</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))):</span>
+                <span class="p">(</span><span class="n">dt</span> <span class="o">&gt;=</span> <span class="n">dtm</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))):</span>
             <span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">Hycom</span><span class="o">.</span><span class="n">gom_url</span><span class="p">(</span><span class="n">dt</span><span class="p">),</span> <span class="n">decode_times</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="n">time_fix</span> <span class="o">=</span> <span class="n">Hycom</span><span class="o">.</span><span class="n">cftime</span><span class="o">.</span><span class="n">num2date</span><span class="p">(</span>
                 <span class="n">ds</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="n">ds</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">units</span><span class="p">,</span> <span class="n">calendar</span><span class="o">=</span><span class="s1">&#39;gregorian&#39;</span><span class="p">)</span>
@@ -1094,7 +1305,7 @@
         <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">Hycom</span><span class="o">.</span><span class="n">plot_map</span><span class="p">(</span>
             <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;ssh&#39;</span><span class="p">],</span> <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;ssh&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">],</span> <span class="n">cmap</span><span class="p">,</span> <span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="p">)</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;SSH </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %HZ&quot;</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-        
+
         <span class="k">if</span> <span class="n">points</span><span class="p">:</span>
             <span class="n">ax</span> <span class="o">=</span> <span class="n">Hycom</span><span class="o">.</span><span class="n">_points</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">pooling</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">save</span><span class="p">:</span>
@@ -1118,7 +1329,6 @@
         <span class="n">vmax</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;vmax&#39;</span><span class="p">,</span> <span class="n">vel</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
         <span class="n">pooling</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;pooling&#39;</span><span class="p">,</span> <span class="p">[])</span>
         <span class="n">points</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;points&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-
 
         <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">Hycom</span><span class="o">.</span><span class="n">plot_map</span><span class="p">(</span>
             <span class="n">vel</span><span class="p">,</span> <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;water_u&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">],</span> <span class="n">cmap</span><span class="p">,</span> <span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="p">)</span>
@@ -1146,8 +1356,9 @@
 
     <span class="k">def</span> <span class="nf">plot_map</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">cmap</span><span class="p">,</span> <span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="p">):</span>
         <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">var</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span> <span class="n">var</span><span class="o">.</span><span class="n">lat</span><span class="p">)</span>
-        <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">8.5</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span>
-                               <span class="n">subplot_kw</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;projection&quot;</span><span class="p">:</span> <span class="n">Hycom</span><span class="o">.</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">()})</span>
+        <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
+            <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">8.5</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span>
+            <span class="n">subplot_kw</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;projection&quot;</span><span class="p">:</span> <span class="n">Hycom</span><span class="o">.</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">()})</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">([</span><span class="n">xx</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">xx</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">yy</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">yy</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
         <span class="n">pcm</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">)</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">()</span>

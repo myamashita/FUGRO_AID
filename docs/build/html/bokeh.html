@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bokeh &#8212; FUGRO_AID 0.3.0 documentation</title>
+    <title>Bokeh &#8212; FUGRO_AID 0.3.1 documentation</title>
     <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -21,7 +21,7 @@
     <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
-          href="index.html">FUGRO_AID 0.3.0 documentation</a></div>
+          href="index.html">FUGRO_AID 0.3.1 documentation</a></div>
         <div class="rel" role="navigation" aria-label="related navigation">
           <a href="aid.html" title="Aid"
              accesskey="P">previous</a> |
@@ -150,7 +150,7 @@
 <span class="n">XX</span><span class="p">,</span> <span class="n">YY</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
 <span class="n">data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">image</span><span class="o">=</span><span class="p">[</span><span class="n">d</span><span class="p">],</span> <span class="n">dt</span><span class="o">=</span><span class="p">[</span><span class="n">XX</span><span class="p">],</span> <span class="n">x</span><span class="o">=</span><span class="p">[</span><span class="n">dtm</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">19</span><span class="p">,</span><span class="mi">30</span><span class="p">)],</span> <span class="n">y</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dw</span><span class="o">=</span><span class="p">[</span><span class="mi">500</span><span class="o">*</span><span class="mi">60000</span><span class="p">],</span> <span class="n">dh</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">])</span>
 <span class="n">fig</span> <span class="o">=</span> <span class="n">Bokeh</span><span class="o">.</span><span class="n">plot_Colour_Flood</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">Y_tooltip</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">Z_tooltip</span><span class="o">=</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                              <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Example&#39;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+                              <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Example&#39;</span><span class="p">,</span> <span class="n">x_axis_label</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -206,7 +206,7 @@
 <li><p><strong>test_name</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>) – Name of the test to plot</p></li>
 <li><p><strong>**kw</strong> – <p>Additional Keyword arguments to be passed to the functions:</p>
 <p>function: bokeh.mk_fig:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">xlabel</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">x_axis_type</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">x_axis_label</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">x_axis_type</span>
 </pre></div>
 </div>
 </p></li>

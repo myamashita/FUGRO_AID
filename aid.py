@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 releases = requests.get(
     r'https://api.github.com/repos/myamashita/FUGRO_AID/releases/latest')
 lastest = releases.json()['tag_name']
-__version__ = '0.3.0'
+__version__ = '0.3.1'
 print(f'This module version is {__version__}.\n'
       f'The lastest version is {lastest}.')
 
@@ -395,14 +395,14 @@ class Bokeh(object):
           XX, YY = np.meshgrid(X, x)
           data = dict(image=[d], dt=[XX], x=[dtm.datetime(2020,2,12,19,30)], y=[0], dw=[500*60000], dh=[10])
           fig = Bokeh.plot_Colour_Flood(data, Y_tooltip='y', Z_tooltip='value', vmin=-1, vmax=1,
-                                        title='Example', xlabel='')
+                                        title='Example', x_axis_label='')
 
         """  # nopep8
         if f is None:
             f = Bokeh.mk_fig(
                 title=kw.pop('title', 'Initial title'),
-                x_axis_label=kw.pop('xlabel', 'Initial xlabel'),
-                y_axis_label=kw.pop('ylabel', 'Initial ylabel'),
+                x_axis_label=kw.pop('x_axis_label', 'Initial xlabel'),
+                y_axis_label=kw.pop('y_axis_label', 'Initial ylabel'),
                 height=kw.pop('height', 350), width=kw.pop('width', 1100),
                 x_axis_type=kw.pop('x_axis_type', 'datetime'), **kw)
 
@@ -446,8 +446,8 @@ class Bokeh(object):
         if f is None:
             f = Bokeh.mk_fig(
                 title=kw.pop('title', 'Initial title'),
-                x_axis_label=kw.pop('xlabel', 'Initial xlabel'),
-                y_axis_label=kw.pop('ylabel', ''),
+                x_axis_label=kw.pop('x_axis_label', 'Initial xlabel'),
+                y_axis_label=kw.pop('y_axis_label', ''),
                 height=kw.pop('height', 350), width=kw.pop('width', 1100),
                 x_axis_type=kw.pop('x_axis_type', 'datetime'), **kw)
         Int_color = kw.get('Int_color', '#6788B1')
@@ -486,7 +486,7 @@ class Bokeh(object):
 
                 function: bokeh.mk_fig::
 
-                    xlabel, height, width, x_axis_type
+                    x_axis_label, height, width, x_axis_type
 
         Returns:
             ``Bokeh.figure``
@@ -504,7 +504,7 @@ class Bokeh(object):
 
         f = Bokeh.mk_fig(
             title=f'{test_name}: {title}',
-            x_axis_label=kw.pop('xlabel', 'Initial xlabel'),
+            x_axis_label=kw.pop('x_axis_label', 'Initial xlabel'),
             y_axis_label='Observation Value',
             height=kw.pop('height', 350), width=kw.pop('width', 1100),
             x_axis_type=kw.pop('x_axis_type', 'datetime'))
@@ -569,8 +569,8 @@ class Bokeh(object):
         if f is None:
             f = Bokeh.mk_fig(
                 title=kw.pop('title', 'Initial title'),
-                x_axis_label=kw.pop('xlabel', 'Initial xlabel'),
-                y_axis_label=kw.pop('ylabel', 'Initial ylabel'),
+                x_axis_label=kw.pop('x_axis_label', 'Initial xlabel'),
+                y_axis_label=kw.pop('y_axis_label', 'Initial ylabel'),
                 height=kw.pop('height', 350), width=kw.pop('width', 1100),
                 x_axis_type=kw.pop('x_axis_type', 'datetime'), **kw)
 
@@ -617,8 +617,8 @@ class Bokeh(object):
         if f is None:
             f = Bokeh.mk_fig(
                 title=kw.pop('title', 'Initial title'),
-                x_axis_label=kw.pop('xlabel', 'Initial xlabel'),
-                y_axis_label=kw.pop('ylabel', 'Initial ylabel'),
+                x_axis_label=kw.pop('x_axis_label', 'Initial xlabel'),
+                y_axis_label=kw.pop('y_axis_label', 'Initial ylabel'),
                 height=kw.pop('height', 350), width=kw.pop('width', 1100),
                 x_axis_type=kw.pop('x_axis_type', 'datetime'), **kw)
         data_args = {'x': data.index, 'y': data,
@@ -705,6 +705,11 @@ class Erddap(object):
           constraints (dict): set constraints
           variables (list): set variables to requests
 
+    .. hlist::
+        :columns: 5
+
+        * :func:`to_pandas`
+        * :func:`vars_in_dataset`
     """  # nopep8
 
     def __init__(self, server='http://10.1.1.17:8080/erddap',
@@ -778,8 +783,8 @@ class Erddap(object):
         >>> type(df)
         <class 'pandas.core.frame.DataFrame'>
         """  # nopep8
-        def dateparser(x): return dtm.datetime.strptime(
-            x, "%Y-%m-%dT%H:%M:%SZ")
+        def dateparser(x):
+            return dtm.datetime.strptime(x, "%Y-%m-%dT%H:%M:%SZ")
         kw = {'index_col': 'time', 'date_parser': dateparser,
               'skiprows': [1], 'response': 'csv'}
         return self._base.to_pandas(**kw)
@@ -809,6 +814,11 @@ class Mat(object):
         :columns: 5
 
         * :func:`fmdm_meta`
+        * :func:`mets_structure`
+        * :func:`mets_meta`
+        * :func:`mets_data`
+        * :func:`merge_local_flag`
+        * :func:`split_local_flag`
         * :func:`save`
 
     """  # nopep8
@@ -832,6 +842,207 @@ class Mat(object):
         Data['Metadata']['Lon'] = lon
         Data['Metadata']['Waterdepth'] = waterdepth
         Data['Metadata']['Contract'] = Contract
+        return Data
+
+    def mets_structure(filename='raw_data.mat', time=[0], data_type='ADCP'):
+        """Create a dictionary with structure necessary for METS.
+
+        Args:
+            filename(``str``): filename 
+            time(``list``): List of matlab datenum
+            data_type(``str``): output data type for METS
+        Returns:
+            ``dict`` Data corresponding to ``METS structure``
+        """  # nopep8
+
+        DTYPES = ['ADCP', 'MCAL', 'CCAL', 'TCAL']
+        if data_type not in DTYPES:
+            raise ValueError("Invalid data type. Expected one of: %s" % DTYPES)
+        name = os.getcwd() + f'\\{filename}'
+        Data = {}
+        Data["qc"] = {}
+        Data["data"] = {}
+        Data["metadata"] = {}
+        Data["time"] = time
+        Data["filename"] = name
+        Data["irec"] = np.arange(len(time)) + 1  # indice_reccord
+        Data["type"] = data_type
+        Data["metadata"]['SDOFC'] = time[0]
+        Data["metadata"]['EDOFC'] = time[-1]
+        Data["metadata"]["NREC"] = len(time)
+        Data["qc"]['flag'] = {}
+        Data["qc"]['flag']['global'] = np.array(
+            [['FalseStart', 1], ['FalseEnd', 2], ['General', 3]], dtype=object)
+        Data["qc"]['flag']['local'] = np.array(
+            [['PGood', 1], ['Spline', 2], ['ErrVel', 3], ['Gao', 4],
+             ['VelSp', 5], ['OK', 6], ['Block', 7], ['Manual', 8]],
+            dtype=object)
+        Data["qc"]['global'] = np.zeros(len(time), dtype=np.uint8)
+        return Data
+
+    def mets_meta(Data={'metadata': {}}, **kw):
+        """
+        Update or generate metadata in METS structure.
+
+        ``One-to-one relationship. keyword arguments and METS arguments.``
+
+        TITLE = Job Name
+
+        REFNO = Contract Number
+
+        INSTR = Instrument Name
+
+        INTRAT = Sample Rate
+
+        MAGVAR = MagVar (-West/+East)
+
+        POSL = Position
+
+        POSD = Location (Descriptive)
+
+        ZONE = Time Zone
+
+        MSERS = Sensor. Serial Nros
+
+        HTMSL = Height of ground
+
+        HEIGHT = Height of Sensor
+
+        SENS1 = Type of First extra sensor
+
+        SENS2 = Type of second extra sensor
+
+        SENS3 = Type of third extra sensor
+
+        SPLIN = Splined
+
+        KFREQ = Head Frequency (kHz)
+
+        DATUM = DATUM
+
+        WDEP = Water Depth (m)
+
+        SDEP = Current Meter Sensor Height (m above bed)
+
+        SERNO = Instrument Serial Number
+
+        NDEP = Dephts array
+
+        NCELL = Number of bins
+
+        Args:
+            Data(``dict``): Dictionary with METS structure 
+            **kw: Additional Keyword arguments to be passed to the functions::
+
+                TITLE, REFNO, INSTR, INTRAT, MAGVAR, POSL, POSD, ZONE,
+                MSERS, HTMSL, HEIGHT, SENS1, SENS2, SENS3, SPLIN, KFREQ,
+                DATUM, WDEP, SDEP, SERNO, NDEP, NCELL 
+
+         Returns:
+            ``dict`` Data corresponding to ``METS structure``
+
+        """  # nopep8
+
+        types = {
+            'ADCP': ['KFREQ', 'SERNO', 'SPLIN', 'WDEP', 'NDEP', 'NCELL'],
+            'MCAL': ['HEIGHT', 'HTMSL', 'MSERS', 'SENS1', 'SENS2', 'SENS3'],
+            'CCAL': ['WDEP', 'SDEP', 'SERNO'],
+            'TCAL': ['DATUM', 'HEIGHT', 'SDEP', 'SERNO', 'WDEP']}
+        if 'metadata' not in Data:
+            raise KeyError("Invalid METS structure. Missing: metadata")
+        for k in types[Data['type']]:
+            try:
+                Data["metadata"][k] = kw.pop(k)
+            except KeyError:
+                raise KeyError(
+                    f'Keyword Argument REQUIRED {types[Data["type"]]}')
+
+        Data["metadata"]["TITLE"] = kw.pop('TITLE', '')
+        Data["metadata"]["REFNO"] = kw.pop('REFNO', '')
+        Data["metadata"]["INSTR"] = kw.pop('INSTR', '')
+        Data["metadata"]["INTRAT"] = kw.pop('INTRAT', 6000)
+        Data["metadata"]["MAGVAR"] = kw.pop('MAGVAR', 0)
+        Data["metadata"]["POSL"] = kw.pop('POSL', '')
+        Data["metadata"]["POSD"] = kw.pop('POSD', '')
+        Data["metadata"]["ZONE"] = kw.pop('ZONE', 'UTC')
+
+        return Data
+
+    def mets_data(name, units, param_type, isBined, value, Data={'data': {}}):
+
+        if 'data' not in Data:
+            raise KeyError("Invalid METS structure. Missing: data")
+        struct = {}
+        struct["units"] = units
+        struct["type"] = param_type
+        struct["isBinned"] = bool(isBined)
+        struct["value"] = value
+        Data['data'][name] = struct
+
+        if 'localMapping' not in Data['qc']:
+            Data['qc']['localMapping'] = np.array([[name, 1]], dtype=object)
+        cols = (np.size(value[0])) ** isBined
+        loc_arr = np.array(
+            [np.zeros(len(value), dtype=np.uint16), ] * cols).transpose()
+        if 'local' not in Data['qc']:
+            qc_local = np.empty((1, 1), dtype=object)
+            qc_local[0, 0] = loc_arr
+            Data['qc']['local'] = qc_local
+        if name in Data['qc']['localMapping']:
+            idx = np.where(Data['qc']['localMapping'] == name)[0][0]
+            Data['qc']['local'][0, idx] = loc_arr
+        else:
+            n = np.size(Data["qc"]["local"])
+            qc_local = np.empty((1, n + 1), dtype=object)
+            qc_local[0, :n] = Data["qc"]["local"][0]
+            qc_local[0, n] = loc_arr
+            Data['qc']['local'] = qc_local
+        if name not in Data['qc']['localMapping']:
+            Lmap = Data['qc']['localMapping']
+            Data['qc']['localMapping'] = np.append(
+                Lmap, [name, name]).reshape((len(Lmap) + 1, 2))
+            Data['qc']['localMapping'][len(Lmap), 1] = Lmap[-1, 1] + 1
+        return Data
+
+    def merge_local_flag(data, merge=[]):
+
+        Lmap = Data['qc']['localMapping']
+        for i in merge:
+            a = [np.where(Lmap == name)[0][0] for name in i]
+            Data['qc']['localMapping'][a, 1] = Lmap[a[0], 1]
+
+        values = set(Data['qc']['localMapping'][:, 1])
+        qc_local = np.empty((1, len(values)), dtype=object)
+        for new, old in enumerate(values, start=1):
+            b = np.where(Data['qc']['localMapping'] == old)[0]
+            Data['qc']['localMapping'][b, 1] = new
+            qc_local[0, new - 1] = Data['qc']['local'][0, old - 1]
+
+        Data['qc']['local'] = qc_local
+        return Data
+
+    def split_local_flag(data, split=[]):
+
+        Lmap = Data['qc']['localMapping']
+        n = Lmap[-1, 1] + 1
+        for i in split:
+            a = [np.where(Lmap == name)[0][0] for name in i]
+            old = Lmap[a, 1][0]
+            Data['qc']['localMapping'][a, 1] = n
+            nl = np.size(Data["qc"]["local"])
+            qc_local = np.empty((1, nl + 1), dtype=object)
+            qc_local[0, :nl] = Data["qc"]["local"][0]
+            qc_local[0, nl] = Data["qc"]["local"][0][old - 1]
+            n += 1
+            Data['qc']['local'] = qc_local
+        values = set(Data['qc']['localMapping'][:, 1])
+        qc_local = np.empty((1, len(values)), dtype=object)
+        for new, old in enumerate(values, start=1):
+            b = np.where(Data['qc']['localMapping'] == old)[0]
+            Data['qc']['localMapping'][b, 1] = new
+            qc_local[0, new - 1] = Data['qc']['local'][0, old - 1]
+        Data['qc']['local'] = qc_local
+
         return Data
 
     def save(fname, mdict):
@@ -903,7 +1114,7 @@ class Hycom(object):
             ``xarray.core.dataset.Dataset`` using respective experiment
         """
         if ((dt < dtm.datetime(2013, 1, 1, 0)) |
-             (dt >= dtm.datetime(2019, 1, 1))):
+                (dt >= dtm.datetime(2019, 1, 1))):
             ds = xr.open_dataset(Hycom.gom_url(dt), decode_times=False)
             time_fix = Hycom.cftime.num2date(
                 ds.time, units=ds.time.units, calendar='gregorian')
@@ -1056,7 +1267,7 @@ class Hycom(object):
         fig, ax = Hycom.plot_map(
             ds['ssh'], ds['ssh'].attrs['units'], cmap, vmin, vmax)
         ax.set_title(f'SSH {time.strftime("%Y-%m-%d %HZ")}')
-        
+
         if points:
             ax = Hycom._points(ax, lon, lat, pooling)
         if save:
@@ -1080,7 +1291,6 @@ class Hycom(object):
         vmax = kw.pop('vmax', vel.max(dim=("lat", "lon")).item())
         pooling = kw.pop('pooling', [])
         points = kw.pop('points', True)
-
 
         fig, ax = Hycom.plot_map(
             vel, ds['water_u'].attrs['units'], cmap, vmin, vmax)
@@ -1108,8 +1318,9 @@ class Hycom(object):
 
     def plot_map(var, label, cmap, vmin, vmax):
         xx, yy = np.meshgrid(var.lon, var.lat)
-        fig, ax = plt.subplots(figsize=(8.5, 11), dpi=70,
-                               subplot_kw={"projection": Hycom.ccrs.PlateCarree()})
+        fig, ax = plt.subplots(
+            figsize=(8.5, 11), dpi=70,
+            subplot_kw={"projection": Hycom.ccrs.PlateCarree()})
         ax.set_extent([xx[0, 0], xx[0, -1], yy[0, 0], yy[-1, 0]])
         pcm = ax.pcolormesh(xx, yy, var, cmap=cmap, vmin=vmin, vmax=vmax)
         ax.coastlines()

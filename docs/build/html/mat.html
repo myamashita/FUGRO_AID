@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mat &#8212; FUGRO_AID 0.3.0 documentation</title>
+    <title>Mat &#8212; FUGRO_AID 0.3.1 documentation</title>
     <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -21,7 +21,7 @@
     <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
-          href="index.html">FUGRO_AID 0.3.0 documentation</a></div>
+          href="index.html">FUGRO_AID 0.3.1 documentation</a></div>
         <div class="rel" role="navigation" aria-label="related navigation">
           <a href="erddap.html" title="Erddap"
              accesskey="P">previous</a> |
@@ -56,15 +56,20 @@
 <dd><p>Class to facilitate matlab operations for FUGRO Softwares</p>
 <table class="hlist"><tr><td><ul class="simple">
 <li><p><a class="reference internal" href="#aid.Mat.fmdm_meta" title="aid.Mat.fmdm_meta"><code class="xref py py-func docutils literal notranslate"><span class="pre">fmdm_meta()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#aid.Mat.mets_structure" title="aid.Mat.mets_structure"><code class="xref py py-func docutils literal notranslate"><span class="pre">mets_structure()</span></code></a></p></li>
+</ul>
+</td><td><ul class="simple">
+<li><p><a class="reference internal" href="#aid.Mat.mets_meta" title="aid.Mat.mets_meta"><code class="xref py py-func docutils literal notranslate"><span class="pre">mets_meta()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#aid.Mat.mets_data" title="aid.Mat.mets_data"><code class="xref py py-func docutils literal notranslate"><span class="pre">mets_data()</span></code></a></p></li>
+</ul>
+</td><td><ul class="simple">
+<li><p><a class="reference internal" href="#aid.Mat.merge_local_flag" title="aid.Mat.merge_local_flag"><code class="xref py py-func docutils literal notranslate"><span class="pre">merge_local_flag()</span></code></a></p></li>
+</ul>
+</td><td><ul class="simple">
+<li><p><a class="reference internal" href="#aid.Mat.split_local_flag" title="aid.Mat.split_local_flag"><code class="xref py py-func docutils literal notranslate"><span class="pre">split_local_flag()</span></code></a></p></li>
 </ul>
 </td><td><ul class="simple">
 <li><p><a class="reference internal" href="#aid.Mat.save" title="aid.Mat.save"><code class="xref py py-func docutils literal notranslate"><span class="pre">save()</span></code></a></p></li>
-</ul>
-</td><td><ul class="simple">
-</ul>
-</td><td><ul class="simple">
-</ul>
-</td><td><ul class="simple">
 </ul>
 </td></tr></table>
 </dd></dl>
@@ -91,6 +96,93 @@
 </dd>
 </dl>
 </dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt id="aid.Mat.mets_structure">
+<code class="sig-prename descclassname">aid.Mat.</code><code class="sig-name descname">mets_structure</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span><span class="o">=</span><span class="default_value">'raw_data.mat'</span></em>, <em class="sig-param"><span class="n">time</span><span class="o">=</span><span class="default_value">[0]</span></em>, <em class="sig-param"><span class="n">data_type</span><span class="o">=</span><span class="default_value">'ADCP'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#aid.Mat.mets_structure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a dictionary with structure necessary for METS.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>) – filename</p></li>
+<li><p><strong>time</strong> (<code class="docutils literal notranslate"><span class="pre">list</span></code>) – List of matlab datenum</p></li>
+<li><p><strong>data_type</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>) – output data type for METS</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">dict</span></code> Data corresponding to <code class="docutils literal notranslate"><span class="pre">METS</span> <span class="pre">structure</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt id="aid.Mat.mets_meta">
+<code class="sig-prename descclassname">aid.Mat.</code><code class="sig-name descname">mets_meta</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Data</span><span class="o">=</span><span class="default_value">{'metadata': {}}</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="headerlink" href="#aid.Mat.mets_meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update or generate metadata in METS structure.</p>
+<p><code class="docutils literal notranslate"><span class="pre">One-to-one</span> <span class="pre">relationship.</span> <span class="pre">keyword</span> <span class="pre">arguments</span> <span class="pre">and</span> <span class="pre">METS</span> <span class="pre">arguments.</span></code></p>
+<p>TITLE = Job Name</p>
+<p>REFNO = Contract Number</p>
+<p>INSTR = Instrument Name</p>
+<p>INTRAT = Sample Rate</p>
+<p>MAGVAR = MagVar (-West/+East)</p>
+<p>POSL = Position</p>
+<p>POSD = Location (Descriptive)</p>
+<p>ZONE = Time Zone</p>
+<p>MSERS = Sensor. Serial Nros</p>
+<p>HTMSL = Height of ground</p>
+<p>HEIGHT = Height of Sensor</p>
+<p>SENS1 = Type of First extra sensor</p>
+<p>SENS2 = Type of second extra sensor</p>
+<p>SENS3 = Type of third extra sensor</p>
+<p>SPLIN = Splined</p>
+<p>KFREQ = Head Frequency (kHz)</p>
+<p>DATUM = DATUM</p>
+<p>WDEP = Water Depth (m)</p>
+<p>SDEP = Current Meter Sensor Height (m above bed)</p>
+<p>SERNO = Instrument Serial Number</p>
+<p>NDEP = Dephts array</p>
+<p>NCELL = Number of bins</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Data</strong> (<code class="docutils literal notranslate"><span class="pre">dict</span></code>) – Dictionary with METS structure</p></li>
+<li><p><strong>**kw</strong> – <blockquote>
+<div><p>Additional Keyword arguments to be passed to the functions:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TITLE</span><span class="p">,</span> <span class="n">REFNO</span><span class="p">,</span> <span class="n">INSTR</span><span class="p">,</span> <span class="n">INTRAT</span><span class="p">,</span> <span class="n">MAGVAR</span><span class="p">,</span> <span class="n">POSL</span><span class="p">,</span> <span class="n">POSD</span><span class="p">,</span> <span class="n">ZONE</span><span class="p">,</span>
+<span class="n">MSERS</span><span class="p">,</span> <span class="n">HTMSL</span><span class="p">,</span> <span class="n">HEIGHT</span><span class="p">,</span> <span class="n">SENS1</span><span class="p">,</span> <span class="n">SENS2</span><span class="p">,</span> <span class="n">SENS3</span><span class="p">,</span> <span class="n">SPLIN</span><span class="p">,</span> <span class="n">KFREQ</span><span class="p">,</span>
+<span class="n">DATUM</span><span class="p">,</span> <span class="n">WDEP</span><span class="p">,</span> <span class="n">SDEP</span><span class="p">,</span> <span class="n">SERNO</span><span class="p">,</span> <span class="n">NDEP</span><span class="p">,</span> <span class="n">NCELL</span>
+</pre></div>
+</div>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><p><code class="docutils literal notranslate"><span class="pre">dict</span></code> Data corresponding to <code class="docutils literal notranslate"><span class="pre">METS</span> <span class="pre">structure</span></code></p>
+</dd>
+</dl>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt id="aid.Mat.mets_data">
+<code class="sig-prename descclassname">aid.Mat.</code><code class="sig-name descname">mets_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">units</span></em>, <em class="sig-param"><span class="n">param_type</span></em>, <em class="sig-param"><span class="n">isBined</span></em>, <em class="sig-param"><span class="n">value</span></em>, <em class="sig-param"><span class="n">Data</span><span class="o">=</span><span class="default_value">{'data': {}}</span></em><span class="sig-paren">)</span><a class="headerlink" href="#aid.Mat.mets_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt id="aid.Mat.merge_local_flag">
+<code class="sig-prename descclassname">aid.Mat.</code><code class="sig-name descname">merge_local_flag</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">merge</span><span class="o">=</span><span class="default_value">[]</span></em><span class="sig-paren">)</span><a class="headerlink" href="#aid.Mat.merge_local_flag" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt id="aid.Mat.split_local_flag">
+<code class="sig-prename descclassname">aid.Mat.</code><code class="sig-name descname">split_local_flag</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">split</span><span class="o">=</span><span class="default_value">[]</span></em><span class="sig-paren">)</span><a class="headerlink" href="#aid.Mat.split_local_flag" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <hr class="docutils" />
 <dl class="py function">
