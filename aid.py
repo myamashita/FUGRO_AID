@@ -1452,10 +1452,10 @@ class Qc(object):
 
     def _get_false_start_end_time(ds):
         fmt = "%Y-%m-%d %H:%M:%S"
-        idx = sum([True for j in DS.global_mask_0.values
+        idx = sum([True for j in ds.global_mask_0.values
                    if 1 in Qc._get_values_in(j)])
         start = ds.isel(date=idx).date.dt.strftime(fmt).values
-        fin_idx = sum([True for j in DS.global_mask_0.values[1:]
+        fin_idx = sum([True for j in ds.global_mask_0.values[1:]
                        if 2 not in Qc._get_values_in(j)])
         end = ds.isel(date=fin_idx).date.dt.strftime(fmt).values
         attrs = ds.attrs

@@ -2,7 +2,7 @@
 =========
 
 Module :class:`Hycom`
--------------------
+---------------------
 
 This is the Hycom module
 
