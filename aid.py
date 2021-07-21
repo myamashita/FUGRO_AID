@@ -1104,13 +1104,13 @@ class Mat(object):
         new = MAT['dataset']
         for i in ds.data_vars:
             if 'global_mask' in i:
-                new["qc"][0, 0]['global'][0, 0] = DS[i].values
+                new["qc"][0, 0]['global'][0, 0] = ds[i].values
             elif i.startswith('local_mask'):
                 n = int(i.split('_')[-1])
-                new['qc'][0, 0]['local'][0, 0][0, n - 1] = DS[i].values
+                new['qc'][0, 0]['local'][0, 0][0, n - 1] = ds[i].values
             else:
-                new['data'][0, 0][i][0, 0]['value'][0, 0] = DS[i].values
-                new['data'][0, 0][i][0, 0]['units'][0, 0] = DS.attrs.get(
+                new['data'][0, 0][i][0, 0]['value'][0, 0] = ds[i].values
+                new['data'][0, 0][i][0, 0]['units'][0, 0] = ds.attrs.get(
                     f'{i}_unit')
         Mat.save(qc_matfile, {'dataset': MAT['dataset']})
 
