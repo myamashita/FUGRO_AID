@@ -15,6 +15,7 @@ Welcome to FUGRO_AID's documentation!
    erddap
    mat
    hycom
+   qc
    
 
 Indices and tables

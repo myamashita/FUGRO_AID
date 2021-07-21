@@ -35,11 +35,19 @@ Methods
 
 .. autofunction:: aid.Mat.merge_local_flag
 
---------------------------------------------
+------------------------------------------
 
 .. autofunction:: aid.Mat.split_local_flag
 
---------------------------------------------
+------------------------------------------
+
+.. autofunction:: aid.Mat.read_mets_data
+
+----------------------------------------
+
+.. autofunction:: aid.Mat.export_qc_metis
+
+-----------------------------------------
 
 .. autofunction:: aid.Mat.save
 

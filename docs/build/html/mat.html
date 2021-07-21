@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mat &#8212; FUGRO_AID 0.3.1 documentation</title>
+    <title>Mat &#8212; FUGRO_AID 0.4.0 documentation</title>
     <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -21,7 +21,7 @@
     <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
-          href="index.html">FUGRO_AID 0.3.1 documentation</a></div>
+          href="index.html">FUGRO_AID 0.4.0 documentation</a></div>
         <div class="rel" role="navigation" aria-label="related navigation">
           <a href="erddap.html" title="Erddap"
              accesskey="P">previous</a> |
@@ -64,9 +64,11 @@
 </ul>
 </td><td><ul class="simple">
 <li><p><a class="reference internal" href="#aid.Mat.merge_local_flag" title="aid.Mat.merge_local_flag"><code class="xref py py-func docutils literal notranslate"><span class="pre">merge_local_flag()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#aid.Mat.split_local_flag" title="aid.Mat.split_local_flag"><code class="xref py py-func docutils literal notranslate"><span class="pre">split_local_flag()</span></code></a></p></li>
 </ul>
 </td><td><ul class="simple">
-<li><p><a class="reference internal" href="#aid.Mat.split_local_flag" title="aid.Mat.split_local_flag"><code class="xref py py-func docutils literal notranslate"><span class="pre">split_local_flag()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#aid.Mat.read_mets_data" title="aid.Mat.read_mets_data"><code class="xref py py-func docutils literal notranslate"><span class="pre">read_mets_data()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#aid.Mat.export_qc_metis" title="aid.Mat.export_qc_metis"><code class="xref py py-func docutils literal notranslate"><span class="pre">export_qc_metis()</span></code></a></p></li>
 </ul>
 </td><td><ul class="simple">
 <li><p><a class="reference internal" href="#aid.Mat.save" title="aid.Mat.save"><code class="xref py py-func docutils literal notranslate"><span class="pre">save()</span></code></a></p></li>
@@ -186,6 +188,37 @@
 
 <hr class="docutils" />
 <dl class="py function">
+<dt id="aid.Mat.read_mets_data">
+<code class="sig-prename descclassname">aid.Mat.</code><code class="sig-name descname">read_mets_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">matfile</span></em><span class="sig-paren">)</span><a class="headerlink" href="#aid.Mat.read_mets_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read matfile (with METS structure) insert into dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>matfile</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>) – Name of the raw .mat file</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">xarray.core.dataset.Dataset</span></code> Dataset corresponding to <code class="docutils literal notranslate"><span class="pre">matfile</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt id="aid.Mat.export_qc_metis">
+<code class="sig-prename descclassname">aid.Mat.</code><code class="sig-name descname">export_qc_metis</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">raw_matfile</span></em>, <em class="sig-param"><span class="n">ds</span></em>, <em class="sig-param"><span class="n">qc_matfile</span></em><span class="sig-paren">)</span><a class="headerlink" href="#aid.Mat.export_qc_metis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save a MATLAB-style .mat file (with METS structure).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>raw_matfile</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>) – Name of the raw .mat file</p></li>
+<li><p><strong>ds</strong> (<code class="docutils literal notranslate"><span class="pre">xarray.core.dataset.Dataset</span></code>) – Dataset with matfile variables and flags</p></li>
+<li><p><strong>qc_matfile</strong> (<code class="docutils literal notranslate"><span class="pre">str</span></code>) – Name of the output qced .mat file</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
 <dt id="aid.Mat.save">
 <code class="sig-prename descclassname">aid.Mat.</code><code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fname</span></em>, <em class="sig-param"><span class="n">mdict</span></em><span class="sig-paren">)</span><a class="headerlink" href="#aid.Mat.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save a dictionary of names and arrays into a MATLAB-style .mat file.</p>
@@ -218,6 +251,7 @@
 <li class="toctree-l1"><a class="reference internal" href="erddap.html"><strong>Erddap</strong></a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>Mat</strong></a></li>
 <li class="toctree-l1"><a class="reference internal" href="hycom.html"><strong>Hycom</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="qc.html"><strong>Hycom</strong></a></li>
 </ul>
 
           <div role="search">

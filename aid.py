@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 releases = requests.get(
     r'https://api.github.com/repos/myamashita/FUGRO_AID/releases/latest')
 lastest = releases.json()['tag_name']
-__version__ = '0.3.1'
+__version__ = '0.4.0'
 print(f'This module version is {__version__}.\n'
       f'The lastest version is {lastest}.')
 
@@ -819,11 +819,13 @@ class Mat(object):
         * :func:`mets_data`
         * :func:`merge_local_flag`
         * :func:`split_local_flag`
+        * :func:`read_mets_data`
+        * :func:`export_qc_metis`
         * :func:`save`
 
     """  # nopep8
 
-    from scipy.io import savemat
+    from scipy.io import savemat, loadmat
 
     def fmdm_meta(lat=0, lon=0, waterdepth=0, Contract='Contract'):
         """Create a dictionary with metadata necessary for FMDM.
@@ -1044,6 +1046,73 @@ class Mat(object):
         Data['qc']['local'] = qc_local
 
         return Data
+
+    def read_mets_data(matfile):
+        """Read matfile (with METS structure) insert into dataset.
+
+        Args:
+            matfile(``str``): Name of the raw .mat file
+        Returns:
+            ``xarray.core.dataset.Dataset`` Dataset corresponding to ``matfile``
+        """  # nopep8
+        MAT = Mat.loadmat(matfile)
+        vfunc = np.vectorize(Aid.datenum_2datetime)
+        QC = MAT['dataset']['qc'][0, 0]
+        DATA = MAT['dataset']['data'][0, 0]
+        time = MAT['dataset']['time'][0, 0].ravel()
+        DS = xr.Dataset(data_vars={
+            'global_mask_0': (('date'), QC['global'][0, 0].ravel())},
+            coords={'date': vfunc(time)})
+        qc_flag = {}
+        for i, j in QC['localMapping'][0, 0]:
+            qc_flag.update({f'{i[0]}': j[0, 0]})
+        for i in DATA.dtype.names:
+            name = f'local_mask_{qc_flag[i]}'
+            flag = QC['local'][0, 0][0, int(qc_flag[i]) - 1]
+            if DATA[i].ravel()[0]['isBinned'][0, 0].ravel():
+                level = MAT['dataset']['metadata'][0, 0]['NDEP'][0, 0].ravel()
+                ds = xr.Dataset(data_vars={
+                    i: (('date', 'level'), DATA[i].ravel()[0]['value'][0, 0]),
+                    name: (('date', 'level'), flag)},
+                    coords={'date': vfunc(time), 'level': level})
+            else:
+                ds = xr.Dataset(data_vars={
+                    i: (('date'), DATA[i].ravel()[0]['value'][0, 0].ravel()),
+                    name: (('date'), flag.ravel())},
+                    coords={'date': vfunc(time)})
+            attrs = DS.attrs
+            attrs.update(
+                {f'{i}_unit': DATA[i].ravel()[0]['units'][0, 0].ravel()[0]})
+            if name not in attrs:
+                attrs.update({name: f'{i}'})
+            else:
+                attrs.update({name: f'{attrs[name]}, {i}'})
+            DS = xr.merge([DS, ds])
+            DS.attrs = attrs
+        Qc._get_false_start_end_time(DS)
+        return DS
+
+    def export_qc_metis(raw_matfile, ds, qc_matfile):
+        """Save a MATLAB-style .mat file (with METS structure).
+
+        Args:
+            raw_matfile(``str``): Name of the raw .mat file
+            ds(``xarray.core.dataset.Dataset``): Dataset with matfile variables and flags
+            qc_matfile(``str``): Name of the output qced .mat file
+        """  # nopep8
+        MAT = Mat.loadmat(raw_matfile, mat_dtype=True)
+        new = MAT['dataset']
+        for i in ds.data_vars:
+            if 'global_mask' in i:
+                new["qc"][0, 0]['global'][0, 0] = DS[i].values
+            elif i.startswith('local_mask'):
+                n = int(i.split('_')[-1])
+                new['qc'][0, 0]['local'][0, 0][0, n - 1] = DS[i].values
+            else:
+                new['data'][0, 0][i][0, 0]['value'][0, 0] = DS[i].values
+                new['data'][0, 0][i][0, 0]['units'][0, 0] = DS.attrs.get(
+                    f'{i}_unit')
+        Mat.save(qc_matfile, {'dataset': MAT['dataset']})
 
     def save(fname, mdict):
         """Save a dictionary of names and arrays into a MATLAB-style .mat file.
@@ -1334,6 +1403,76 @@ class Hycom(object):
         fig.colorbar(pcm, cax=pos_cax, orientation='horizontal', label=label)
 
         return fig, ax
+
+
+class Qc(object):
+    """Class to QC in xarray dataset for FUGRO Softwares
+
+    .. hlist::
+        :columns: 5
+
+        * :func:`false_start_end`
+
+
+    """  # nopep8
+    def _get_values_in(num):
+        """get values inside METS flags"""
+        v_in = []
+
+        def factor(n):
+            v = 0
+            while n % 2 == 0:
+                n = n / 2
+                v += 1
+            return 2**v
+        while num > 0:
+            i = factor(num)
+            num = num - i
+            v_in.append(i)
+        return v_in
+
+    def _remove_false_start_end_time(ds):
+        da = ds['global_mask_0']
+        ds['global_mask_0'].values = Qc._remove_values(da, 1)
+        ds['global_mask_0'].values = Qc._remove_values(da, 2)
+        Qc._get_false_start_end_time(ds)
+        return ds
+
+    def _remove_values(da, num):
+        flags = [i - num if num in Qc._get_values_in(
+            i) else i for i in da.values]
+        da = np.asarray(flags, dtype=np.uint16)
+        return da
+
+    def _apply_values(da, idx, num):
+        flags = [i if num in Qc._get_values_in(
+            i) else i + num for i in da[idx]]
+        da[idx] = np.asarray(flags, dtype=np.uint16)
+        return da
+
+    def _get_false_start_end_time(ds):
+        fmt = "%Y-%m-%d %H:%M:%S"
+        idx = sum([True for j in DS.global_mask_0.values
+                   if 1 in Qc._get_values_in(j)])
+        start = ds.isel(date=idx).date.dt.strftime(fmt).values
+        fin_idx = sum([True for j in DS.global_mask_0.values[1:]
+                       if 2 not in Qc._get_values_in(j)])
+        end = ds.isel(date=fin_idx).date.dt.strftime(fmt).values
+        attrs = ds.attrs
+        attrs.update({f'False_Start_time > ': f'{start}'})
+        attrs.update({f'False_End_time < ': f'{end}'})
+        return ds
+
+    def false_start_end(ds, start, end):
+        Qc._remove_false_start_end_time(ds)
+        ini_idx = ds['date'] < np.datetime64(start)
+        ds['global_mask_0'] = Qc._apply_values(ds['global_mask_0'], ini_idx, 1)
+        fin_idx = ds['date'] > np.datetime64(end)
+        ds['global_mask_0'] = Qc._apply_values(ds['global_mask_0'], fin_idx, 2)
+        attrs = ds.attrs
+        attrs.update({f'False_Start_time > ': f'{start}'})
+        attrs.update({f'False_End_time < ': f'{end}'})
+        return ds
 
 
 if __name__ == "__main__":

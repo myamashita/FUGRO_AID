@@ -1,7 +1,7 @@
 **Hycom**
 =========
 
-Module :class:`Mat`
+Module :class:`Hycom`
 -------------------
 
 This is the Hycom module
