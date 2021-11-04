@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 releases = requests.get(
     r'https://api.github.com/repos/myamashita/FUGRO_AID/releases/latest')
 lastest = releases.json()['tag_name']
-__version__ = '0.4.0'
+__version__ = '0.4.1'
 print(f'This module version is {__version__}.\n'
       f'The lastest version is {lastest}.')
 
@@ -1060,6 +1060,7 @@ class Mat(object):
         QC = MAT['dataset']['qc'][0, 0]
         DATA = MAT['dataset']['data'][0, 0]
         time = MAT['dataset']['time'][0, 0].ravel()
+        META = MAT['dataset']['metadata'][0, 0]
         DS = xr.Dataset(data_vars={
             'global_mask_0': (('date'), QC['global'][0, 0].ravel())},
             coords={'date': vfunc(time)})
@@ -1088,6 +1089,14 @@ class Mat(object):
             else:
                 attrs.update({name: f'{attrs[name]}, {i}'})
             DS = xr.merge([DS, ds])
+            DS.attrs = attrs
+        for i in META.dtype.names:
+            attrs = DS.attrs
+            values = META[i].ravel()[0].ravel()
+            if len(values) > 1:
+                attrs.update({f'{i}': values})
+            else:
+                attrs.update({f'{i}': values[0]})
             DS.attrs = attrs
         Qc._get_false_start_end_time(DS)
         return DS
@@ -1412,7 +1421,8 @@ class Qc(object):
         :columns: 5
 
         * :func:`false_start_end`
-
+        * :func:`get_expected_date`
+        * :func:`get_QCed`
 
     """  # nopep8
     def _get_values_in(num):
@@ -1455,8 +1465,8 @@ class Qc(object):
         idx = sum([True for j in ds.global_mask_0.values
                    if 1 in Qc._get_values_in(j)])
         start = ds.isel(date=idx).date.dt.strftime(fmt).values
-        fin_idx = sum([True for j in ds.global_mask_0.values[1:]
-                       if 2 not in Qc._get_values_in(j)])
+        fin_idx = sum([True for j in ds.global_mask_0.values
+                       if 2 not in Qc._get_values_in(j)]) - 1
         end = ds.isel(date=fin_idx).date.dt.strftime(fmt).values
         attrs = ds.attrs
         attrs.update({f'False_Start_time > ': f'{start}'})
@@ -1473,6 +1483,32 @@ class Qc(object):
         attrs.update({f'False_Start_time > ': f'{start}'})
         attrs.update({f'False_End_time < ': f'{end}'})
         return ds
+
+    def get_expected_date(ds):
+        freq = ds.attrs['INTRAT'] / 10
+        start = ds.attrs['False_Start_time > ']
+        end = ds.attrs['False_End_time < ']
+        expected_date = pd.date_range(start, end, freq=f'{freq}S')
+        return expected_date
+
+    def get_QCed(ds):
+        var_list = [i for i in list(ds.keys()) if 'mask' not in i]
+        flag_list = [i for i in list(ds.attrs.keys()) if 'local_mask' in i]
+        DF = pd.DataFrame()
+        for i in var_list:
+            for j in flag_list:
+                if i in ds.attrs[j]:
+                    break
+            VAR_Qced = ds[i].where(ds.global_mask_0 + ds[j] == 0)
+            if 'level' in VAR_Qced.dims:
+                df = VAR_Qced.to_dataframe().unstack('level')
+                df.columns = [
+                    f'{col[0]}{abs(int(col[1]))}m' for col in df.columns]
+            else:
+                df = VAR_Qced.to_dataframe()
+            DF = pd.concat([DF, df], axis=1)
+        DF = DF.reindex(Qc.get_expected_date(ds))
+        return DF
 
 
 if __name__ == "__main__":

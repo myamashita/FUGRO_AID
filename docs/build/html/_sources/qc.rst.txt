@@ -19,3 +19,11 @@ Methods
 
 .. autofunction:: aid.Qc.false_start_end
 
+----------------------------------------
+
+.. autofunction:: aid.Qc.get_expected_date
+
+------------------------------------------
+
+.. autofunction:: aid.Qc.get_QCed
+
