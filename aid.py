@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 releases = requests.get(
     r'https://api.github.com/repos/myamashita/FUGRO_AID/releases/latest')
 lastest = releases.json()['tag_name']
-__version__ = '0.4.1'
+__version__ = '0.4.2'
 print(f'This module version is {__version__}.\n'
       f'The lastest version is {lastest}.')
 
@@ -17,11 +17,13 @@ print(f'This module version is {__version__}.\n'
 class Aid():
     """
     .. hlist::
-        :columns: 5
+        :columns: 4
 
         * :func:`datenum_2datetime`
         * :func:`datetime_2matlab`
+        * :func:`datetimeIndex_2matlab`
         * :func:`datetime64_2matlab`
+        * :func:`dadatetime_2matlab`
         * :func:`describe`
         * :func:`highlight_bins`
         * :func:`id2uv`
@@ -58,6 +60,20 @@ class Aid():
         td = dt - dt.min
         return n + td.seconds / 86400 + td.microseconds / 86400000000
 
+    def datetimeIndex_2matlab(dtIndex):
+        """Convert pandas.core.indexes.datetimes.DatetimeIndex to
+        matlab datenum list
+
+        Args:
+            dtIndex (``pandas.core.indexes.datetimes.DatetimeIndex``): Date in datetime format
+        Returns:
+            ``List`` List corresponding to ``DatetimeIndex``
+        >>> dtIndex = pd.to_datetime(['2000-01-01', '2010-12-20', '2020-02-12'])
+        >>> [Aid.datetime_2matlab(i.to_pydatetime()) for i in dtIndex]
+        [730486.0, 734492.0, 737833.0]
+        """ # nopep8
+        return [Aid.datetime_2matlab(i.to_pydatetime()) for i in dtIndex]
+
     def datetime64_2matlab(dt: np.datetime64) -> float:
         """Convert a datetime64[ns] to matlab datenum
 
@@ -69,8 +85,25 @@ class Aid():
         737833.8147569444
         >>> Aid.datetime64_2matlab(np.datetime64('2020-01-01 05:08:15.735'))
         737791.214071007
-        """
+        """  # nopep8
         return Aid.datetime_2matlab(dt.astype('M8[ms]').astype('O'))
+
+    def dadatetime_2matlab(DAtime):
+        """Convert xarray.core.dataarray.DataArray to matlab datenum list
+
+        Args:
+            DAtime (``xarray.core.dataarray.DataArray``): Date in datetime format
+        Returns:
+            ``List`` List corresponding to ``DatetimeIndex``
+        >>> da = xr.DataArray(
+        ...    np.random.rand(4),
+        ...    [("time", pd.date_range("2000-01-01", periods=4))],
+        ... )
+        >>> DAtime = da.time
+        >>> [Aid.datetime64_2matlab(i.values) for i in DAtime]
+        [730486.0, 730487.0, 730488.0, 730489.0]
+        """ 
+        return [Aid.datetime64_2matlab(i.values) for i in DAtime]
 
     def describe(df: pd.DataFrame, len_exp: int,
                  df_dir: pd.DataFrame = None) -> pd.DataFrame:
@@ -1006,7 +1039,7 @@ class Mat(object):
             Data['qc']['localMapping'][len(Lmap), 1] = Lmap[-1, 1] + 1
         return Data
 
-    def merge_local_flag(data, merge=[]):
+    def merge_local_flag(Data, merge=[]):
 
         Lmap = Data['qc']['localMapping']
         for i in merge:
@@ -1023,7 +1056,7 @@ class Mat(object):
         Data['qc']['local'] = qc_local
         return Data
 
-    def split_local_flag(data, split=[]):
+    def split_local_flag(Data, split=[]):
 
         Lmap = Data['qc']['localMapping']
         n = Lmap[-1, 1] + 1

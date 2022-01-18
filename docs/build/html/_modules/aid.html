@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>aid &#8212; FUGRO_AID 0.4.1 documentation</title>
+    <title>aid &#8212; FUGRO_AID 0.4.2 documentation</title>
     <link rel="stylesheet" href="../_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -19,7 +19,7 @@
     <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
-          href="../index.html">FUGRO_AID 0.4.1 documentation</a></div>
+          href="../index.html">FUGRO_AID 0.4.2 documentation</a></div>
         <div class="rel" role="navigation" aria-label="related navigation">
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a>
@@ -47,7 +47,7 @@
 <span class="n">releases</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
     <span class="sa">r</span><span class="s1">&#39;https://api.github.com/repos/myamashita/FUGRO_AID/releases/latest&#39;</span><span class="p">)</span>
 <span class="n">lastest</span> <span class="o">=</span> <span class="n">releases</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s1">&#39;tag_name&#39;</span><span class="p">]</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;0.4.1&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;0.4.2&#39;</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;This module version is </span><span class="si">{</span><span class="n">__version__</span><span class="si">}</span><span class="s1">.</span><span class="se">\n</span><span class="s1">&#39;</span>
       <span class="sa">f</span><span class="s1">&#39;The lastest version is </span><span class="si">{</span><span class="n">lastest</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
 
@@ -55,11 +55,13 @@
 <div class="viewcode-block" id="Aid"><a class="viewcode-back" href="../aid.html#aid.Aid">[docs]</a><span class="k">class</span> <span class="nc">Aid</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. hlist::</span>
-<span class="sd">        :columns: 5</span>
+<span class="sd">        :columns: 4</span>
 
 <span class="sd">        * :func:`datenum_2datetime`</span>
 <span class="sd">        * :func:`datetime_2matlab`</span>
+<span class="sd">        * :func:`datetimeIndex_2matlab`</span>
 <span class="sd">        * :func:`datetime64_2matlab`</span>
+<span class="sd">        * :func:`dadatetime_2matlab`</span>
 <span class="sd">        * :func:`describe`</span>
 <span class="sd">        * :func:`highlight_bins`</span>
 <span class="sd">        * :func:`id2uv`</span>
@@ -96,6 +98,20 @@
         <span class="n">td</span> <span class="o">=</span> <span class="n">dt</span> <span class="o">-</span> <span class="n">dt</span><span class="o">.</span><span class="n">min</span>
         <span class="k">return</span> <span class="n">n</span> <span class="o">+</span> <span class="n">td</span><span class="o">.</span><span class="n">seconds</span> <span class="o">/</span> <span class="mi">86400</span> <span class="o">+</span> <span class="n">td</span><span class="o">.</span><span class="n">microseconds</span> <span class="o">/</span> <span class="mi">86400000000</span>
 
+    <span class="k">def</span> <span class="nf">datetimeIndex_2matlab</span><span class="p">(</span><span class="n">dtIndex</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert pandas.core.indexes.datetimes.DatetimeIndex to</span>
+<span class="sd">        matlab datenum list</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dtIndex (``pandas.core.indexes.datetimes.DatetimeIndex``): Date in datetime format</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            ``List`` List corresponding to ``DatetimeIndex``</span>
+<span class="sd">        &gt;&gt;&gt; dtIndex = pd.to_datetime([&#39;2000-01-01&#39;, &#39;2010-12-20&#39;, &#39;2020-02-12&#39;])</span>
+<span class="sd">        &gt;&gt;&gt; [Aid.datetime_2matlab(i.to_pydatetime()) for i in dtIndex]</span>
+<span class="sd">        [730486.0, 734492.0, 737833.0]</span>
+<span class="sd">        &quot;&quot;&quot;</span> <span class="c1"># nopep8</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">Aid</span><span class="o">.</span><span class="n">datetime_2matlab</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">to_pydatetime</span><span class="p">())</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">dtIndex</span><span class="p">]</span>
+
     <span class="k">def</span> <span class="nf">datetime64_2matlab</span><span class="p">(</span><span class="n">dt</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Convert a datetime64[ns] to matlab datenum</span>
 
@@ -107,8 +123,25 @@
 <span class="sd">        737833.8147569444</span>
 <span class="sd">        &gt;&gt;&gt; Aid.datetime64_2matlab(np.datetime64(&#39;2020-01-01 05:08:15.735&#39;))</span>
 <span class="sd">        737791.214071007</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>  <span class="c1"># nopep8</span>
         <span class="k">return</span> <span class="n">Aid</span><span class="o">.</span><span class="n">datetime_2matlab</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;M8[ms]&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;O&#39;</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">dadatetime_2matlab</span><span class="p">(</span><span class="n">DAtime</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert xarray.core.dataarray.DataArray to matlab datenum list</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            DAtime (``xarray.core.dataarray.DataArray``): Date in datetime format</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            ``List`` List corresponding to ``DatetimeIndex``</span>
+<span class="sd">        &gt;&gt;&gt; da = xr.DataArray(</span>
+<span class="sd">        ...    np.random.rand(4),</span>
+<span class="sd">        ...    [(&quot;time&quot;, pd.date_range(&quot;2000-01-01&quot;, periods=4))],</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; DAtime = da.time</span>
+<span class="sd">        &gt;&gt;&gt; [Aid.datetime64_2matlab(i.values) for i in DAtime]</span>
+<span class="sd">        [730486.0, 730487.0, 730488.0, 730489.0]</span>
+<span class="sd">        &quot;&quot;&quot;</span> 
+        <span class="k">return</span> <span class="p">[</span><span class="n">Aid</span><span class="o">.</span><span class="n">datetime64_2matlab</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">values</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">DAtime</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">describe</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">len_exp</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
                  <span class="n">df_dir</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
@@ -1044,7 +1077,7 @@
             <span class="n">Data</span><span class="p">[</span><span class="s1">&#39;qc&#39;</span><span class="p">][</span><span class="s1">&#39;localMapping&#39;</span><span class="p">][</span><span class="nb">len</span><span class="p">(</span><span class="n">Lmap</span><span class="p">),</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">Lmap</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="n">Data</span>
 
-    <span class="k">def</span> <span class="nf">merge_local_flag</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">merge</span><span class="o">=</span><span class="p">[]):</span>
+    <span class="k">def</span> <span class="nf">merge_local_flag</span><span class="p">(</span><span class="n">Data</span><span class="p">,</span> <span class="n">merge</span><span class="o">=</span><span class="p">[]):</span>
 
         <span class="n">Lmap</span> <span class="o">=</span> <span class="n">Data</span><span class="p">[</span><span class="s1">&#39;qc&#39;</span><span class="p">][</span><span class="s1">&#39;localMapping&#39;</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">merge</span><span class="p">:</span>
@@ -1061,7 +1094,7 @@
         <span class="n">Data</span><span class="p">[</span><span class="s1">&#39;qc&#39;</span><span class="p">][</span><span class="s1">&#39;local&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">qc_local</span>
         <span class="k">return</span> <span class="n">Data</span>
 
-    <span class="k">def</span> <span class="nf">split_local_flag</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="p">[]):</span>
+    <span class="k">def</span> <span class="nf">split_local_flag</span><span class="p">(</span><span class="n">Data</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="p">[]):</span>
 
         <span class="n">Lmap</span> <span class="o">=</span> <span class="n">Data</span><span class="p">[</span><span class="s1">&#39;qc&#39;</span><span class="p">][</span><span class="s1">&#39;localMapping&#39;</span><span class="p">]</span>
         <span class="n">n</span> <span class="o">=</span> <span class="n">Lmap</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>

@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aid &#8212; FUGRO_AID 0.4.1 documentation</title>
+    <title>Aid &#8212; FUGRO_AID 0.4.2 documentation</title>
     <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -21,7 +21,7 @@
     <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
-          href="index.html">FUGRO_AID 0.4.1 documentation</a></div>
+          href="index.html">FUGRO_AID 0.4.2 documentation</a></div>
         <div class="rel" role="navigation" aria-label="related navigation">
           <a href="index.html" title="Welcome to FUGRO_AID’s documentation!"
              accesskey="P">previous</a> |
@@ -56,20 +56,20 @@
 <dd><table class="hlist"><tr><td><ul class="simple">
 <li><p><a class="reference internal" href="#aid.Aid.datenum_2datetime" title="aid.Aid.datenum_2datetime"><code class="xref py py-func docutils literal notranslate"><span class="pre">datenum_2datetime()</span></code></a></p></li>
 <li><p><a class="reference internal" href="#aid.Aid.datetime_2matlab" title="aid.Aid.datetime_2matlab"><code class="xref py py-func docutils literal notranslate"><span class="pre">datetime_2matlab()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#aid.Aid.datetimeIndex_2matlab" title="aid.Aid.datetimeIndex_2matlab"><code class="xref py py-func docutils literal notranslate"><span class="pre">datetimeIndex_2matlab()</span></code></a></p></li>
 </ul>
 </td><td><ul class="simple">
 <li><p><a class="reference internal" href="#aid.Aid.datetime64_2matlab" title="aid.Aid.datetime64_2matlab"><code class="xref py py-func docutils literal notranslate"><span class="pre">datetime64_2matlab()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#aid.Aid.dadatetime_2matlab" title="aid.Aid.dadatetime_2matlab"><code class="xref py py-func docutils literal notranslate"><span class="pre">dadatetime_2matlab()</span></code></a></p></li>
 <li><p><a class="reference internal" href="#aid.Aid.describe" title="aid.Aid.describe"><code class="xref py py-func docutils literal notranslate"><span class="pre">describe()</span></code></a></p></li>
 </ul>
 </td><td><ul class="simple">
 <li><p><a class="reference internal" href="#aid.Aid.highlight_bins" title="aid.Aid.highlight_bins"><code class="xref py py-func docutils literal notranslate"><span class="pre">highlight_bins()</span></code></a></p></li>
 <li><p><a class="reference internal" href="#aid.Aid.id2uv" title="aid.Aid.id2uv"><code class="xref py py-func docutils literal notranslate"><span class="pre">id2uv()</span></code></a></p></li>
-</ul>
-</td><td><ul class="simple">
 <li><p><a class="reference internal" href="#aid.Aid.round_dt" title="aid.Aid.round_dt"><code class="xref py py-func docutils literal notranslate"><span class="pre">round_dt()</span></code></a></p></li>
-<li><p><a class="reference internal" href="#aid.Aid.round_time" title="aid.Aid.round_time"><code class="xref py py-func docutils literal notranslate"><span class="pre">round_time()</span></code></a></p></li>
 </ul>
 </td><td><ul class="simple">
+<li><p><a class="reference internal" href="#aid.Aid.round_time" title="aid.Aid.round_time"><code class="xref py py-func docutils literal notranslate"><span class="pre">round_time()</span></code></a></p></li>
 <li><p><a class="reference internal" href="#aid.Aid.uv2id" title="aid.Aid.uv2id"><code class="xref py py-func docutils literal notranslate"><span class="pre">uv2id()</span></code></a></p></li>
 </ul>
 </td></tr></table>
@@ -118,6 +118,27 @@
 
 <hr class="docutils" />
 <dl class="py function">
+<dt id="aid.Aid.datetimeIndex_2matlab">
+<code class="sig-prename descclassname">aid.Aid.</code><code class="sig-name descname">datetimeIndex_2matlab</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dtIndex</span></em><span class="sig-paren">)</span><a class="headerlink" href="#aid.Aid.datetimeIndex_2matlab" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert pandas.core.indexes.datetimes.DatetimeIndex to
+matlab datenum list</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dtIndex</strong> (<code class="docutils literal notranslate"><span class="pre">pandas.core.indexes.datetimes.DatetimeIndex</span></code>) – Date in datetime format</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">List</span></code> List corresponding to <code class="docutils literal notranslate"><span class="pre">DatetimeIndex</span></code></p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dtIndex</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">([</span><span class="s1">&#39;2000-01-01&#39;</span><span class="p">,</span> <span class="s1">&#39;2010-12-20&#39;</span><span class="p">,</span> <span class="s1">&#39;2020-02-12&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">Aid</span><span class="o">.</span><span class="n">datetime_2matlab</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">to_pydatetime</span><span class="p">())</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">dtIndex</span><span class="p">]</span>
+<span class="go">[730486.0, 734492.0, 737833.0]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
 <dt id="aid.Aid.datetime64_2matlab">
 <code class="sig-prename descclassname">aid.Aid.</code><code class="sig-name descname">datetime64_2matlab</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dt</span><span class="p">:</span> <span class="n">numpy.datetime64</span></em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#aid.Aid.datetime64_2matlab" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert a datetime64[ns] to matlab datenum</p>
@@ -133,6 +154,30 @@
 <span class="go">737833.8147569444</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Aid</span><span class="o">.</span><span class="n">datetime64_2matlab</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">(</span><span class="s1">&#39;2020-01-01 05:08:15.735&#39;</span><span class="p">))</span>
 <span class="go">737791.214071007</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py function">
+<dt id="aid.Aid.dadatetime_2matlab">
+<code class="sig-prename descclassname">aid.Aid.</code><code class="sig-name descname">dadatetime_2matlab</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">DAtime</span></em><span class="sig-paren">)</span><a class="headerlink" href="#aid.Aid.dadatetime_2matlab" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert xarray.core.dataarray.DataArray to matlab datenum list</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>DAtime</strong> (<code class="docutils literal notranslate"><span class="pre">xarray.core.dataarray.DataArray</span></code>) – Date in datetime format</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">List</span></code> List corresponding to <code class="docutils literal notranslate"><span class="pre">DatetimeIndex</span></code></p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">da</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
+<span class="gp">... </span>   <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span>
+<span class="gp">... </span>   <span class="p">[(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s2">&quot;2000-01-01&quot;</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">4</span><span class="p">))],</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">DAtime</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">time</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">Aid</span><span class="o">.</span><span class="n">datetime64_2matlab</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">values</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">DAtime</span><span class="p">]</span>
+<span class="go">[730486.0, 730487.0, 730488.0, 730489.0]</span>
 </pre></div>
 </div>
 </dd></dl>

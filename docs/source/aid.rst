@@ -25,7 +25,15 @@ Methods
 
 ------------------------------------------
 
+.. autofunction:: aid.Aid.datetimeIndex_2matlab
+
+-----------------------------------------------
+
 .. autofunction:: aid.Aid.datetime64_2matlab
+
+--------------------------------------------
+
+.. autofunction:: aid.Aid.dadatetime_2matlab
 
 --------------------------------------------
 
